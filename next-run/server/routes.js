@@ -6,12 +6,16 @@ const express = require("express");
 const router = express.Router();
 const pool = require("./db");
 
-router.get("/api/get/allcourts", (req, res, next) => {
+/**
+ * Gets all courts in court table
+ */
+router.get("/api/get/allcourts", (req, res) => {
   pool.query(`SELECT * FROM courts`, (queryErr, queryRes) => {
     if (queryErr) {
       console.log(queryErr);
     }
-    console.log(queryRes.rows[0]);
+
+    //Converts query result to json to be used in client
     res.json(queryRes.rows[0]);
   });
 });

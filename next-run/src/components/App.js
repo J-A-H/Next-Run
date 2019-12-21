@@ -22,7 +22,7 @@ const App = props => {
   return (
     <div className="App">
       <div className="App-header">
-        <img src={"images/logo.svg"} className="App-logo" alt="logo" />
+        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
         <h2>Welcome to React</h2>
         {/* Added semantic UI button to test */}
         <button className="ui button">Click Here</button>

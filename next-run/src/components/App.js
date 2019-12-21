@@ -1,23 +1,28 @@
 import React, {useState, useEffect } from "react";
 import "./App.css";
 
-import axios from 'axios';
+import useDatabase from '../helpers/useDatabase'
 
 const App = props => {
 
   const [state, setState] = useState('');
-
+  const {getAllCourts} = useDatabase(); //Object destructure to use getAllcourts function
+  
+  /**
+   * Runs everytime App component is rendered.
+   */
   useEffect(() => {
 
     //Makes get request to route in server to query for all courts from our database.
-    axios.get('/api/get/allcourts').then((res, err)=> {
+    getAllCourts().then((res, err)=> {
       if(err){
         console.log(err)
       }
       
       setState(res.data);
-    })
-  }, []);
+    });
+
+  }, []); //Empty arr tells it to only run once after App rendered
 
   return (
     <div className="App">

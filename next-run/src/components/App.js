@@ -3,20 +3,18 @@ import "./App.css";
 
 import axios from 'axios';
 
-// Import semantic UI CSS
-import "semantic-ui-css/semantic.min.css";
-
 const App = props => {
 
   const [state, setState] = useState('');
 
   useEffect(() => {
+
+    //Makes get request to route in server to query for all courts from our database.
     axios.get('/api/get/allcourts').then((res, err)=> {
       if(err){
         console.log(err)
       }
-
-      console.log(res.data);
+      
       setState(res.data);
     })
   }, []);

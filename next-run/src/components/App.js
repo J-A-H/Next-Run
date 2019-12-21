@@ -8,25 +8,20 @@ import useDatabase from "../helpers/useDatabase";
 //Api calls
 import { Map, GoogleApiWrapper } from "google-maps-react";
 
-const App = props => {
-  const [state, setState] = useState("");
+const App = (props) => {
+  const [state, setState] = useState([{}]);
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
-  defaultProps = () => {
-
-    //Get current location
-    navigator.geolocation.getCurrentPosition(res => {
-      const latitude = res.coords.latitude;
-      const longitude = res.coords.longitude;
-    }, err => {
-      console.log(`Error:${err}`);
-    });
-
-    return {
-      center: {lat: latitude, lng: longitude}, 
-      zoom: 12
-    }
+  const getCurrentPosition = (lat, lng) => {
+    return {lat, lng}
   }
+
+   //Get current location
+   navigator.geolocation.getCurrentPosition(res => {
+    setState([{lat: res.coords.latitude, lng: res.coords.longitude}]);
+  }, err => {
+    console.log(`Error:${err}`);
+  });
 
   /**
    * Runs everytime App component is rendered.
@@ -49,7 +44,9 @@ const App = props => {
       </div>
 
       <Map
-
+        google= {props.google}
+        zoom={12}
+        initialCenter={state[0]}
       />
     </div>
   );

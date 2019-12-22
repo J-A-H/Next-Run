@@ -6,7 +6,10 @@ import "./App.css";
 import useDatabase from "../helpers/useDatabase";
 
 //Api calls
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
+
+const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
+const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
 const App = (props) => {
   const [state, setState] = useState({
@@ -30,25 +33,40 @@ const App = (props) => {
   }
 
   /**
+   * Generates Map component
+   */
+  const MapComponent = withScriptjs(withGoogleMap((props)=> {
+    return  <GoogleMap
+      defaultZoom={15}
+      defaultCenter={state.currentLocation}
+    >
+    </GoogleMap>
+  }));
+  
+
+  /**
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-    //Makes get request to route in server to query for all courts from our database.
+
+    //Get all courts from database and updates state
     getAllCourts().then((res, err) => {
       if (err) {
         console.log(err);
       }
 
-      console.log(res.data);
       setState(prevState => ({
         ...prevState,
         courts: res.data
       }));
     });
 
+    //Gets current location and saves to state
     navigator.geolocation.getCurrentPosition(res => {
+
       setCurrentLocation({lat: res.coords.latitude, lng: res.coords.longitude})
     }, err => {
+
       console.log(`Error:${err}`);
     });
 
@@ -59,7 +77,13 @@ const App = (props) => {
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
-      
+      <MapComponent
+        googleMapURL={MAP_URL}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      >
+      </MapComponent>
     </div>
   );
 };

@@ -5,9 +5,10 @@ import "./App.css";
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
 
-//Api calls
+//API calls
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 
+//API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
@@ -24,8 +25,6 @@ const App = (props) => {
    */
   const setCurrentLocation =  (position) =>{
 
-    console.log(position);
-
     setState(prevState => ({
       ...prevState,
       currentLocation: position
@@ -33,7 +32,7 @@ const App = (props) => {
   }
 
   /**
-   * Generates Map component
+   * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(withGoogleMap((props)=> {
     return  <GoogleMap

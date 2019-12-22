@@ -9,19 +9,25 @@ import useDatabase from "../helpers/useDatabase";
 import { Map, GoogleApiWrapper } from "google-maps-react";
 
 const App = (props) => {
-  const [state, setState] = useState([{}]);
+  const [state, setState] = useState({
+      courts: [],
+      currentLocation: {}
+    }
+  );
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
-  const getCurrentPosition = (lat, lng) => {
-    return {lat, lng}
-  }
+  /**
+   * Sets current location and adds to state 
+   */
+  const setCurrentLocation =  (position) =>{
 
-   //Get current location
-   navigator.geolocation.getCurrentPosition(res => {
-    setState([{lat: res.coords.latitude, lng: res.coords.longitude}]);
-  }, err => {
-    console.log(`Error:${err}`);
-  });
+    console.log(position);
+
+    setState(prevState => ({
+      ...prevState,
+      currentLocation: position
+    }));
+  }
 
   /**
    * Runs everytime App component is rendered.
@@ -33,8 +39,19 @@ const App = (props) => {
         console.log(err);
       }
 
-      setState(res.data);
+      console.log(res.data);
+      setState(prevState => ({
+        ...prevState,
+        courts: res.data
+      }));
     });
+
+    navigator.geolocation.getCurrentPosition(res => {
+      setCurrentLocation({lat: res.coords.latitude, lng: res.coords.longitude})
+    }, err => {
+      console.log(`Error:${err}`);
+    });
+
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (
@@ -42,12 +59,7 @@ const App = (props) => {
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
-
-      <Map
-        google= {props.google}
-        zoom={12}
-        initialCenter={state[0]}
-      />
+      
     </div>
   );
 };

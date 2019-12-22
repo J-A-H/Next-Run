@@ -1,25 +1,73 @@
-import React, {useState, useEffect } from "react";
+// React components and hooks
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import useDatabase from '../helpers/useDatabase'
+// Database helper object
+import useDatabase from "../helpers/useDatabase";
 
-const App = props => {
+//Api calls
+import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 
-  const [state, setState] = useState('');
-  const {getAllCourts} = useDatabase(); //Object destructure to use getAllcourts function
+const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
+const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
+
+const App = (props) => {
+  const [state, setState] = useState({
+      courts: [],
+      currentLocation: {}
+    }
+  );
+  const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
+
+  /**
+   * Sets current location and adds to state 
+   */
+  const setCurrentLocation =  (position) =>{
+
+    console.log(position);
+
+    setState(prevState => ({
+      ...prevState,
+      currentLocation: position
+    }));
+  }
+
+  /**
+   * Generates Map component
+   */
+  const MapComponent = withScriptjs(withGoogleMap((props)=> {
+    return  <GoogleMap
+      defaultZoom={15}
+      defaultCenter={state.currentLocation}
+    >
+    </GoogleMap>
+  }));
   
+
   /**
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
 
-    //Makes get request to route in server to query for all courts from our database.
-    getAllCourts().then((res, err)=> {
-      if(err){
-        console.log(err)
+    //Get all courts from database and updates state
+    getAllCourts().then((res, err) => {
+      if (err) {
+        console.log(err);
       }
-      
-      setState(res.data);
+
+      setState(prevState => ({
+        ...prevState,
+        courts: res.data
+      }));
+    });
+
+    //Gets current location and saves to state
+    navigator.geolocation.getCurrentPosition(res => {
+
+      setCurrentLocation({lat: res.coords.latitude, lng: res.coords.longitude})
+    }, err => {
+
+      console.log(`Error:${err}`);
     });
 
   }, []); //Empty arr tells it to only run once after App rendered
@@ -28,15 +76,16 @@ const App = props => {
     <div className="App">
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
-        <h2>Welcome to React</h2>
-        {/* Added semantic UI button to test */}
-        <button className="ui button">Click Here</button>
       </div>
-      <p className="App-intro">
-        Court Name: {state.name}
-      </p>
+      <MapComponent
+        googleMapURL={MAP_URL}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      >
+      </MapComponent>
     </div>
   );
-  }
+};
 
 export default App;

@@ -16,7 +16,7 @@ router.get("/api/get/allcourts", (req, res) => {
     }
 
     //Converts query result to json to be used in client
-    res.json(queryRes.rows[0]);
+    res.json(queryRes.rows);
   });
 });
 

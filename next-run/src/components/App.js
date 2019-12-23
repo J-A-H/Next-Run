@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+import { Plugins } from '@capacitor/core';
+
+const { Geolocation } = Plugins;
+
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
 
@@ -28,16 +32,28 @@ const App = props => {
 
   //*------------------------------- Methods ----------------------------------------------
 
-
   /**
    * Sets current location and adds to state
    */
   const setCurrentLocation = position => {
+
     setState(prevState => ({
       ...prevState,
       currentLocation: position
     }));
   };
+
+  //Gets current location through capacitor API
+  const getCurrentLocation = async () => {
+
+    let location = await Geolocation.getCurrentPosition();
+    const coords = {
+      lat: location.coords.latitude,
+      lng: location.coords.longitude
+    }
+
+    setCurrentLocation(coords);
+  }
 
   //*-------------------------------Custom components----------------------------------------------
 
@@ -69,6 +85,7 @@ const App = props => {
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
+
     //Get all courts from database and updates state
     getAllCourts().then((res, err) => {
       if (err) {
@@ -81,18 +98,7 @@ const App = props => {
       }));
     });
 
-    //Gets current location and saves to state
-    navigator.geolocation.getCurrentPosition(
-      res => {
-        setCurrentLocation({
-          lat: res.coords.latitude,
-          lng: res.coords.longitude
-        });
-      },
-      err => {
-        console.log(`Error:${err}`);
-      }
-    );
+    getCurrentLocation();
     
   }, []); //Empty arr tells it to only run once after App rendered
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
+import CourtDetailsContainer from './components/CourtDetailsContainer';
 
 // Import serviceWork for PWA
 // import * as serviceWorker from './serviceWorker';
@@ -9,8 +11,17 @@ import './index.css';
 // Import semantic UI CSS
 import "semantic-ui-css/semantic.min.css";
 
+const routing = (
+  <Router>
+    <div>
+      <Route path="/" component={App} />
+      <Route path="/courtDetails" component={CourtDetailsContainer} />
+    </div>
+  </Router>
+)
+
 ReactDOM.render(
-  <App />,
+  routing,
   document.getElementById('root')
 );
 

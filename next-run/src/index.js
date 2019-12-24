@@ -1,18 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
+import CourtDetailsContainer from './components/CourtDetailsContainer';
+
+// Import serviceWork for PWA
+// import * as serviceWorker from './serviceWorker';
 
 // Import semantic UI CSS
 import "semantic-ui-css/semantic.min.css";
 
+<<<<<<< HEAD
 import Navbar from 'react-bootstrap/Navbar'
+=======
+const routing = (
+  <Router>
+    <div>
+      <Route path="/" component={App} />
+      <Route path="/courtDetails" component={CourtDetailsContainer} />
+    </div>
+  </Router>
+)
+>>>>>>> 922b4f5cae3e25845320847a6f68a3021592b041
 
 ReactDOM.render(
-  <App />,
+  routing,
   document.getElementById('root')
 );
 
+<<<<<<< HEAD
 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
   <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -36,3 +53,11 @@ ReactDOM.render(
     </Nav>
   </Navbar.Collapse>
 </Navbar>
+=======
+
+//TODO: Use to acitivate service worker for PWA
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+// serviceWorker.unregister();
+>>>>>>> 922b4f5cae3e25845320847a6f68a3021592b041

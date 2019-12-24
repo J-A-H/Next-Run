@@ -1,0 +1,8 @@
+{
+  "appId": "com.jah.app",
+  "appName": "next-run",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

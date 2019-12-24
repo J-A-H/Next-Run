@@ -15,7 +15,6 @@ const routing = (
   <Router>
     <div>
       <Route path="/" component={App} />
-      <Route path="/courtDetails" component={CourtDetailsContainer} />
     </div>
   </Router>
 )

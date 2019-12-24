@@ -20,7 +20,6 @@ import {
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
-
 const App = props => {
 
   const [state, setState] = useState({

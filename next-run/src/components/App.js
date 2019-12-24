@@ -60,6 +60,8 @@ const App = props => {
         setCurrentLocation(coords);
       }
     });
+
+    
   }
 
   //*-------------------------------Custom components----------------------------------------------

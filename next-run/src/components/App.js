@@ -1,5 +1,5 @@
 // React components and hooks
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 
 // Database helper object
@@ -12,13 +12,13 @@ import {
   withScriptjs,
   Marker
 } from "react-google-maps";
+import CourtListContainer from "./CourtListContainer";
 
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
 const App = props => {
-
   const [state, setState] = useState({
     courts: [],
     currentLocation: {}
@@ -27,7 +27,6 @@ const App = props => {
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
   //*------------------------------- Methods ----------------------------------------------
-
 
   /**
    * Sets current location and adds to state
@@ -43,14 +42,14 @@ const App = props => {
 
   /**
    * Generates custom map marker component
-   * @param {*} props 
+   * @param {*} props
    */
-  const CurrentLocationMarkerComponent = (props) => {
+  const CurrentLocationMarkerComponent = props => {
     return (
       //TODO: Use defaultIcon prop to link to png
-      <Marker position={state.currentLocation}/>
+      <Marker position={state.currentLocation} />
     );
-  }
+  };
 
   /**
    * Generates Map component other props are used with withScriptjs and withGoogleMap
@@ -59,7 +58,7 @@ const App = props => {
     withGoogleMap(props => {
       return (
         <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
-          <CurrentLocationMarkerComponent/>
+          <CurrentLocationMarkerComponent />
         </GoogleMap>
       );
     })
@@ -93,11 +92,10 @@ const App = props => {
         console.log(`Error:${err}`);
       }
     );
-    
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (
-    <div className="App">
+    <React.Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
@@ -107,7 +105,8 @@ const App = props => {
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
-    </div>
+      <CourtListContainer courts={state.courts}></CourtListContainer>
+    </React.Fragment>
   );
 };
 

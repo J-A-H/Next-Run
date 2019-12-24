@@ -46,7 +46,7 @@ const App = props => {
   //Gets current location through capacitor API
   const getCurrentLocation = async () => {
 
-    //Watch for location changes and update state
+    // Watch for location changes and update state
     await Geolocation.watchPosition({enableHighAccuracy: true}, (location, err) => {
       if (err){
         console.log(err);

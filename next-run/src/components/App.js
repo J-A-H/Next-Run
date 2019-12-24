@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+//Ionic Capcitor layer
 import { Plugins } from '@capacitor/core';
-
 const { Geolocation } = Plugins;
 
 // Database helper object
@@ -46,13 +46,20 @@ const App = props => {
   //Gets current location through capacitor API
   const getCurrentLocation = async () => {
 
-    let location = await Geolocation.getCurrentPosition();
-    const coords = {
-      lat: location.coords.latitude,
-      lng: location.coords.longitude
-    }
+    //Watch for location changes and update state
+    await Geolocation.watchPosition({enableHighAccuracy: true}, (location, err) => {
+      if (err){
+        console.log(err);
+      }
+      else{
+        const coords = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude
+        }
 
-    setCurrentLocation(coords);
+        setCurrentLocation(coords);
+      }
+    });
   }
 
   //*-------------------------------Custom components----------------------------------------------

@@ -12,6 +12,8 @@ import {
   withScriptjs,
   Marker
 } from "react-google-maps";
+import CourtCard from "./CourtCard";
+import CourtListContainer from "./CourtListContainer"
 
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
@@ -48,7 +50,7 @@ const App = props => {
   const CurrentLocationMarkerComponent = (props) => {
     return (
       //TODO: Use defaultIcon prop to link to png
-      <Marker position={state.currentLocation}/>
+      <Marker position={state.currentLocation} />
     );
   }
 
@@ -58,9 +60,11 @@ const App = props => {
   const MapComponent = withScriptjs(
     withGoogleMap(props => {
       return (
-        <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
-          <CurrentLocationMarkerComponent/>
-        </GoogleMap>
+        <div>
+          <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
+            <CurrentLocationMarkerComponent />
+          </GoogleMap>
+        </div>
       );
     })
   );
@@ -93,20 +97,29 @@ const App = props => {
         console.log(`Error:${err}`);
       }
     );
-    
+
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (
-    <div className="App">
-      <div className="App-header">
-        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
+    <div>
+      <div className="App">
+        <div className="App-header">
+          <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
+        </div >
+ 
+        <div style={{ position: 'absolute', zIndex: '2' }}>
+        <CourtListContainer/> 
       </div>
-      <MapComponent
-        googleMapURL={MAP_URL}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-      />
+      <div style={{ zIndex: '1' }}>
+        <MapComponent
+          googleMapURL={MAP_URL}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        />
+        </div>
+      </div>
+
     </div>
   );
 };

@@ -59,8 +59,6 @@ const App = props => {
         setCurrentLocation(coords);
       }
     });
-
-    
   }
 
   //*-------------------------------Custom components----------------------------------------------
@@ -77,6 +75,16 @@ const App = props => {
   }
 
   /**
+   * Generates a court marker  for each court
+   * @param {*} param0 
+   */
+  const CourtMarkerComponent = ({location} = props) => {
+    return (
+      <Marker position={location}/>
+    )
+  }
+
+  /**
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
@@ -84,6 +92,9 @@ const App = props => {
       return (
         <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
           <CurrentLocationMarkerComponent/>
+          {state.courts.map(court =>{
+            return (<CourtMarkerComponent location={{lat: court.lat, lng: court.lng}}/>);
+          })}
         </GoogleMap>
       );
     })

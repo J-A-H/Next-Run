@@ -1,9 +1,10 @@
 // React components and hooks
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
+import CourtListContainer from "./CourtListContainer";
 
 //Ionic Capcitor layer
-import { Plugins } from '@capacitor/core';
+import { Plugins } from "@capacitor/core";
 const { Geolocation } = Plugins;
 
 // Database helper object
@@ -20,8 +21,8 @@ import {
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
-const App = props => {
 
+const App = props => {
   const [state, setState] = useState({
     courts: [],
     currentLocation: {}
@@ -35,7 +36,6 @@ const App = props => {
    * Sets current location and adds to state
    */
   const setCurrentLocation = position => {
-
     setState(prevState => ({
       ...prevState,
       currentLocation: position
@@ -44,19 +44,20 @@ const App = props => {
 
   //Gets current location through capacitor API
   const getCurrentLocation = async () => {
-
     // Watch for location changes and update state
-    await Geolocation.watchPosition({enableHighAccuracy: true}, (location, err) => {
-      if (err){
-        console.log(err);
-      }
-      else{
-        const coords = {
-          lat: location.coords.latitude,
-          lng: location.coords.longitude
-        }
+    Geolocation.watchPosition(
+      { enableHighAccuracy: true},
+      (location, err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          const coords = {
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+          };
 
-        setCurrentLocation(coords);
+          setCurrentLocation(coords);
+        }
       }
     });
   }
@@ -65,14 +66,14 @@ const App = props => {
 
   /**
    * Generates custom map marker component
-   * @param {*} props 
+   * @param {*} props
    */
-  const CurrentLocationMarkerComponent = (props) => {
+  const CurrentLocationMarkerComponent = props => {
     return (
       //TODO: Use defaultIcon prop to link to png
-      <Marker position={state.currentLocation}/>
+      <Marker position={state.currentLocation} />
     );
-  }
+  };
 
   /**
    * Generates a court marker  for each court
@@ -92,9 +93,12 @@ const App = props => {
       return (
         <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
           <CurrentLocationMarkerComponent/>
+        
           {state.courts.map(court =>{
             return (<CourtMarkerComponent key={court.id} location={{lat: Number(court.lat), lng: Number(court.lng)}}/>);
           })}
+    
+          <CurrentLocationMarkerComponent />
         </GoogleMap>
       );
     })
@@ -104,7 +108,6 @@ const App = props => {
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-
     //Get all courts from database and updates state
     getAllCourts().then((res, err) => {
       if (err) {
@@ -117,12 +120,12 @@ const App = props => {
       }));
     });
 
+    //Gets current location and sets it to state.
     getCurrentLocation();
-    
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (
-    <div className="App">
+    <React.Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
@@ -132,7 +135,8 @@ const App = props => {
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
-    </div>
+      {/* <CourtListContainer courts={state.courts}></CourtListContainer> */}
+    </React.Fragment>
   );
 };
 

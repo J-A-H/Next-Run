@@ -32,5 +32,24 @@ router.get("/courts/:id", (req, res) => {
   });
 });
 
+router.get("/visits", (req, res) => {
+  pool.query(`SELECT * FROM visits`, (queryErr, queryRes) => {
+    if (queryErr) {
+      console.log(queryErr);
+    }
+
+    //Converts query result to json to be used in client
+    res.json(queryRes.rows);
+  });
+});
+router.post("/")
+
+//_____________PUSHER______________
+
+router.post("/message"), (req, res) => {
+  const payload = req.body;
+  pusher.trigger('chat', 'message', payload);
+  res.send(payload)
+};
 
 module.exports = router;

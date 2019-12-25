@@ -93,7 +93,7 @@ const App = props => {
         <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
           <CurrentLocationMarkerComponent/>
           {state.courts.map(court =>{
-            return (<CourtMarkerComponent location={{lat: court.lat, lng: court.lng}}/>);
+            return (<CourtMarkerComponent key={court.id} location={{lat: Number(court.lat), lng: Number(court.lng)}}/>);
           })}
         </GoogleMap>
       );

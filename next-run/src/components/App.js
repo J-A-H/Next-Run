@@ -47,6 +47,19 @@ const App = props => {
   //*------------------------------- Methods ----------------------------------------------
 
   /**
+   * Return true if current position is within the court region at courtPosition
+   * @param {*} courtPosition 
+   * @param {*} radius 
+   * @param {*} currentPosition 
+   */
+  const withinCourt = (courtPosition, radius, currentPosition) => {
+    const start = new google.maps.LatLng(courtPosition.lat, courtPosition.lng);
+    const end = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
+    const distance = google.maps.geometry.spherical.computeDistanceBetween;
+    return distance(start, end) <= radius;
+  }
+
+  /**
    * Sets current location and adds to state
    */
   const setCurrentLocation = position => {
@@ -73,6 +86,7 @@ const App = props => {
           };
 
           setCurrentLocation(coords);
+          //TODO: Check if current location is within a court region
         }
       }
     );
@@ -111,10 +125,9 @@ const App = props => {
           {state.courts.map(court =>{
             let coords = {lat: Number(court.lat), lng: Number(court.lng)};
             return (
-            <Fragment>
-              <CourtMarkerComponent key={court.id} location={coords}/>
+            <Fragment key = {court.id}>
+              <CourtMarkerComponent location={coords}/>
               <Circle
-                key={court.id}
                 center={coords}
                 radius={400}
                 options={{ fillOpacity: 0.1, strokeWidth: 1, strokeOpacity: 0.2 }}

@@ -14,15 +14,20 @@ const UseDatabase = () => {
     return axios.get('/courts');
   };
 
-  /**
-   * Database helpers go here-------------------------------------------
-   */
+
   const getCourt = (id) => {
     return axios.get('/courts/' + id);
   };
 
+  /**
+   * Return all visits
+   */
+  const getAllVisits = () => {
+    return axios.get('/visits')
+  }
+
   //TODO: Add any new functions defined about to the return obj, or else you can't call it
-  return {getAllCourts, getCourt}
+  return {getAllCourts, getCourt, getAllVisits}
 }
 
 export default UseDatabase;

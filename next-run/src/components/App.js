@@ -15,20 +15,34 @@ import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Marker
+  Marker,
+  Circle
 } from "react-google-maps";
+import Axios from "axios";
 
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
+//PUSHER
+const Pusher = require('pusher-js');
+
+const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+  encrypted: true
+});
+
 const App = props => {
+
+  //_________State_________
+
   const [state, setState] = useState({
     courts: [],
-    currentLocation: {}
+    currentLocation: {},
+    visits: []
   });
 
-  const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
+  const { getAllCourts, getCourt, getAllVisits } = useDatabase(); //Object destructure to use getAllcourts function
 
   //*------------------------------- Methods ----------------------------------------------
 
@@ -42,7 +56,9 @@ const App = props => {
     }));
   };
 
-  //Gets current location through capacitor API
+  /**
+   * Gets current location
+   */
   const getCurrentLocation = async () => {
     // Watch for location changes and update state
     Geolocation.watchPosition(
@@ -80,9 +96,7 @@ const App = props => {
    * @param {*} param0 
    */
   const CourtMarkerComponent = ({location} = props) => {
-    return (
-      <Marker position={location}/>
-    )
+    return (<Marker position={location}/>)
   }
 
   /**
@@ -95,9 +109,19 @@ const App = props => {
           <CurrentLocationMarkerComponent/>
         
           {state.courts.map(court =>{
-            return (<CourtMarkerComponent key={court.id} location={{lat: Number(court.lat), lng: Number(court.lng)}}/>);
+            let coords = {lat: Number(court.lat), lng: Number(court.lng)};
+            return (
+            <Fragment>
+              <CourtMarkerComponent key={court.id} location={coords}/>
+              <Circle
+                key={court.id}
+                center={coords}
+                radius={400}
+                options={{ fillOpacity: 0.1, strokeWidth: 1, strokeOpacity: 0.2 }}
+              />
+            </Fragment>)
           })}
-    
+
           <CurrentLocationMarkerComponent />
         </GoogleMap>
       );
@@ -120,8 +144,20 @@ const App = props => {
       }));
     });
 
+    getAllVisits().then((res, err) => {
+      if(err) {
+        console.log(err)
+      }
+
+      setState(prevState => ({
+        ...prevState,
+        visits: res.data
+      }));
+    });
+
     //Gets current location and sets it to state.
     getCurrentLocation();
+
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (

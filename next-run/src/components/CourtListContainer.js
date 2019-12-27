@@ -3,10 +3,11 @@ import CourtList from "./CourtList";
 import ActivityLevelFilterList from "./ActivityLevelFilterList"
 
 const CourtListContainer = props => {
+  return(
   <Fragment>
-    <CourtList courts={props.courts} />
     <ActivityLevelFilterList/>
-  </Fragment>;
-};
+    <CourtList courts={props.courts} />
+  </Fragment>
+  )};
 
 export default CourtListContainer;

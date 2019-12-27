@@ -19,7 +19,7 @@ const CourtDetailsContainer = props => {
         court: res.data
       }));
     });
-  }, []); //Empty arr tells it to only run once after App rendered
+  }); //Empty arr tells it to only run once after App rendered
   return (
     <Fragment>
       <CourtDetailShow court={state.court}/>

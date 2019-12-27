@@ -17,8 +17,8 @@ const routing = (
       <li>
         <Link to="/">Update Location</Link>
       </li>
-      <Route path="/" component={App} />
-      <Route path="/courts/:courtID" component={CourtDetailsContainer}/>
+      <Route exact path="/" component={App} />
+      <Route exact path="/courts/:courtID" component={CourtDetailsContainer}/>
     </div>
   </Router>
 )

@@ -10,8 +10,9 @@ const UseDatabase = () => {
   /**
    * Return all courts in table courts (Example helper)
    */
-  const getAllCourts = () => {
+  const getAllCourts = () => {  
     return axios.get('/courts');
+
   };
 
   /**

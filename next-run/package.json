@@ -12,6 +12,7 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "express": "^4.17.1",
     "google-maps-react": "^2.0.2",
+    "gulp": "^4.0.2",
     "pg": "^7.15.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

@@ -4,8 +4,7 @@ import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 
 //Ionic Capcitor layer
-import { Plugins } from "@capacitor/core";
-const { Geolocation } = Plugins;
+// import { Plugins } from "@capacitor/core";
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -18,14 +17,15 @@ import {
   Marker,
   Circle
 } from "react-google-maps";
-import Axios from "axios";
 
-//API keys
+ const google = window.google;
+
+//API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
-//PUSHER
-const Pusher = require('pusher-js');
+//PUSHER________________
+const Pusher = require("pusher-js");
 
 const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
@@ -33,64 +33,57 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 });
 
 const App = props => {
-
   //_________State_________
 
-  const [state, setState] = useState({
-    courts: [],
-    currentLocation: {},
-    visits: []
-  });
+  const [geolocation, setGeolocation] = useState({});
 
-  const { getAllCourts, getCourt, getAllVisits } = useDatabase(); //Object destructure to use getAllcourts function
+  const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
   //*------------------------------- Methods ----------------------------------------------
 
   /**
-   * Return true if current position is within the court region at courtPosition
-   * @param {*} courtPosition 
-   * @param {*} radius 
-   * @param {*} currentPosition 
+   * Return true if current position is within the court region at court
+   * @param {*} court
+   * @param {*} radius
+   * @param {*} currentPosition
    */
-  const withinCourt = (courtPosition, radius, currentPosition) => {
-    const start = new google.maps.LatLng(courtPosition.lat, courtPosition.lng);
-    const end = new google.maps.LatLng(currentPosition.lat, currentPosition.lng);
+  const withinCourt = (court, radius, currentPosition) => {
+
+    const start = new google.maps.LatLng(court.lat, court.lng);
+    const end = new google.maps.LatLng(
+      currentPosition.lat,
+      currentPosition.lng
+    );
     const distance = google.maps.geometry.spherical.computeDistanceBetween;
     return distance(start, end) <= radius;
-  }
+  };
 
-  /**
-   * Sets current location and adds to state
-   */
-  const setCurrentLocation = position => {
-    setState(prevState => ({
-      ...prevState,
-      currentLocation: position
-    }));
+  const updateCourts = () => {
+    allCourts.forEach(court => {
+      if (withinCourt(court, 400, geolocation)) {
+        //TODO: PUSHER UPDATE CHANNEL
+        console.log(`You are at court: ${court.name}`);
+      }
+    });
   };
 
   /**
    * Gets current location
    */
   const getCurrentLocation = async () => {
-    // Watch for location changes and update state
-    Geolocation.watchPosition(
-      { enableHighAccuracy: true},
-      (location, err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          const coords = {
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-          };
 
-          setCurrentLocation(coords);
-          //TODO: Check if current location is within a court region
-        }
+    navigator.geolocation.watchPosition(
+      location => {
+        setGeolocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude
+        });
+      },
+      err => {
+        console.log(err);
       }
     );
-  }
+  };
 
   //*-------------------------------Custom components----------------------------------------------
 
@@ -101,38 +94,47 @@ const App = props => {
   const CurrentLocationMarkerComponent = props => {
     return (
       //TODO: Use defaultIcon prop to link to png
-      <Marker position={state.currentLocation} />
+      <Marker position={geolocation} />
     );
   };
 
   /**
    * Generates a court marker  for each court
-   * @param {*} param0 
+   * @param {*} param0
    */
-  const CourtMarkerComponent = ({location} = props) => {
-    return (<Marker position={location}/>)
-  }
+  const CourtMarkerComponent = ({ location } = props) => {
+    return <Marker position={location} />;
+  };
 
   /**
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
     withGoogleMap(props => {
+
+      updateCourts();
+      
       return (
-        <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
-          <CurrentLocationMarkerComponent/>
-        
-          {state.courts.map(court =>{
-            let coords = {lat: Number(court.lat), lng: Number(court.lng)};
+        <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
+          <CurrentLocationMarkerComponent />
+
+          {allCourts.map(court => {
+            let coords = { lat: Number(court.lat), lng: Number(court.lng) }
+
             return (
-            <Fragment key = {court.id}>
-              <CourtMarkerComponent location={coords}/>
-              <Circle
-                center={coords}
-                radius={400}
-                options={{ fillOpacity: 0.1, strokeWidth: 1, strokeOpacity: 0.2 }}
-              />
-            </Fragment>)
+              <Fragment key={court.id}>
+                <CourtMarkerComponent location={coords} />
+                <Circle
+                  center={coords}
+                  radius={400}
+                  options={{
+                    fillOpacity: 0.1,
+                    strokeWidth: 1,
+                    strokeOpacity: 0.2
+                  }}
+                />
+              </Fragment>
+            );
           })}
 
           <CurrentLocationMarkerComponent />
@@ -145,28 +147,6 @@ const App = props => {
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-    //Get all courts from database and updates state
-    getAllCourts().then((res, err) => {
-      if (err) {
-        console.log(err);
-      }
-
-      setState(prevState => ({
-        ...prevState,
-        courts: res.data
-      }));
-    });
-
-    getAllVisits().then((res, err) => {
-      if(err) {
-        console.log(err)
-      }
-
-      setState(prevState => ({
-        ...prevState,
-        visits: res.data
-      }));
-    });
 
     //Gets current location and sets it to state.
     getCurrentLocation();

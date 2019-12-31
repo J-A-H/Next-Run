@@ -5,8 +5,8 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("./db");
-const Pusher = require('pusher');
-const secret = require('./secret').secret;
+const Pusher = require("pusher");
+const secret = require("./secret").secret;
 
 console.log(secret);
 
@@ -34,14 +34,18 @@ router.get("/courts", (req, res) => {
 
 router.get("/courts/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  pool.query(`SELECT * FROM courts where courts.id = $1`, [id], (queryErr, queryRes) => {
-    if (queryErr) {
-      console.log(queryErr);
-    }
+  pool.query(
+    `SELECT * FROM courts where courts.id = $1`,
+    [id],
+    (queryErr, queryRes) => {
+      if (queryErr) {
+        console.log(queryErr);
+      }
 
-    //Converts query result to json to be used in client
-    res.json(queryRes.rows[0]);
-  });
+      //Converts query result to json to be used in client
+      res.json(queryRes.rows[0]);
+    }
+  );
 });
 
 router.get("/visits", (req, res) => {
@@ -60,10 +64,21 @@ router.post("/");
 //_____________PUSHER______________
 
 router.post("/add_visit", (req, res) => {
-  const payload = req.body;
+  const channel = req.body.channel;
+  const court = req.body.court;
 
-  pusher.trigger(payload.channel, 'player-count', {
-    "name": payload.channel
+  pool.query(
+    `insert into visits (court_id, times_stamp) values ('${court.id}', current_timestamp)`,
+    (queryErr, queryRes) => {
+      if(queryErr){
+        console.log(queryErr);
+      }
+      res.json(queryRes.rows);
+    }
+  );
+
+  pusher.trigger(channel, "player-count", {
+    name: channel
   });
 });
 

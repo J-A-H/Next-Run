@@ -102,7 +102,7 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
-      Pusher.logToConsole = true;
+      // Pusher.logToConsole = true;
 
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
@@ -120,7 +120,7 @@ const App = props => {
 
 
             if (withinCourt(court, 400, geolocation)) {
-              axios.post("/add_visit", {channel: channelName, });
+              axios.post("/add_visit", {channel: channelName, court: court});
             }
 
             return (

@@ -18,8 +18,6 @@ import {
   Circle
 } from "react-google-maps";
 
- const google = window.google;
-
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
@@ -42,36 +40,9 @@ const App = props => {
   //*------------------------------- Methods ----------------------------------------------
 
   /**
-   * Return true if current position is within the court region at court
-   * @param {*} court
-   * @param {*} radius
-   * @param {*} currentPosition
-   */
-  const withinCourt = (court, radius, currentPosition) => {
-
-    const start = new google.maps.LatLng(court.lat, court.lng);
-    const end = new google.maps.LatLng(
-      currentPosition.lat,
-      currentPosition.lng
-    );
-    const distance = google.maps.geometry.spherical.computeDistanceBetween;
-    return distance(start, end) <= radius;
-  };
-
-  const updateCourts = () => {
-    allCourts.forEach(court => {
-      if (withinCourt(court, 400, geolocation)) {
-        //TODO: PUSHER UPDATE CHANNEL
-        console.log(`You are at court: ${court.name}`);
-      }
-    });
-  };
-
-  /**
    * Gets current location
    */
   const getCurrentLocation = async () => {
-
     navigator.geolocation.watchPosition(
       location => {
         setGeolocation({
@@ -110,16 +81,48 @@ const App = props => {
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
-    withGoogleMap(props => {
+    withGoogleMap(({ googleMapURL } = props) => {
 
-      updateCourts();
-      
+      const google = window.google;
+
+      /**
+       * Return true if current position is within the court region at court
+       * @param {*} court
+       * @param {*} radius
+       * @param {*} currentPosition
+       */
+      const withinCourt = (court, radius, currentPosition) => {
+        const start = new google.maps.LatLng(court.lat, court.lng);
+        const end = new google.maps.LatLng(
+          currentPosition.lat,
+          currentPosition.lng
+        );
+        const distance = google.maps.geometry.spherical.computeDistanceBetween;
+        return distance(start, end) <= radius;
+      };
+
+      /**
+       * Checks whether or not user is within a court.
+       */
+      const updateCourts = () => {
+        allCourts.forEach(court => {
+          if (withinCourt(court, 400, geolocation)) {
+            //TODO: PUSHER UPDATE CHANNEL
+            console.log(`You are at court: ${court.name}`);
+          }
+        });
+      };
+
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
           <CurrentLocationMarkerComponent />
 
           {allCourts.map(court => {
-            let coords = { lat: Number(court.lat), lng: Number(court.lng) }
+            let coords = { lat: Number(court.lat), lng: Number(court.lng) };
+
+            if(withinCourt(court, 400, geolocation)){
+              console.log(`You are at court: ${court.name}`);
+            };
 
             return (
               <Fragment key={court.id}>
@@ -147,10 +150,8 @@ const App = props => {
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-
     //Gets current location and sets it to state.
     getCurrentLocation();
-
   }, []); //Empty arr tells it to only run once after App rendered
 
   return (

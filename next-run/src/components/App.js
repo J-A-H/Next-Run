@@ -8,6 +8,7 @@ import CourtListContainer from "./CourtListContainer";
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
+import helpers from "../helpers/helpers";
 
 //API calls
 import {
@@ -36,8 +37,6 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
 
   const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
-
-  //*------------------------------- Methods ----------------------------------------------
 
   /**
    * Gets current location
@@ -82,7 +81,6 @@ const App = props => {
    */
   const MapComponent = withScriptjs(
     withGoogleMap(({ googleMapURL } = props) => {
-
       const google = window.google;
 
       /**
@@ -101,18 +99,6 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
-      /**
-       * Checks whether or not user is within a court.
-       */
-      const updateCourts = () => {
-        allCourts.forEach(court => {
-          if (withinCourt(court, 400, geolocation)) {
-            //TODO: PUSHER UPDATE CHANNEL
-            console.log(`You are at court: ${court.name}`);
-          }
-        });
-      };
-
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
           <CurrentLocationMarkerComponent />
@@ -120,9 +106,9 @@ const App = props => {
           {allCourts.map(court => {
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
 
-            if(withinCourt(court, 400, geolocation)){
+            if (withinCourt(court, 400, geolocation)) {
               console.log(`You are at court: ${court.name}`);
-            };
+            }
 
             return (
               <Fragment key={court.id}>

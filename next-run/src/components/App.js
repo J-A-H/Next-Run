@@ -2,6 +2,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
+import axios from "axios";
 
 //Ionic Capcitor layer
 // import { Plugins } from "@capacitor/core";
@@ -26,9 +27,9 @@ const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&
 //PUSHER________________
 const Pusher = require("pusher-js");
 
-const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
-  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
-  encrypted: true
+const pusherObject = new Pusher(
+  process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER
 });
 
 const App = props => {
@@ -99,6 +100,13 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
+      // Pusher.logToConsole = true;
+
+      let channel = pusherObject.subscribe("Courts");
+      channel.bind("player-count", function(data) {
+        console.log(`You are at court ${data.name}`);
+      });
+
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
           <CurrentLocationMarkerComponent />
@@ -107,7 +115,7 @@ const App = props => {
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
 
             if (withinCourt(court, 400, geolocation)) {
-              console.log(`You are at court: ${court.name}`);
+              axios.post("/add_visit", court);
             }
 
             return (

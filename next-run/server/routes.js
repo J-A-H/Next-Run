@@ -5,6 +5,18 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("./db");
+const Pusher = require('pusher');
+const secret = require('./secret').secret;
+
+console.log(secret);
+
+var pusher = new Pusher({
+  appId: secret.REACT_APP_PUSHER_APP_ID,
+  key: secret.REACT_APP_PUSHER_APP_KEY,
+  secret: secret.REACT_APP_PUSHER_APP_SECRET,
+  cluster: secret.REACT_APP_PUSHER_APP_CLUSTER,
+  encrypted: true
+});
 
 /**
  * Gets all courts in court table
@@ -42,14 +54,19 @@ router.get("/visits", (req, res) => {
     res.json(queryRes.rows);
   });
 });
-router.post("/")
+
+router.post("/");
 
 //_____________PUSHER______________
 
-router.post("/message"), (req, res) => {
+router.post("/add_visit", (req, res) => {
   const payload = req.body;
-  pusher.trigger('chat', 'message', payload);
-  res.send(payload)
-};
+
+  console.log(payload);
+
+  pusher.trigger('Courts', 'player-count', {
+    "name": payload.name
+  });
+});
 
 module.exports = router;

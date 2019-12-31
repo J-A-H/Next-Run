@@ -18,6 +18,10 @@ yarn-error.log*
 
 # evnironment variables
 .env.dev
+/src/helpers/secret.js
 
 # vscode eslint ignore
 .vscode
+
+# server files
+/server/secret.j

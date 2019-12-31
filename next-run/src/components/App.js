@@ -39,6 +39,8 @@ const App = props => {
 
   const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
+  const { toKebabCase } = helpers();
+
   /**
    * Gets current location
    */
@@ -100,12 +102,7 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
-      // Pusher.logToConsole = true;
-
-      let channel = pusherObject.subscribe("Courts");
-      channel.bind("player-count", function(data) {
-        console.log(`You are at court ${data.name}`);
-      });
+      Pusher.logToConsole = true;
 
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
@@ -114,8 +111,16 @@ const App = props => {
           {allCourts.map(court => {
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
 
+            const channelName = toKebabCase(court.name);
+
+            let channel = pusherObject.subscribe(`${channelName}`);
+            channel.bind('player-count', (data) => {
+              console.log(`You are at court ${data.name}`);
+            })
+
+
             if (withinCourt(court, 400, geolocation)) {
-              axios.post("/add_visit", court);
+              axios.post("/add_visit", {channel: channelName, });
             }
 
             return (

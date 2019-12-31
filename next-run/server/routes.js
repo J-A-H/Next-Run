@@ -62,10 +62,8 @@ router.post("/");
 router.post("/add_visit", (req, res) => {
   const payload = req.body;
 
-  console.log(payload);
-
-  pusher.trigger('Courts', 'player-count', {
-    "name": payload.name
+  pusher.trigger(payload.channel, 'player-count', {
+    "name": payload.channel
   });
 });
 

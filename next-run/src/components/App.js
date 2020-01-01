@@ -17,7 +17,7 @@ import {
   withGoogleMap,
   withScriptjs,
   Marker,
-  Circle
+  Circle,
 } from "react-google-maps";
 
 //API keys______________
@@ -36,6 +36,8 @@ const App = props => {
   //_________State_________
 
   const [geolocation, setGeolocation] = useState({});
+
+  const [playersCount, setPlayersCount] = useState({});
 
   const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
@@ -151,7 +153,20 @@ const App = props => {
   useEffect(() => {
     //Gets current location and sets it to state.
     getCurrentLocation();
-  }, []); //Empty arr tells it to only run once after App rendered
+
+    const playersCountObject = {};
+
+    if(allCourts){
+      allCourts.forEach( court => {
+
+        const courtName = court.name;
+
+        playersCountObject[courtName] = 0;
+      });
+    }
+
+    setPlayersCount(playersCountObject);
+  }, [allCourts]); //Empty arr tells it to only run once after App rendered
 
   return (
     <React.Fragment>

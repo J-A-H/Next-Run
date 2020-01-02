@@ -168,10 +168,6 @@ const App = props => {
         }
       });
 
-      useEffect(() => {
-        
-      }, []);
-
       // Pusher.logToConsole = true;
 
       return (

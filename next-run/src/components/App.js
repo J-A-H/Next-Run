@@ -28,7 +28,8 @@ const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&
 const Pusher = require("pusher-js");
 
 const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
-  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER
+  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+  disableStats: true
 });
 
 const App = props => {

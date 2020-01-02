@@ -7,6 +7,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const Pusher = require('pusher');
 
 const indexRouter = require('./routes');//Gets routes.
 

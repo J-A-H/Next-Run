@@ -2,68 +2,78 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
+import axios from "axios";
 
 //Ionic Capcitor layer
-import { Plugins } from "@capacitor/core";
-const { Geolocation } = Plugins;
+// import { Plugins } from "@capacitor/core";
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
+import helpers from "../helpers/helpers";
 
 //API calls
 import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Marker
+  Marker,
+  Circle
 } from "react-google-maps";
 
-//API keys
+//API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
+//PUSHER________________
+const Pusher = require("pusher-js");
+
+const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER
+});
+
 const App = props => {
-  const [state, setState] = useState({
-    courts: [],
-    currentLocation: {}
-  });
+  //_________State_________
 
-  const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
+  const [geolocation, setGeolocation] = useState({});
 
-  //*------------------------------- Methods ----------------------------------------------
+  const [playersCount, setPlayersCount] = useState({});
+
+  const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
+
+  const { toKebabCase } = helpers();
 
   /**
-   * Sets current location and adds to state
+   * Gets current location
    */
-  const setCurrentLocation = position => {
-    setState(prevState => ({
-      ...prevState,
-      currentLocation: position
-    }));
-  };
-
-  //Gets current location through capacitor API
   const getCurrentLocation = async () => {
-    // Watch for location changes and update state
-    Geolocation.watchPosition(
-      { enableHighAccuracy: true},
-      (location, err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          const coords = {
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-          };
-
-          setCurrentLocation(coords);
-        }
+    navigator.geolocation.watchPosition(
+      location => {
+        setGeolocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude
+        });
+      },
+      err => {
+        console.log(err);
       }
     );
-  }
+  };
 
-  //*-------------------------------Custom components----------------------------------------------
+  /**
+   * Updates player count of court
+   * @param {*} courtName 
+   */
+  const updatePlayerCount = courtName => {
+    const newPlayersCountObject = playersCount;
 
+    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
+
+    // console.log(newPlayersCountObject);
+
+    // setPlayersCount(newPlayersCountObject);
+  };
+
+  //Custom Components
   /**
    * Generates custom map marker component
    * @param {*} props
@@ -71,33 +81,86 @@ const App = props => {
   const CurrentLocationMarkerComponent = props => {
     return (
       //TODO: Use defaultIcon prop to link to png
-      <Marker position={state.currentLocation} />
+      <Marker position={geolocation} />
     );
   };
 
   /**
    * Generates a court marker  for each court
-   * @param {*} param0 
+   * @param {*} param0
    */
-  const CourtMarkerComponent = ({location} = props) => {
-    return (
-      <Marker position={location}/>
-    )
-  }
+  const CourtMarkerComponent = ({ location } = props) => {
+    return <Marker position={location} />;
+  };
 
   /**
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
-    withGoogleMap(props => {
+    withGoogleMap(({ googleMapURL, updatePlayerCount } = props) => {
+      const google = window.google;
+
+      /**
+       * Return true if current position is within the court region at court
+       * @param {*} court
+       * @param {*} radius
+       * @param {*} currentPosition
+       */
+      const withinCourt = (court, radius, currentPosition) => {
+        const start = new google.maps.LatLng(court.lat, court.lng);
+        const end = new google.maps.LatLng(
+          currentPosition.lat,
+          currentPosition.lng
+        );
+        const distance = google.maps.geometry.spherical.computeDistanceBetween;
+        return distance(start, end) <= radius;
+      };
+
+      allCourts.forEach(court => {
+        const channelName = toKebabCase(court.name);
+
+        // Pusher.logToConsole = true;
+
+        let channel = pusherObject.subscribe(`${channelName}`);
+
+        channel.bind("player-count", data => {
+          // console.log(`You are at court ${data.name}`);
+
+          const courtName = data.name;
+          // console.log(courtName);
+          updatePlayerCount(courtName);
+        });
+
+        if (withinCourt(court, 400, geolocation)) {
+          axios.post("/add_visit", { channel: channelName, court: court });
+        }
+      });
+
+      // Pusher.logToConsole = true;
+
       return (
-        <GoogleMap defaultZoom={15} defaultCenter={state.currentLocation}>
-          <CurrentLocationMarkerComponent/>
-        
-          {state.courts.map(court =>{
-            return (<CourtMarkerComponent key={court.id} location={{lat: Number(court.lat), lng: Number(court.lng)}}/>);
+        <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
+          <CurrentLocationMarkerComponent />
+
+          {allCourts.map(court => {
+            let coords = { lat: Number(court.lat), lng: Number(court.lng) };
+
+            return (
+              <Fragment key={court.id}>
+                <CourtMarkerComponent location={coords} />
+                <Circle
+                  center={coords}
+                  radius={400}
+                  options={{
+                    fillOpacity: 0.1,
+                    strokeWidth: 1,
+                    strokeOpacity: 0.2
+                  }}
+                />
+              </Fragment>
+            );
           })}
-    
+
           <CurrentLocationMarkerComponent />
         </GoogleMap>
       );
@@ -108,21 +171,20 @@ const App = props => {
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-    //Get all courts from database and updates state
-    getAllCourts().then((res, err) => {
-      if (err) {
-        console.log(err);
-      }
-
-      setState(prevState => ({
-        ...prevState,
-        courts: res.data
-      }));
-    });
-
     //Gets current location and sets it to state.
     getCurrentLocation();
-  }, []); //Empty arr tells it to only run once after App rendered
+
+    const playersCountObject = {};
+
+    if (allCourts) {
+      allCourts.forEach(court => {
+        const courtName = court.name;
+        playersCountObject[courtName] = 0;
+      });
+    }
+
+    setPlayersCount(playersCountObject);
+  }, [allCourts]); //Empty arr tells it to only run once after App rendered
 
   return (
     <React.Fragment>
@@ -134,6 +196,7 @@ const App = props => {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
+        updatePlayerCount={updatePlayerCount}
       />
       <CourtListContainer courts={state.courts}/>
     </React.Fragment>

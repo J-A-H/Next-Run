@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 import CourtList from "./CourtList";
-import ActivityLevelFilterList from "./ActivityLevelFilterList"
+import ActivityLevelFilterList from "./ActivityLevelFilterList";
 
 const CourtListContainer = props => {
-  <Fragment>
-    <CourtList courts={props.courts} />
-    <ActivityLevelFilterList/>
-  </Fragment>;
+  return (
+    <Fragment>
+      <ActivityLevelFilterList />
+      <CourtList courts={props.courts} />
+    </Fragment>
+  );
 };
 
 export default CourtListContainer;

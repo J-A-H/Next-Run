@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './index.css';
 import CourtDetailsContainer from './components/CourtDetailsContainer';
 
@@ -14,7 +14,11 @@ import "semantic-ui-css/semantic.min.css";
 const routing = (
   <Router>
     <div>
-      <Route path="/" component={App} />
+      <li>
+        <Link to="/">Update Location</Link>
+      </li>
+      <Route exact path="/" component={App} />
+      <Route exact path="/courts/:courtID" component={CourtDetailsContainer}/>
     </div>
   </Router>
 )

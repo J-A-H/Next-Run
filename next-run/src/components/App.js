@@ -17,7 +17,7 @@ import {
   withGoogleMap,
   withScriptjs,
   Marker,
-  Circle,
+  Circle
 } from "react-google-maps";
 
 //API keys______________
@@ -27,8 +27,7 @@ const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&
 //PUSHER________________
 const Pusher = require("pusher-js");
 
-const pusherObject = new Pusher(
-  process.env.REACT_APP_PUSHER_APP_KEY, {
+const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER
 });
 
@@ -60,8 +59,21 @@ const App = props => {
     );
   };
 
-  //*-------------------------------Custom components----------------------------------------------
+  /**
+   * Updates player count of court
+   * @param {*} courtName 
+   */
+  const updatePlayerCount = courtName => {
+    const newPlayersCountObject = playersCount;
 
+    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
+
+    // console.log(newPlayersCountObject);
+
+    // setPlayersCount(newPlayersCountObject);
+  };
+
+  //Custom Components
   /**
    * Generates custom map marker component
    * @param {*} props
@@ -85,7 +97,7 @@ const App = props => {
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
-    withGoogleMap(({ googleMapURL } = props) => {
+    withGoogleMap(({ googleMapURL, updatePlayerCount } = props) => {
       const google = window.google;
 
       /**
@@ -104,6 +116,26 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
+      allCourts.forEach(court => {
+        const channelName = toKebabCase(court.name);
+
+        // Pusher.logToConsole = true;
+
+        let channel = pusherObject.subscribe(`${channelName}`);
+
+        channel.bind("player-count", data => {
+          // console.log(`You are at court ${data.name}`);
+
+          const courtName = data.name;
+          // console.log(courtName);
+          updatePlayerCount(courtName);
+        });
+
+        if (withinCourt(court, 400, geolocation)) {
+          axios.post("/add_visit", { channel: channelName, court: court });
+        }
+      });
+
       // Pusher.logToConsole = true;
 
       return (
@@ -112,18 +144,6 @@ const App = props => {
 
           {allCourts.map(court => {
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
-
-            const channelName = toKebabCase(court.name);
-
-            let channel = pusherObject.subscribe(`${channelName}`);
-            channel.bind('player-count', (data) => {
-              console.log(`You are at court ${data.name}`);
-            })
-
-
-            if (withinCourt(court, 400, geolocation)) {
-              axios.post("/add_visit", {channel: channelName, court: court});
-            }
 
             return (
               <Fragment key={court.id}>
@@ -156,11 +176,9 @@ const App = props => {
 
     const playersCountObject = {};
 
-    if(allCourts){
-      allCourts.forEach( court => {
-
+    if (allCourts) {
+      allCourts.forEach(court => {
         const courtName = court.name;
-
         playersCountObject[courtName] = 0;
       });
     }
@@ -178,6 +196,7 @@ const App = props => {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
+        updatePlayerCount={updatePlayerCount}
       />
       {/* <CourtListContainer courts={state.courts}></CourtListContainer> */}
     </React.Fragment>

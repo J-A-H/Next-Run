@@ -61,8 +61,6 @@ router.get("/visits", (req, res) => {
 
 router.post("/");
 
-//_____________PUSHER______________
-
 router.post("/add_visit", (req, res) => {
   const channel = req.body.channel;
   const court = req.body.court;
@@ -77,9 +75,18 @@ router.post("/add_visit", (req, res) => {
     }
   );
 
+  //Broadcasts Court name that obtained extra visit
   pusher.trigger(channel, "player-count", {
-    name: channel
+    name: court.name
   });
+});
+
+router.post('/pusher/auth', function(req, res) {
+  var socketId = req.body.socket_id;
+  var channel = req.body.channel_name;
+  var data = {court: `court 1`, count: 1}
+  var auth = pusher.authenticate(socketId, channel, data);
+  res.send(auth);
 });
 
 module.exports = router;

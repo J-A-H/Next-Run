@@ -1,7 +1,7 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/node_modules/
 
 # testing
 /coverage
@@ -24,5 +24,5 @@ yarn-error.log*
 .vscode
 
 # server files
-/server/secret.j
-/server/node_modules
+/server/secret.js
+/server/node_modules/

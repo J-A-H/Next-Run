@@ -198,7 +198,7 @@ const App = props => {
         mapElement={<div style={{ height: `100%` }} />}
         updatePlayerCount={updatePlayerCount}
       />
-      <CourtListContainer courts={state.courts}/>
+      {/* <CourtListContainer courts={state.courts}/> */}
     </React.Fragment>
   );
 };

@@ -13,11 +13,7 @@ const UseDatabase = () => {
   /**
    * Return all courts in table courts (Example helper)
    */
-<<<<<<< HEAD
-   const getAllCourts = () => {
-=======
   const getAllCourts = () => {  
->>>>>>> master
     return axios.get('/courts');
 
   };

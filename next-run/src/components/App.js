@@ -64,14 +64,28 @@ const App = props => {
    * Updates player count of court
    * @param {*} courtName 
    */
-  const updatePlayerCount = courtName => {
+  const updatePlayerCount = (courtName) => {
     const newPlayersCountObject = playersCount;
 
-    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
+    // Object.keys(newPlayersCountObject).forEach(key => {
+    //   newPlayersCountObject[key] = 0;
+    // })
+
+    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] = 1;
 
     // console.log(newPlayersCountObject);
 
-    // setPlayersCount(newPlayersCountObject);
+    setPlayersCount(newPlayersCountObject);
+  };
+
+  const clearPlayerCount = (courtName) => {
+    const newPlayersCountObject = playersCount;
+
+    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] = 0;
+
+    // console.log(newPlayersCountObject);
+
+    setPlayersCount(newPlayersCountObject);
   };
 
   //Custom Components
@@ -98,9 +112,10 @@ const App = props => {
    * Generates Map component other props are used with withScriptjs and withGoogleMap
    */
   const MapComponent = withScriptjs(
-    withGoogleMap(({ googleMapURL, updatePlayerCount } = props) => {
+    withGoogleMap(({ googleMapURL, updatePlayerCount, clearPlayerCount } = props) => {
       const google = window.google;
 
+      console.log('render');
       /**
        * Return true if current position is within the court region at court
        * @param {*} court
@@ -117,27 +132,32 @@ const App = props => {
         return distance(start, end) <= radius;
       };
 
-      allCourts.forEach(court => {
-        const channelName = toKebabCase(court.name);
-
-        // Pusher.logToConsole = true;
-
-        let channel = pusherObject.subscribe(`${channelName}`);
-
-        channel.bind("player-count", data => {
-          // console.log(`You are at court ${data.name}`);
-
-          const courtName = data.name;
-          // console.log(courtName);
-          updatePlayerCount(courtName);
-        });
-
-        if (withinCourt(court, 400, geolocation)) {
-          axios.post("/add_visit", { channel: channelName, court: court });
-        }
-      });
-
       // Pusher.logToConsole = true;
+
+      useEffect(() => {
+        allCourts.forEach(court => {
+          const channelName = toKebabCase(court.name);
+  
+          // Pusher.logToConsole = true;
+  
+          let channel = pusherObject.subscribe(`${channelName}`);
+  
+          channel.bind("player-count", data => {
+            // console.log(`You are at court ${data.name}`);
+  
+            const courtName = data.name;
+            // console.log(courtName);
+            updatePlayerCount(courtName);
+          });
+  
+          if (withinCourt(court, 400, geolocation)) {
+            axios.post("/add_visit", { channel: channelName, court: court });
+          }
+          else{
+            clearPlayerCount(court.name);
+          }
+        });
+      }, [])
 
       return (
         <GoogleMap defaultZoom={15} defaultCenter={geolocation}>
@@ -198,6 +218,7 @@ const App = props => {
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
         updatePlayerCount={updatePlayerCount}
+        clearPlayerCount={clearPlayerCount}
       />
       {/* <CourtListContainer courts={state.courts}/> */}
     </React.Fragment>

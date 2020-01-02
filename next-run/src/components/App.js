@@ -1,6 +1,8 @@
 // React components and hooks
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import CourtCard from "./CourtCard";
+import CourtListContainer from "./CourtListContainer"
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -12,8 +14,7 @@ import {
   withScriptjs,
   Marker
 } from "react-google-maps";
-import CourtCard from "./CourtCard";
-import CourtListContainer from "./CourtListContainer"
+
 
 //API keys
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
@@ -107,7 +108,7 @@ const App = props => {
           <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
         </div >
  
-        <div style={{ position: 'absolute', zIndex: '2' }}>
+        <div style={{ position: 'absolute', zIndex: '10' }}>
         <CourtListContainer/> 
       </div>
       <div style={{ zIndex: '1' }}>

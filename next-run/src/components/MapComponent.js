@@ -48,7 +48,7 @@ const MapComponent = withScriptjs(
           // clearPlayerCount(court.name);
         }
       });
-    }, []);
+    }, [geolocation]);
 
     return (
       <GoogleMap defaultZoom={15} defaultCenter={geolocation}>

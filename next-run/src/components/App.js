@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
+import {usePosition} from "../helpers/usePosition";
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -21,7 +22,7 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   disableStats: true
 });
 
-const App = props => {
+const App = (props) => {
   //States
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
@@ -30,6 +31,7 @@ const App = props => {
   //Helpers
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
+  const {lat, lng, error} = usePosition();
 
   /**
    * Updates player count of court
@@ -56,25 +58,8 @@ const App = props => {
   };
 
   useEffect(() => {
-    /**
-     * Gets current location
-     */
-    const getCurrentLocation = async () => {
-      navigator.geolocation.watchPosition(
-        location => {
-          setGeolocation({
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    };
-
-    getCurrentLocation();
-  }, []);
+    setGeolocation({lat, lng});
+  }, [lat, lng]);
 
   /**
    * Initialize courts side effect

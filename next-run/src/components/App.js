@@ -4,9 +4,6 @@ import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 
-//google maps api
-import {withScriptjs} from 'react-google-maps';
-
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
 import helpers from "../helpers/helpers";
@@ -25,7 +22,6 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 });
 
 const App = props => {
-
   //States
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
@@ -34,23 +30,6 @@ const App = props => {
   //Helpers
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
-
-  /**
-   * Gets current location
-   */
-  const getCurrentLocation = async () => {
-    navigator.geolocation.watchPosition(
-      location => {
-        setGeolocation({
-          lat: location.coords.latitude,
-          lng: location.coords.longitude
-        });
-      },
-      err => {
-        console.log(err);
-      }
-    );
-  };
 
   /**
    * Updates player count of court
@@ -76,40 +55,58 @@ const App = props => {
     setPlayersCount(newPlayersCountObject);
   };
 
-  const initializeAllcourts = async () => {
-    const allCourts = await getAllCourts();
-    setAllCourts(allCourts.data);
+  useEffect(() => {
+    /**
+     * Gets current location
+     */
+    const getCurrentLocation = async () => {
+      navigator.geolocation.watchPosition(
+        location => {
+          setGeolocation({
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    };
 
-    const playersCountObject = {};
-
-    allCourts.data.forEach(court => {
-      const courtName = court.name;
-      //TODO: Set to get data from pusher for exisitng counts?
-      playersCountObject[courtName] = 0;
-
-      // Pusher.logToConsole = true;
-      const channelName = toKebabCase(court.name);
-      let channel = pusherObject.subscribe(`${channelName}`);
-
-      //Listens for court updates
-      channel.bind("player-count", data => {
-        // console.log(`You are at court ${data.name}`);
-        const courtName = data.name;
-
-        console.log(courtName);
-        // updatePlayerCount(courtName);
-      });
-    });
-
-    setPlayersCount(playersCountObject);
-  };
-
-  getCurrentLocation();
+    getCurrentLocation();
+  }, []);
 
   /**
-   * Runs everytime App component is rendered.
+   * Initialize courts side effect
    */
   useEffect(() => {
+    const initializeAllcourts = async () => {
+      const allCourts = await getAllCourts();
+      setAllCourts(allCourts.data);
+
+      const playersCountObject = {};
+
+      allCourts.data.forEach(court => {
+        const courtName = court.name;
+        //TODO: Set to get data from pusher for exisitng counts?
+        playersCountObject[courtName] = 0;
+
+        // Pusher.logToConsole = true;
+        const channelName = toKebabCase(court.name);
+        let channel = pusherObject.subscribe(`${channelName}`);
+
+        //Listens for court updates
+        channel.bind("player-count", data => {
+          // console.log(`You are at court ${data.name}`);
+          const courtName = data.name;
+
+          console.log(courtName);
+          // updatePlayerCount(courtName);
+        });
+      });
+
+      setPlayersCount(playersCountObject);
+    };
     initializeAllcourts();
     // initializeChannels();
     //Gets current location and sets it to state.

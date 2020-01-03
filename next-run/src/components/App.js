@@ -47,16 +47,6 @@ const App = (props) => {
 
   };
 
-  const clearPlayerCount = courtName => {
-    const newPlayersCountObject = playersCount;
-
-    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] = 0;
-
-    // console.log(newPlayersCountObject);
-
-    setPlayersCount(newPlayersCountObject);
-  };
-
   //Fetch curent location
   useEffect(() => {
     setGeolocation({lat, lng});
@@ -76,7 +66,6 @@ const App = (props) => {
 
       allCourts.data.forEach(court => {
         const courtName = court.name;
-        //TODO: Set to get data from pusher for exisitng counts?
         playersCountObject[courtName] = 0;
       });
 
@@ -123,12 +112,9 @@ const App = (props) => {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        updatePlayerCount={updatePlayerCount}
-        clearPlayerCount={clearPlayerCount}
         allCourts={allCourts}
         toKebabCase={toKebabCase}
         geolocation={geolocation}
-        setGeolocation={setGeolocation}
       />
       <CourtListContainer courts={allCourts} />
     </Fragment>

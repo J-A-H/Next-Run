@@ -38,13 +38,13 @@ const App = (props) => {
    * @param {*} courtName
    */
   const updatePlayerCount = courtName => {
+
     const newPlayersCountObject = playersCount;
 
-    // Object.keys(newPlayersCountObject).forEach(key => {
-    //   newPlayersCountObject[key] = 0;
-    // });
+    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
 
-    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] = 1;
+    setPlayersCount(newPlayersCountObject);
+
   };
 
   const clearPlayerCount = courtName => {
@@ -57,14 +57,17 @@ const App = (props) => {
     setPlayersCount(newPlayersCountObject);
   };
 
+  //Fetch curent location
   useEffect(() => {
     setGeolocation({lat, lng});
   }, [lat, lng]);
 
-  /**
-   * Initialize courts side effect
-   */
+  //Fetch court data
   useEffect(() => {
+
+    /**
+     * Initializes all court data
+     */
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
@@ -75,7 +78,24 @@ const App = (props) => {
         const courtName = court.name;
         //TODO: Set to get data from pusher for exisitng counts?
         playersCountObject[courtName] = 0;
+      });
 
+      setPlayersCount(playersCountObject);
+    };
+
+    initializeAllcourts();
+  
+  }, []);
+
+
+  //Pusher channel logic
+  useEffect(() => {
+
+    /**
+     * Initialzes pusher channels for each court
+     */
+    const initializeChannels = async () => {
+      allCourts.forEach(court => {
         // Pusher.logToConsole = true;
         const channelName = toKebabCase(court.name);
         let channel = pusherObject.subscribe(`${channelName}`);
@@ -84,18 +104,14 @@ const App = (props) => {
         channel.bind("player-count", data => {
           // console.log(`You are at court ${data.name}`);
           const courtName = data.name;
-
-          console.log(courtName);
-          // updatePlayerCount(courtName);
+          updatePlayerCount(courtName);
         });
       });
+    }
 
-      setPlayersCount(playersCountObject);
-    };
-    initializeAllcourts();
-    // initializeChannels();
-    //Gets current location and sets it to state.
-  }, []); //Empty arr tells it to only run once after App rendered
+    initializeChannels();
+
+  }, [playersCount]);
 
   return (
     <Fragment>

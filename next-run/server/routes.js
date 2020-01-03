@@ -8,8 +8,6 @@ const pool = require("./db");
 const Pusher = require("pusher");
 const secret = require("./secret").secret;
 
-console.log(secret);
-
 var pusher = new Pusher({
   appId: secret.REACT_APP_PUSHER_APP_ID,
   key: secret.REACT_APP_PUSHER_APP_KEY,

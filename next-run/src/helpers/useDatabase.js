@@ -8,8 +8,6 @@ import { useEffect, useState } from 'react';
  */
 const UseDatabase = () => {
 
-  const [allCourts, setAllcourts] = useState([]);
-
   /**
    * Return all courts in table courts (Example helper)
    */
@@ -29,19 +27,8 @@ const UseDatabase = () => {
   const getAllVisits = () => {
     return axios.get('/visits')
   }
-
-  useEffect(() => {
-    const initializeState = async () => {
-      const allCourtsQuery = await getAllCourts();
-
-      setAllcourts(
-        allCourtsQuery.data);
-    };
-
-    initializeState();
-  }, []);
   
-  return {allCourts, getCourt, getAllVisits}
+  return {getAllCourts, getCourt, getAllVisits}
 }
 
 export default UseDatabase;

@@ -4,26 +4,35 @@ import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 
-//Ionic Capcitor layer
-// import { Plugins } from "@capacitor/core";
+//google maps api
+import {withScriptjs} from 'react-google-maps';
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
 import helpers from "../helpers/helpers";
+import axios from "axios";
 
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
 const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
 
-const App = (props) => {
-  //_________State_________
+//PUSHER________________
+const Pusher = require("pusher-js");
 
+const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+  disableStats: true
+});
+
+const App = props => {
+
+  //States
   const [geolocation, setGeolocation] = useState({});
-
+  const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
 
-  const { allCourts } = useDatabase(); //Object destructure to use getAllcourts function
-
+  //Helpers
+  const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
 
   /**
@@ -55,10 +64,7 @@ const App = (props) => {
     // });
 
     newPlayersCountObject[courtName] = newPlayersCountObject[courtName] = 1;
-
-    console.log(courtName);
   };
-
 
   const clearPlayerCount = courtName => {
     const newPlayersCountObject = playersCount;
@@ -70,25 +76,42 @@ const App = (props) => {
     setPlayersCount(newPlayersCountObject);
   };
 
-  const initializePlayerCount = () => {
+  const initializeAllcourts = async () => {
+    const allCourts = await getAllCourts();
+    setAllCourts(allCourts.data);
+
     const playersCountObject = {};
 
-    if (allCourts) {
-      allCourts.forEach(court => {
-        const courtName = court.name;
-        playersCountObject[courtName] = 0;
+    allCourts.data.forEach(court => {
+      const courtName = court.name;
+      //TODO: Set to get data from pusher for exisitng counts?
+      playersCountObject[courtName] = 0;
+
+      // Pusher.logToConsole = true;
+      const channelName = toKebabCase(court.name);
+      let channel = pusherObject.subscribe(`${channelName}`);
+
+      //Listens for court updates
+      channel.bind("player-count", data => {
+        // console.log(`You are at court ${data.name}`);
+        const courtName = data.name;
+
+        console.log(courtName);
+        // updatePlayerCount(courtName);
       });
-    }
+    });
 
     setPlayersCount(playersCountObject);
   };
+
+  getCurrentLocation();
 
   /**
    * Runs everytime App component is rendered.
    */
   useEffect(() => {
-    getCurrentLocation();
-    initializePlayerCount();
+    initializeAllcourts();
+    // initializeChannels();
     //Gets current location and sets it to state.
   }, []); //Empty arr tells it to only run once after App rendered
 
@@ -107,6 +130,7 @@ const App = (props) => {
         allCourts={allCourts}
         toKebabCase={toKebabCase}
         geolocation={geolocation}
+        setGeolocation={setGeolocation}
       />
       <CourtListContainer courts={allCourts} />
     </Fragment>

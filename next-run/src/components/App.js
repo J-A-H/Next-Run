@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
-import {usePosition} from "../helpers/usePosition";
+import { usePosition } from "../helpers/usePosition";
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -22,39 +22,36 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   disableStats: true
 });
 
-const App = (props) => {
+const App = props => {
   //States
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
 
   //Helpers
-  const { getAllCourts, getAllVisits, getDailyPeakTimes } = useDatabase(); //Object destructure to use getAllcourts function
+  const { getAllCourts, getAllVisits, getDailyPeakTimes, getWeeklyPeakTimes } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
-  const {lat, lng, error} = usePosition();
+  const { lat, lng, error } = usePosition();
 
   /**
    * Updates player count of court
    * @param {*} courtName
    */
   const updatePlayerCount = courtName => {
-
     const newPlayersCountObject = playersCount;
 
     newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
 
     setPlayersCount(newPlayersCountObject);
-
   };
 
   //Fetch curent location
   useEffect(() => {
-    setGeolocation({lat, lng});
+    setGeolocation({ lat, lng });
   }, [lat, lng]);
 
   //Fetch court data
   useEffect(() => {
-
     /**
      * Initializes all court data
      */
@@ -73,13 +70,10 @@ const App = (props) => {
     };
 
     initializeAllcourts();
-  
   }, []);
-
 
   //Pusher channel logic
   useEffect(() => {
-
     /**
      * Initialzes pusher channels for each court
      */
@@ -96,27 +90,28 @@ const App = (props) => {
           updatePlayerCount(courtName);
         });
       });
-    }
+    };
 
     initializeChannels();
-
   }, [playersCount]);
 
   //Court peak times
   useEffect(() => {
-
     const a = async () => {
-      
-        const allVisits = await getAllVisits(3);
-        console.log(allVisits.data);
+      allCourts.forEach( async court => {
 
-        const dailyPeakTimes = await getDailyPeakTimes(3);
+        console.log(`${court.name}`);
+        const dailyPeakTimes = await getDailyPeakTimes(court.id);
         console.log(dailyPeakTimes);
+
+        const weeklyPeakTimes = await getWeeklyPeakTimes(court.id);
+        console.log(weeklyPeakTimes);
         
-    }
+      });
+    };
 
     a();
-  }, []);
+  }, [allCourts]);
 
   return (
     <Fragment>

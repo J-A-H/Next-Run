@@ -6,6 +6,7 @@ import axios from "axios";
  * Return an object with methods to get and update database. For use in client.
  */
 const UseDatabase = () => {
+
   /**
    * Return all courts in table courts (Example helper)
    */
@@ -33,7 +34,7 @@ const UseDatabase = () => {
   };
 
   /**
-   * Returns an object of the daily peak
+   * Returns an object of the daily court activity
    * @param {*} court_id
    */
   const getDailyPeakTimes = async court_id => {
@@ -55,7 +56,26 @@ const UseDatabase = () => {
     return hours;
   };
 
-  return { getAllCourts, getCourt, getAllVisits, getDailyPeakTimes };
+  const getWeeklyPeakTimes = async court_id => {
+    const days = {}
+
+    for(let i = 0; i < 7; i++){
+      days[i] = 0;
+    }
+
+    const visits = await getAllVisits(court_id);
+
+    visits.data.forEach(visit => {
+      const time = new Date(visit.times_stamp);
+      const day = time.getDay();
+      days[day] += 1;
+    })
+
+    return days;
+
+  }
+
+  return { getAllCourts, getCourt, getAllVisits, getDailyPeakTimes, getWeeklyPeakTimes };
 };
 
 export default UseDatabase;

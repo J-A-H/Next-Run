@@ -66,13 +66,23 @@ router.get("/visits", (req, res) => {
 router.get("/visits/:id", (req, res) => {
   const court_id = req.params.id;
 
-  pool.query(`SELECT count(*) FROM visits where court_id = ${court_id}`, (queryErr, queryRes) => {
+  pool.query(`SELECT * FROM visits where court_id = ${court_id}`, (queryErr, queryRes) => {
     if(queryErr){
       console.log(queryErr);
     }
-    res.json(queryRes.rows[0]);
+    res.json(queryRes.rows);
   })
-})
+});
+
+router.get("/visits/:id/:hour", (req, res) => {
+  const court_id = req.params.id;
+  const hour = req.params.hour;
+
+  console.log(court_id, hour);
+  // pool.query(`SELECT * FROM `, ()=> {
+
+  // });
+});
 
 router.post("/");
 

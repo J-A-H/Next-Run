@@ -1,22 +1,20 @@
 //This file contains all the functions to get and modify data from database
 
-import axios from 'axios';
+import axios from "axios";
 
 /**
  * Return an object with methods to get and update database. For use in client.
  */
 const UseDatabase = () => {
-
   /**
    * Return all courts in table courts (Example helper)
    */
-  const getAllCourts = () => {  
-    return axios.get('/courts');
-
+  const getAllCourts = () => {
+    return axios.get("/courts");
   };
 
-  const getCourt = (id) => {
-    return axios.get('/courts/' + id);
+  const getCourt = id => {
+    return axios.get("/courts/" + id);
   };
 
   // /**
@@ -28,14 +26,36 @@ const UseDatabase = () => {
 
   /**
    * Returns all visits for a court
-   * @param {*} court_id 
+   * @param {*} court_id
    */
-  const getAllVisits = (court_id) => {
+  const getAllVisits = court_id => {
+    return axios.get("/visits/" + court_id);
+  };
 
-    return axios.get("/visits/" + court_id);  
-  } 
-  
-  return {getAllCourts, getCourt, getAllVisits}
-}
+  /**
+   * Returns an object of the daily peak
+   * @param {*} court_id
+   */
+  const getDailyPeakTimes = async court_id => {
+
+    const hours  = {}
+
+    for(let i = 0; i < 24; i++){
+      hours[i] = 0;
+    }
+
+    const visits = await getAllVisits(court_id);
+    
+    visits.data.forEach(visit => {
+      const time = new Date(visit.times_stamp);
+      const hour = time.getHours();
+      hours[hour] += 1;
+    });
+
+    return hours;
+  };
+
+  return { getAllCourts, getCourt, getAllVisits, getDailyPeakTimes };
+};
 
 export default UseDatabase;

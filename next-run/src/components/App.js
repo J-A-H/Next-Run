@@ -29,7 +29,7 @@ const App = (props) => {
   const [playersCount, setPlayersCount] = useState({});
 
   //Helpers
-  const { getAllCourts, getAllVisits } = useDatabase(); //Object destructure to use getAllcourts function
+  const { getAllCourts, getAllVisits, getDailyPeakTimes } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const {lat, lng, error} = usePosition();
 
@@ -107,8 +107,12 @@ const App = (props) => {
 
     const a = async () => {
       
-        const allVisits = await getAllVisits(4);
-        console.log(allVisits.data.count);
+        const allVisits = await getAllVisits(3);
+        console.log(allVisits.data);
+
+        const dailyPeakTimes = await getDailyPeakTimes(3);
+        console.log(dailyPeakTimes);
+        
     }
 
     a();

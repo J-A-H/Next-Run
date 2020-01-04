@@ -46,6 +46,9 @@ router.get("/courts/:id", (req, res) => {
   );
 });
 
+/**
+ * Get all visits
+ */
 router.get("/visits", (req, res) => {
   pool.query(`SELECT * FROM visits`, (queryErr, queryRes) => {
     if (queryErr) {
@@ -57,9 +60,18 @@ router.get("/visits", (req, res) => {
   });
 });
 
+/**
+ * Get all visits from a specific court
+ */
 router.get("/visits/:id", (req, res) => {
   const court_id = req.params.id;
-  console.log(court_id);
+
+  pool.query(`SELECT count(*) FROM visits where court_id = ${court_id}`, (queryErr, queryRes) => {
+    if(queryErr){
+      console.log(queryErr);
+    }
+    res.json(queryRes.rows[0]);
+  })
 })
 
 router.post("/");

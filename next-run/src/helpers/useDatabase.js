@@ -32,7 +32,6 @@ const UseDatabase = () => {
    */
   const getAllVisits = (court_id) => {
 
-    console.log(court_id);
     return axios.get("/visits/" + court_id);  
   } 
   

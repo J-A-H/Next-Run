@@ -104,10 +104,15 @@ const App = (props) => {
 
   //Court peak times
   useEffect(() => {
-    allCourts.forEach(court => {
-      getAllVisits(court.id);
-    });
-  }, [allCourts]);
+
+    const a = async () => {
+      
+        const allVisits = await getAllVisits(4);
+        console.log(allVisits.data.count);
+    }
+
+    a();
+  }, []);
 
   return (
     <Fragment>

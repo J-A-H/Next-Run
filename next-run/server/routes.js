@@ -54,9 +54,12 @@ router.get("/visits", (req, res) => {
     if (queryErr) {
       console.log(queryErr);
     }
+    else{
+      res.json(queryRes.rows);
+
+    }
 
     //Converts query result to json to be used in client
-    res.json(queryRes.rows);
   });
 });
 
@@ -96,7 +99,9 @@ router.post("/add_visit", (req, res) => {
       if(queryErr){
         console.log(queryErr);
       }
-      res.json(queryRes.rows);
+      else{
+        res.json(queryRes.rows);        
+      }
     }
   );
 

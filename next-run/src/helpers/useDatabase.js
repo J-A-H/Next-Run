@@ -56,6 +56,10 @@ const UseDatabase = () => {
     return hours;
   };
 
+  /**
+   * Return all visits per day for the last two weeks.
+   * @param {*} court_id 
+   */
   const getWeeklyPeakTimes = async court_id => {
     const days = {}
 
@@ -64,11 +68,19 @@ const UseDatabase = () => {
     }
 
     const visits = await getAllVisits(court_id);
-
     visits.data.forEach(visit => {
+      //Visit info
       const time = new Date(visit.times_stamp);
       const day = time.getDay();
-      days[day] += 1;
+      const date = time.getDate(); 
+
+      //Current date
+      const currentDate = new Date().getDate();
+
+      //Only include visits from last two weeks
+      if(Math.abs(currentDate - date) <= 14){
+        days[day] += 1;
+      }
     })
 
     return days;

@@ -98,20 +98,19 @@ const App = props => {
   //Court peak times
   useEffect(() => {
     const a = async () => {
-      allCourts.forEach( async court => {
+      // allCourts.forEach( async court => {
 
-        console.log(`${court.name}`);
-        const dailyPeakTimes = await getDailyPeakTimes(court.id);
-        console.log(dailyPeakTimes);
+        // const dailyPeakTimes = await getDailyPeakTimes(court.id);
+        // console.log(dailyPeakTimes, court.name);
 
-        const weeklyPeakTimes = await getWeeklyPeakTimes(court.id);
+        const weeklyPeakTimes = await getWeeklyPeakTimes(5);
         console.log(weeklyPeakTimes);
         
-      });
+      // });
     };
 
     a();
-  }, [allCourts]);
+  }, [allCourts, geolocation]);
 
   return (
     <Fragment>

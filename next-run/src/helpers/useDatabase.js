@@ -14,16 +14,13 @@ const UseDatabase = () => {
     return axios.get("/courts");
   };
 
+  /**
+   * Returns court with id
+   * @param {*} id 
+   */
   const getCourt = id => {
     return axios.get("/courts/" + id);
   };
-
-  // /**
-  //  * Return all visits
-  //  */
-  // const getAllVisits = () => {
-  //   return axios.get('/visits')
-  // }
 
   /**
    * Returns all visits for a court
@@ -39,18 +36,26 @@ const UseDatabase = () => {
    */
   const getDailyPeakTimes = async court_id => {
 
+    //initialize return object
     const hours  = {}
-
     for(let i = 0; i < 24; i++){
       hours[i] = 0;
     }
 
     const visits = await getAllVisits(court_id);
-    
     visits.data.forEach(visit => {
+
       const time = new Date(visit.times_stamp);
       const hour = time.getHours();
-      hours[hour] += 1;
+      const date = time.getDate();
+
+      //Current date
+      const currentDate = new Date().getDate();
+
+      //Only include visits from last two weeks
+      if(Math.abs(currentDate - date) <= 14){
+        hours[hour] += 1;
+      }
     });
 
     return hours;
@@ -61,12 +66,14 @@ const UseDatabase = () => {
    * @param {*} court_id 
    */
   const getWeeklyPeakTimes = async court_id => {
-    const days = {}
 
+    //Initialize return object
+    const days = {}
     for(let i = 0; i < 7; i++){
       days[i] = 0;
     }
 
+    //Append visits to return object
     const visits = await getAllVisits(court_id);
     visits.data.forEach(visit => {
       //Visit info
@@ -83,6 +90,7 @@ const UseDatabase = () => {
       }
     })
 
+    //return object
     return days;
 
   }

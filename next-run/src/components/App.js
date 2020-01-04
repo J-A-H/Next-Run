@@ -1,7 +1,6 @@
 // React components and hooks
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import CourtCard from "./CourtCard";
 import CourtListContainer from "./CourtListContainer"
 
 // Database helper object
@@ -14,6 +13,7 @@ import {
   withScriptjs,
   Marker
 } from "react-google-maps";
+import RecipeReviewCard from "./CourtDetailShow";
 
 
 //API keys
@@ -109,7 +109,8 @@ const App = props => {
         </div >
  
         <div style={{ position: 'absolute', zIndex: '10' }}>
-        <CourtListContainer/> 
+        <CourtListContainer /> 
+        <RecipeReviewCard />
       </div>
       <div style={{ zIndex: '1' }}>
         <MapComponent

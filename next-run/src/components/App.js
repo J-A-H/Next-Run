@@ -23,13 +23,18 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 });
 
 const App = props => {
-  //States
+  //*States
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
 
-  //Helpers
-  const { getAllCourts, getAllVisits, getDailyPeakTimes, getWeeklyPeakTimes } = useDatabase(); //Object destructure to use getAllcourts function
+  //*Helpers
+  const {
+    getAllCourts,
+    getAllVisits,
+    getDailyPeakTimes,
+    getWeeklyPeakTimes
+  } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const { lat, lng, error } = usePosition();
 
@@ -45,7 +50,7 @@ const App = props => {
     setPlayersCount(newPlayersCountObject);
   };
 
-  //Fetch curent location
+  //*Fetch curent location
   useEffect(() => {
     setGeolocation({ lat, lng });
   }, [lat, lng]);
@@ -72,7 +77,7 @@ const App = props => {
     initializeAllcourts();
   }, []);
 
-  //Pusher channel logic
+  //*Pusher channel logic
   useEffect(() => {
     /**
      * Initialzes pusher channels for each court
@@ -95,17 +100,19 @@ const App = props => {
     initializeChannels();
   }, [playersCount]);
 
-  //Court peak times
+  //*Court peak times
   useEffect(() => {
+    //example function of peak times, currently prints on screen
+    //TODO: add to state?
     const a = async () => {
       // allCourts.forEach( async court => {
 
-        // const dailyPeakTimes = await getDailyPeakTimes(court.id);
-        // console.log(dailyPeakTimes, court.name);
+      // const dailyPeakTimes = await getDailyPeakTimes(court.id);
+      // console.log(dailyPeakTimes, court.name);
 
-        const weeklyPeakTimes = await getWeeklyPeakTimes(5);
-        console.log(weeklyPeakTimes);
-        
+      const weeklyPeakTimes = await getWeeklyPeakTimes(5);
+      console.log(weeklyPeakTimes);
+
       // });
     };
 

@@ -46,15 +46,45 @@ router.get("/courts/:id", (req, res) => {
   );
 });
 
+/**
+ * Get all visits
+ */
 router.get("/visits", (req, res) => {
   pool.query(`SELECT * FROM visits`, (queryErr, queryRes) => {
     if (queryErr) {
       console.log(queryErr);
     }
+    else{
+      res.json(queryRes.rows);
+
+    }
 
     //Converts query result to json to be used in client
-    res.json(queryRes.rows);
   });
+});
+
+/**
+ * Get all visits from a specific court
+ */
+router.get("/visits/:id", (req, res) => {
+  const court_id = req.params.id;
+
+  pool.query(`SELECT * FROM visits where court_id = ${court_id}`, (queryErr, queryRes) => {
+    if(queryErr){
+      console.log(queryErr);
+    }
+    res.json(queryRes.rows);
+  })
+});
+
+router.get("/visits/:id/:hour", (req, res) => {
+  const court_id = req.params.id;
+  const hour = req.params.hour;
+
+  console.log(court_id, hour);
+  // pool.query(`SELECT * FROM `, ()=> {
+
+  // });
 });
 
 router.post("/");
@@ -69,7 +99,9 @@ router.post("/add_visit", (req, res) => {
       if(queryErr){
         console.log(queryErr);
       }
-      res.json(queryRes.rows);
+      else{
+        res.json(queryRes.rows);        
+      }
     }
   );
 

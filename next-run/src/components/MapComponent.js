@@ -18,7 +18,6 @@ import CourtMarkerComponent from "./CourtMarkerComponent";
  */
 const MapComponent = withScriptjs(
   withGoogleMap(({ allCourts, geolocation, toKebabCase }) => {
-
     const google = window.google;
     /**
      * Return true if current position is within the court region at court
@@ -27,7 +26,6 @@ const MapComponent = withScriptjs(
      * @param {*} currentPosition
      */
     const withinCourt = (court, radius, currentPosition) => {
-
       const start = new google.maps.LatLng(court.lat, court.lng);
       const end = new google.maps.LatLng(
         currentPosition.lat,
@@ -37,23 +35,20 @@ const MapComponent = withScriptjs(
       return distance(start, end) <= radius;
     };
     useEffect(() => {
-
       allCourts.forEach(court => {
-
         const channelName = toKebabCase(court.name);
         if (withinCourt(court, 400, geolocation)) {
-
           axios.post("/add_visit", { channel: channelName, court: court });
         }
       });
-
-      
-
-
     }, [geolocation.lat, geolocation.lng]);
 
     return (
-      <GoogleMap defaultZoom={14} defaultCenter={geolocation} center={geolocation}>
+      <GoogleMap
+        defaultZoom={14}
+        defaultCenter={geolocation}
+        center={geolocation}
+      >
         <CurrentLocationMarkerComponent geolocation={geolocation} />
         {allCourts.map(court => {
           let coords = { lat: Number(court.lat), lng: Number(court.lng) };

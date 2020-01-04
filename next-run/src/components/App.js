@@ -29,7 +29,7 @@ const App = (props) => {
   const [playersCount, setPlayersCount] = useState({});
 
   //Helpers
-  const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
+  const { getAllCourts, getAllVisits } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const {lat, lng, error} = usePosition();
 
@@ -101,6 +101,13 @@ const App = (props) => {
     initializeChannels();
 
   }, [playersCount]);
+
+  //Court peak times
+  useEffect(() => {
+    allCourts.forEach(court => {
+      getAllVisits(court.id);
+    });
+  }, [allCourts]);
 
   return (
     <Fragment>

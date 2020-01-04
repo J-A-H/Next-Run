@@ -57,6 +57,11 @@ router.get("/visits", (req, res) => {
   });
 });
 
+router.get("/visits/:id", (req, res) => {
+  const court_id = req.params.id;
+  console.log(court_id);
+})
+
 router.post("/");
 
 router.post("/add_visit", (req, res) => {

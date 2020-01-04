@@ -1,7 +1,6 @@
 //This file contains all the functions to get and modify data from database
 
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 /**
  * Return an object with methods to get and update database. For use in client.
@@ -16,17 +15,26 @@ const UseDatabase = () => {
 
   };
 
-
   const getCourt = (id) => {
     return axios.get('/courts/' + id);
   };
 
+  // /**
+  //  * Return all visits
+  //  */
+  // const getAllVisits = () => {
+  //   return axios.get('/visits')
+  // }
+
   /**
-   * Return all visits
+   * Returns all visits for a court
+   * @param {*} court_id 
    */
-  const getAllVisits = () => {
-    return axios.get('/visits')
-  }
+  const getAllVisits = (court_id) => {
+
+    console.log(court_id);
+    return axios.get("/visits/" + court_id);  
+  } 
   
   return {getAllCourts, getCourt, getAllVisits}
 }

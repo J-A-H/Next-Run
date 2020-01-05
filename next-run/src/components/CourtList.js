@@ -5,7 +5,9 @@ const CourtList = props => {
   return (
     <div>
       {props.courts.map(court => (
-        <Link to={`/courts/${court.id}`}>
+        <Link 
+        key={court.id} 
+        to={`/courts/${court.id}`}>
           <CourtCard key={court.id} court={court} />
         </Link>
       ))}

@@ -27,6 +27,7 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
+  const [currentLocation, setCurrentLocation] = useState("");
 
   //*Helpers
   const {
@@ -44,20 +45,45 @@ const App = props => {
    * @param {*} courtName
    */
   const updatePlayerCount = courtName => {
-    const newPlayersCountObject = playersCount;
+    if (currentLocation !== courtName) {
+      const newPlayersCountObject = playersCount;
 
-    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
+      newPlayersCountObject[courtName] = newPlayersCountObject[courtName] + 1;
 
-    setPlayersCount(newPlayersCountObject);
+      setPlayersCount(newPlayersCountObject);
+      setCurrentLocation(courtName);
+    }
   };
 
   /**
-   * 
-   * @param {*} courtName 
+   *
+   * @param {*} courtName
    */
   const clearPlayerCount = courtName => {
     //TODO: reduces count
-  }
+    
+    if (currentLocation === courtName) {
+      console.log(`clear: ${courtName}`);
+      console.log("clear");
+      console.log(currentLocation);
+      console.log(courtName);
+
+      const newPlayersCountObject = playersCount;
+
+      newPlayersCountObject[courtName] = newPlayersCountObject[courtName] - 1;
+
+      console.log(newPlayersCountObject);
+      setPlayersCount(newPlayersCountObject);
+    }
+  };
+
+  /**
+   * Updates current location
+   * @param {*} court
+   */
+  const updateCurrentLocation = court => {
+    setCurrentLocation(court.name);
+  };
 
   //*Fetch curent location
   useEffect(() => {
@@ -66,7 +92,7 @@ const App = props => {
     //Send client location to server
     axios.post("/updatePlayerCounts", {
       geolocation: { lat, lng },
-      channel:'broadcast-location'
+      channel: "broadcast-location"
     });
   }, [lat, lng]);
 
@@ -149,6 +175,9 @@ const App = props => {
         broadcastLocationChannel={broadcastLocationChannel}
         updatePlayerCount={updatePlayerCount}
         clearPlayerCount={clearPlayerCount}
+        currentLocation={currentLocation}
+        setPlayersCount={setPlayersCount}
+        playersCount={playersCount}
       />
       <CourtListContainer courts={allCourts} />
     </Fragment>

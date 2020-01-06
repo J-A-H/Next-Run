@@ -17,7 +17,7 @@ import CourtMarkerComponent from "./CourtMarkerComponent";
  * Generates Map component other props are used with withScriptjs and withGoogleMap
  */
 const MapComponent = withScriptjs(
-  withGoogleMap(({ allCourts, geolocation, toKebabCase }) => {
+  withGoogleMap(({ allCourts, geolocation, toKebabCase, broadcastLocationChannel }) => {
     const google = window.google;
     /**
      * Return true if current position is within the court region at court
@@ -40,6 +40,12 @@ const MapComponent = withScriptjs(
         if (withinCourt(court, 400, geolocation)) {
           axios.post("/add_visit", { channel: channelName, court: court });
         }
+      });
+
+      //listener for incoming geolocaitons
+      broadcastLocationChannel.bind('transit', data => {
+        console.log("Incoming locaiton");
+        console.log(data);
       });
     }, [geolocation.lat, geolocation.lng]);
 

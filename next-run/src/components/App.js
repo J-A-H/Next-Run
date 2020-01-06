@@ -37,6 +37,7 @@ const App = props => {
   } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const { lat, lng, error } = usePosition();
+  const broadcastLocationChannel = pusherObject.subscribe("broadcast-location");
 
   /**
    * Updates player count of court
@@ -53,6 +54,12 @@ const App = props => {
   //*Fetch curent location
   useEffect(() => {
     setGeolocation({ lat, lng });
+
+    //Send client location to server
+    axios.post("/updatePlayerCounts", {
+      geolocation: { lat, lng },
+      channel:'broadcast-location'
+    });
   }, [lat, lng]);
 
   //Fetch court data
@@ -111,7 +118,6 @@ const App = props => {
       // console.log(dailyPeakTimes, court.name);
 
       const weeklyPeakTimes = await getWeeklyPeakTimes(5);
-      console.log(weeklyPeakTimes);
 
       // });
     };
@@ -132,6 +138,7 @@ const App = props => {
         allCourts={allCourts}
         toKebabCase={toKebabCase}
         geolocation={geolocation}
+        broadcastLocationChannel={broadcastLocationChannel}
       />
       <CourtListContainer courts={allCourts} />
     </Fragment>

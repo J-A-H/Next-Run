@@ -51,6 +51,14 @@ const App = props => {
     setPlayersCount(newPlayersCountObject);
   };
 
+  /**
+   * 
+   * @param {*} courtName 
+   */
+  const clearPlayerCount = courtName => {
+    //TODO: reduces count
+  }
+
   //*Fetch curent location
   useEffect(() => {
     setGeolocation({ lat, lng });
@@ -139,6 +147,8 @@ const App = props => {
         toKebabCase={toKebabCase}
         geolocation={geolocation}
         broadcastLocationChannel={broadcastLocationChannel}
+        updatePlayerCount={updatePlayerCount}
+        clearPlayerCount={clearPlayerCount}
       />
       <CourtListContainer courts={allCourts} />
     </Fragment>

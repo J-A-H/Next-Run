@@ -17,7 +17,7 @@ import CourtMarkerComponent from "./CourtMarkerComponent";
  * Generates Map component other props are used with withScriptjs and withGoogleMap
  */
 const MapComponent = withScriptjs(
-  withGoogleMap(({ allCourts, geolocation, toKebabCase, broadcastLocationChannel }) => {
+  withGoogleMap(({ allCourts, geolocation, toKebabCase, broadcastLocationChannel, updatePlayerCount, clearPlayerCount }) => {
     const google = window.google;
     /**
      * Return true if current position is within the court region at court
@@ -34,20 +34,33 @@ const MapComponent = withScriptjs(
       const distance = google.maps.geometry.spherical.computeDistanceBetween;
       return distance(start, end) <= radius;
     };
-    useEffect(() => {
-      allCourts.forEach(court => {
-        const channelName = toKebabCase(court.name);
-        if (withinCourt(court, 400, geolocation)) {
-          axios.post("/add_visit", { channel: channelName, court: court });
-        }
-      });
 
+    //initialize pusher listener for incoming broadcasts
+    useEffect(() => {
       //listener for incoming geolocaitons
       broadcastLocationChannel.bind('transit', data => {
         console.log("Incoming locaiton");
         console.log(data);
+
+        const incomingLocation = data.incomingLocation;
+        
+        allCourts.forEach(court => {
+          if(withinCourt(court, 400, incomingLocation)){
+            console.log(court.name);
+            updatePlayerCount(court.name);
+          }
+        });
       });
-    }, [geolocation.lat, geolocation.lng]);
+    }, []);
+    
+    // useEffect(() => {
+    //   allCourts.forEach(court => {
+    //     const channelName = toKebabCase(court.name);
+    //     if (withinCourt(court, 400, geolocation)) {
+    //       axios.post("/add_visit", { channel: channelName, court: court });
+    //     }
+    //   });
+    // }, [geolocation.lat, geolocation.lng]);
 
     return (
       <GoogleMap

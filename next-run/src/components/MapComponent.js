@@ -27,7 +27,7 @@ const MapComponent = withScriptjs(
       clearPlayerCount,
       currentLocation,
       playersCount,
-      setPlayersCount,
+      setPlayersCount
     }) => {
       const google = window.google;
       /**
@@ -48,24 +48,29 @@ const MapComponent = withScriptjs(
 
       //initialize pusher listener for incoming broadcasts
       useEffect(() => {
-        
-        //listener for incoming geolocaitons
-        broadcastLocationChannel.bind("transit", data => {
-          console.log("Incoming locaiton");
+        // if (currentLocation !== "") {
+          //listener for incoming geolocaitons
+          broadcastLocationChannel.bind("transit", data => {
+            console.log("Incoming locaiton");
 
-          const incomingLocation = data.incomingLocation;
-          console.log(incomingLocation);
+            const incomingLocation = data.incomingLocation;
+            console.log(incomingLocation);
 
-          allCourts.forEach(court => {
-            if (withinCourt(court, 400, incomingLocation)) {
-              console.log(`increment: ${court.name}`);
-              updatePlayerCount(court.name);
-            } else {
-              clearPlayerCount(court.name);
-            }
+            console.log(`Current Location: ${
+              currentLocation
+            }`)
+
+            allCourts.forEach(court => {
+              if (withinCourt(court, 400, incomingLocation)) {
+                console.log(`increment: ${court.name}`);
+                updatePlayerCount(court.name);
+              } else {
+                clearPlayerCount(court.name);
+              }
+            });
           });
-        });
-      }, [geolocation]);
+        // }
+      }, [currentLocation]);
 
       // useEffect(() => {
       //   allCourts.forEach(court => {

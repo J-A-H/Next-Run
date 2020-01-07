@@ -18,28 +18,30 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 345,
+    width: 800,
+    height: 385,
+    margin: 10
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    padding: 15,
+    margin: 20
   },
   expand: {
-    transform: 'rotate(0deg)',
+    transform: 'rotate(270deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: 'rotate(90deg)',
   },
   avatar: {
     backgroundColor: red[500],
   },
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 

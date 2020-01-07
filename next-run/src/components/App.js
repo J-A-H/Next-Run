@@ -24,8 +24,11 @@ const App = props => {
 
   const [state, setState] = useState({
     courts: [],
-    currentLocation: {}
+    currentLocation: {},
+    isTrue: true
   });
+
+  // const [isTrue, setTrue] = useState(true)
 
   const { getAllCourts } = useDatabase(); //Object destructure to use getAllcourts function
 
@@ -101,29 +104,56 @@ const App = props => {
 
   }, []); //Empty arr tells it to only run once after App rendered
 
+  const onClickDisplay = () => {
+    console.log(state.isTrue)
+    if (state.isTrue == true) {
+      setState(prevState => ({
+        ...prevState,
+        isTrue: false
+      }));
+    }
+    else if (state.isTrue == false) {
+      setState(prevState => ({
+        ...prevState,
+        isTrue: true
+      }));
+    }
+  }
+
   return (
+
     <div>
       <div className="App">
         <div className="App-header">
           <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
         </div >
- 
-        <div style={{ position: 'absolute', zIndex: '10' }}>
-        <CourtListContainer /> 
-        <RecipeReviewCard />
-      </div>
-      <div style={{ zIndex: '1' }}>
-        <MapComponent
-          googleMapURL={MAP_URL}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-        />
+
+        <div style={{ position: 'absolute', zIndex: 10 }}>
+          <CourtListContainer
+            onClickDisplay={onClickDisplay}
+          />
+        </div>
+
+        {state.isTrue && (
+          <div style={{ position: 'absolute', margin: 'auto', right: 0, left: 0, width: 600, height: 100, zIndex: 15 }}>
+            <RecipeReviewCard />
+          </div>
+        )}
+
+        <div style={{ zIndex: '1' }}>
+          <MapComponent
+            googleMapURL={MAP_URL}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `400px` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
         </div>
       </div>
 
     </div>
   );
-};
+}
+
 
 export default App;
+

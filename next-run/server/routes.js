@@ -125,11 +125,17 @@ router.post('/pusher/auth', function(req, res) {
 router.post('/updatePlayerCounts', (req, res) => {
   const incomingLocation =  req.body.geolocation;
   const channel = req.body.channel;
+
+  req.setTimeout(0); 
+
+  console.log(channel);
   
   //Broadcast location to all clients
   pusher.trigger(channel, 'transit', {
     incomingLocation: incomingLocation
   });
+
+  res.send('broadcast-sent');
 });
 
 module.exports = router;

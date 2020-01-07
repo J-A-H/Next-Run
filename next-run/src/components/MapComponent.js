@@ -48,34 +48,13 @@ const MapComponent = withScriptjs(
 
       //initialize pusher listener for incoming broadcasts
       useEffect(() => {
-        // const clearPlayerCount = courtName => {
-        //   //TODO: reduces count
-
-        //   console.log(`clear`);
-        //   console.log(currentLocation);
-
-        //   if (currentLocation === courtName) {
-        //     console.log(`clear: ${courtName}`);
-        //     console.log("clear");
-        //     console.log(currentLocation);
-        //     console.log(courtName);
-
-        //     const newPlayersCountObject = playersCount;
-
-        //     newPlayersCountObject[courtName] =
-        //       newPlayersCountObject[courtName] - 1;
-
-        //     console.log(newPlayersCountObject);
-        //     setPlayersCount(newPlayersCountObject);
-        //   }
-        // };
-
+        
         //listener for incoming geolocaitons
         broadcastLocationChannel.bind("transit", data => {
           console.log("Incoming locaiton");
-          console.log(data.incomingLocation);
 
           const incomingLocation = data.incomingLocation;
+          console.log(incomingLocation);
 
           allCourts.forEach(court => {
             if (withinCourt(court, 400, incomingLocation)) {
@@ -86,7 +65,7 @@ const MapComponent = withScriptjs(
             }
           });
         });
-      }, [currentLocation]);
+      }, [geolocation]);
 
       // useEffect(() => {
       //   allCourts.forEach(court => {

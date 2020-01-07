@@ -48,7 +48,7 @@ const App = props => {
     if (currentLocation !== courtName) {
       const newPlayersCountObject = playersCount;
 
-      newPlayersCountObject[courtName] = newPlayersCountObject[courtName] + 1;
+      newPlayersCountObject[courtName] += 1;
 
       setPlayersCount(newPlayersCountObject);
       setCurrentLocation(courtName);
@@ -60,20 +60,18 @@ const App = props => {
    * @param {*} courtName
    */
   const clearPlayerCount = courtName => {
-    //TODO: reduces count
-    
     if (currentLocation === courtName) {
       console.log(`clear: ${courtName}`);
-      console.log("clear");
-      console.log(currentLocation);
-      console.log(courtName);
 
       const newPlayersCountObject = playersCount;
 
-      newPlayersCountObject[courtName] = newPlayersCountObject[courtName] - 1;
+      if (newPlayersCountObject[courtName] > 0) {
+        newPlayersCountObject[courtName] -= 1;
+      }
 
       console.log(newPlayersCountObject);
       setPlayersCount(newPlayersCountObject);
+      setCurrentLocation("");
     }
   };
 
@@ -87,13 +85,22 @@ const App = props => {
 
   //*Fetch curent location
   useEffect(() => {
-    setGeolocation({ lat, lng });
 
-    //Send client location to server
-    axios.post("/updatePlayerCounts", {
-      geolocation: { lat, lng },
-      channel: "broadcast-location"
-    });
+    const sendToServer = async (lat, lng) => {
+      //Send client location to server
+      const send = await axios.post("/updatePlayerCounts", {
+        geolocation: { lat, lng },
+        channel: "broadcast-location"
+      });
+
+      console.log(send.data);
+    }
+
+    if(lat){
+      setGeolocation({ lat, lng });
+      sendToServer(lat, lng);
+    }
+    
   }, [lat, lng]);
 
   //Fetch court data
@@ -156,7 +163,7 @@ const App = props => {
       // });
     };
 
-    a();
+    // a();
   }, [allCourts, geolocation]);
 
   return (

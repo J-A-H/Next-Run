@@ -138,4 +138,17 @@ router.post('/updatePlayerCounts', (req, res) => {
   res.send('broadcast-sent');
 });
 
+router.post('/updatePlayerCounts/leaveCourt', (req, res) => {
+  const courtName = req.body.courtName;
+  const channel = req.body.channel;
+
+  console.log(courtName, channel);
+
+  pusher.trigger(channel, 'decrement-court', {
+    courtToDecrement: courtName
+  })
+
+  res.send("decrement-broadcast-sent");
+})
+
 module.exports = router;

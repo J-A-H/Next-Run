@@ -55,7 +55,6 @@ const MapComponent = withScriptjs(
           console.log(incomingLocation);
 
           if (allCourts.length > 0) {
-            console.log(allCourts);
             allCourts.forEach(court => {
               if (withinCourt(court, 400, incomingLocation)) {
                 console.log(`increment: ${court.name}`);

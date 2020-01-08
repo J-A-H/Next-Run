@@ -162,6 +162,16 @@ const App = props => {
       return result;
     };
 
+    const sendToServer = async (courtName) => {
+      //Send client location to server
+      const send = await axios.post("/updatePlayerCounts/leaveCourt", {
+        courtName: courtName,
+        channel: "broadcast-location"
+      });
+
+      console.log(send.data);
+    };
+
     if(withinAnyCourt() === "Empty"){
       if(currentLocation !== "Empty" && Object.keys(playersCount).length > 0){
         console.log(`decrementing: ${currentLocation}`);
@@ -169,10 +179,28 @@ const App = props => {
         newPlayersCountObject[currentLocation] -= 1;
         console.log(newPlayersCountObject);
         setPlayersCount(newPlayersCountObject);
+
+        sendToServer(currentLocation);
       }
     }
     setCurrentLocation(withinAnyCourt());
   }, [geolocation, allCourts, playersCount]);
+
+  useEffect(()=> {
+
+    const handleDecrementCourt = data => {
+      console.log(`Court to decrement: ${data.courtToDecrement}`);
+    } 
+
+    if(allCourts.length > 0 && Object.keys(playersCount).length > 0){
+      console.log("Initializing decrement broadcast");
+
+      console.log(allCourts, playersCount);
+
+      broadcastLocationChannel.bind('decrement-court', handleDecrementCourt);
+      return () => {broadcastLocationChannel.unbind('decrement-court', handleDecrementCourt)}
+    }
+  }, [allCourts, playersCount]);
 
   return (
     <Fragment>

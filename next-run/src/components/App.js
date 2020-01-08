@@ -2,6 +2,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
+import RecipeReviewCard from './CourtDetailShow'
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 
@@ -27,6 +28,7 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
+  const [state, setState] = useState({isTrue: false});
 
   //*Helpers
   const {
@@ -119,21 +121,53 @@ const App = props => {
     a();
   }, [allCourts, geolocation]);
 
+  // Functions for rendering CourtCard
+  const onClickDisplay = () => {
+    if (state.isTrue == true) {
+      setState(prevState => ({
+        ...prevState,
+        isTrue: false
+      }));
+    }
+    else if (state.isTrue == false) {
+      setState(prevState => ({
+        ...prevState,
+        isTrue: true
+      }));
+    }
+  }
+
   return (
     <Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
-      <MapComponent
-        googleMapURL={MAP_URL}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-        allCourts={allCourts}
-        toKebabCase={toKebabCase}
-        geolocation={geolocation}
-      />
-      <CourtListContainer courts={allCourts} />
+
+      <div style={{ position: 'absolute', zIndex: 10 }}>
+        <CourtListContainer
+          courts={allCourts}
+          onClickDisplay={onClickDisplay}
+        />
+      </div>
+
+      {state.isTrue && (
+        <div style={{ position: 'absolute', margin: 'auto', right: 0, left: 0, width: 600, height: 100, zIndex: 15 }}>
+          <RecipeReviewCard />
+        </div>
+      )}
+
+      <div style={{ zIndex: '1' }}>
+        <MapComponent
+          googleMapURL={MAP_URL}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          allCourts={allCourts}
+          toKebabCase={toKebabCase}
+          geolocation={geolocation}
+        />
+      </div>
+
     </Fragment>
   );
 };

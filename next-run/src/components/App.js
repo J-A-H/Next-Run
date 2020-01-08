@@ -174,11 +174,11 @@ const App = props => {
 
     if(withinAnyCourt() === "Empty"){
       if(currentLocation !== "Empty" && Object.keys(playersCount).length > 0){
-        console.log(`decrementing: ${currentLocation}`);
-        let newPlayersCountObject = playersCount;
-        newPlayersCountObject[currentLocation] -= 1;
-        console.log(newPlayersCountObject);
-        setPlayersCount(newPlayersCountObject);
+        // console.log(`decrementing: ${currentLocation}`);
+        // let newPlayersCountObject = playersCount;
+        // newPlayersCountObject[currentLocation] -= 1;
+        // console.log(newPlayersCountObject);
+        // setPlayersCount(newPlayersCountObject);
 
         sendToServer(currentLocation);
       }
@@ -190,6 +190,14 @@ const App = props => {
 
     const handleDecrementCourt = data => {
       console.log(`Court to decrement: ${data.courtToDecrement}`);
+
+      const decrementPlayersCountObject = playersCount;
+      if(decrementPlayersCountObject[data.courtToDecrement] > 0){
+        decrementPlayersCountObject[data.courtToDecrement] -= 1;
+      }
+
+      console.log(decrementPlayersCountObject);
+      setPlayersCount(decrementPlayersCountObject);
     } 
 
     if(allCourts.length > 0 && Object.keys(playersCount).length > 0){

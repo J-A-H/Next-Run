@@ -48,29 +48,31 @@ const MapComponent = withScriptjs(
 
       //initialize pusher listener for incoming broadcasts
       useEffect(() => {
-
-        const handlleIncomingLocation = (data) => {
+        const handlleIncomingLocation = data => {
           console.log("Incoming locaiton");
 
           const incomingLocation = data.incomingLocation;
           console.log(incomingLocation);
 
-          allCourts.forEach(court => {
-            if (withinCourt(court, 400, incomingLocation)) {
-              console.log(`increment: ${court.name}`);
-              updatePlayerCount(court.name);
-            } else {
-              clearPlayerCount(court.name);
-            }
-          });
-        }
+          if (allCourts.length > 0) {
+            console.log(allCourts);
+            allCourts.forEach(court => {
+              if (withinCourt(court, 400, incomingLocation)) {
+                console.log(`increment: ${court.name}`);
+                updatePlayerCount(court.name);
+              } else {
+                // clearPlayerCount(court.name);
+              }
+            });
+          }
+        };
         //listener for incoming geolocaitons
         broadcastLocationChannel.bind("transit", handlleIncomingLocation);
 
         return () => {
           broadcastLocationChannel.unbind("transit", handlleIncomingLocation);
         };
-      }, [currentLocation]);
+      }, [allCourts, playersCount]);
 
       return (
         <GoogleMap

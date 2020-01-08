@@ -46,16 +46,12 @@ const App = props => {
    * @param {*} courtName
    */
   const updatePlayerCount = courtName => {
-    if (currentLocation !== "") {
-      if (currentLocation !== courtName) {
-        const newPlayersCountObject = playersCount;
+    const newPlayersCountObject = playersCount;
 
-        newPlayersCountObject[courtName] += 1;
+    newPlayersCountObject[courtName] += 1;
 
-        setPlayersCount(newPlayersCountObject);
-        setCurrentLocation(courtName);
-      }
-    }
+    console.log(newPlayersCountObject);
+    setPlayersCount(newPlayersCountObject);
   };
 
   /**
@@ -71,18 +67,10 @@ const App = props => {
       }
 
       setPlayersCount(newPlayersCountObject);
-      setCurrentLocation("Empty");
+      // setCurrentLocation("Empty");
 
       console.log(`clear: ${courtName}`);
     }
-  };
-
-  /**
-   * Updates current location
-   * @param {*} court
-   */
-  const updateCurrentLocation = court => {
-    setCurrentLocation(court.name);
   };
 
   //*Fetch curent location
@@ -162,16 +150,29 @@ const App = props => {
       return distance(start, end) <= radius;
     };
 
-    if(allCourts.length > 0){
-      console.log(allCourts);
+    const withinAnyCourt = () => {
+      let result = "Empty";
+      if (allCourts.length > 0) {
+        allCourts.forEach(court => {
+          if (withinCourt(court, 400, geolocation)) {
+            result = court.name;
+          }
+        });
+      }
+      return result;
+    };
 
-      allCourts.forEach(court => {
-        if(withinCourt(court, 400, geolocation)){
-          console.log(`User is in court: ${court.name}`);
-        }
-      })
+    if(withinAnyCourt() === "Empty"){
+      if(currentLocation !== "Empty" && Object.keys(playersCount).length > 0){
+        console.log(`decrementing: ${currentLocation}`);
+        let newPlayersCountObject = playersCount;
+        newPlayersCountObject[currentLocation] -= 1;
+        console.log(newPlayersCountObject);
+        setPlayersCount(newPlayersCountObject);
+      }
     }
-  }, [geolocation, allCourts]);
+    setCurrentLocation(withinAnyCourt());
+  }, [geolocation, allCourts, playersCount]);
 
   return (
     <Fragment>

@@ -5,7 +5,7 @@ const CourtList = props => {
   return (
     <div>
       {props.courts.map(court => (
-          <CourtCard key={court.id} court={court} onClick={props.onClickDisplay}/>
+          <CourtCard key={court.id} court={court} onClickDisplay={props.onClickDisplay}/>
       )
       )
     }

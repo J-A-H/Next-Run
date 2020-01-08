@@ -23,8 +23,8 @@ const CourtListContainer = props => {
             </DropdownButton>
           </div>
         </div>
-        <div onClick={props.onClickDisplay}>
-          <CourtList courts={props.courts} onClick={props.onClickDisplay}/>
+        <div>
+          <CourtList onClickDisplay={() => props.onClickDisplay} courts={props.courts}/>
         </div>
       </div>
 

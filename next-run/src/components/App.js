@@ -152,7 +152,7 @@ const App = props => {
 
       {state.isTrue && (
         <div style={{ position: 'absolute', margin: 'auto', right: 0, left: 0, width: 600, height: 100, zIndex: 15 }}>
-          <RecipeReviewCard />
+          <RecipeReviewCard  />
         </div>
       )}
 

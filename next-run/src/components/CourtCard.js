@@ -5,7 +5,7 @@ import Link from "react-router-dom";
 const CourtCard = props => {
 
   return (
-    <div style={{ opacity: 1, margin: 10, zIndex: 10, }}>
+    <div onClick={props.onClickDisplay()} style={{ opacity: 1, margin: 10, zIndex: 10, }}>
       <div className="ui card">
         <div className="content">
           <div className="header">{props.court.name}</div>

@@ -119,4 +119,36 @@ router.post('/pusher/auth', function(req, res) {
   res.send(auth);
 });
 
+/**
+ * Broadcasts location to clients to update current player counts
+ */
+router.post('/updatePlayerCounts', (req, res) => {
+  const incomingLocation =  req.body.geolocation;
+  const channel = req.body.channel;
+
+  req.setTimeout(0); 
+
+  console.log(channel);
+  
+  //Broadcast location to all clients
+  pusher.trigger(channel, 'transit', {
+    incomingLocation: incomingLocation
+  });
+
+  res.send('broadcast-sent');
+});
+
+router.post('/updatePlayerCounts/leaveCourt', (req, res) => {
+  const courtName = req.body.courtName;
+  const channel = req.body.channel;
+
+  console.log(courtName, channel);
+
+  pusher.trigger(channel, 'decrement-court', {
+    courtToDecrement: courtName
+  })
+
+  res.send("decrement-broadcast-sent");
+})
+
 module.exports = router;

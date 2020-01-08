@@ -10,6 +10,7 @@ import { usePosition } from "../helpers/usePosition";
 import useDatabase from "../helpers/useDatabase";
 import helpers from "../helpers/helpers";
 import axios from "axios";
+import { withScriptjs } from "react-google-maps";
 
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
@@ -28,6 +29,8 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
+  const [currentLocation, setCurrentLocation] = useState("");
+
   const [state, setState] = useState({isTrue: false});
 
   //*Helpers
@@ -39,6 +42,7 @@ const App = props => {
   } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const { lat, lng, error } = usePosition();
+  const broadcastLocationChannel = pusherObject.subscribe("broadcast-location");
 
   /**
    * Updates player count of court
@@ -47,14 +51,48 @@ const App = props => {
   const updatePlayerCount = courtName => {
     const newPlayersCountObject = playersCount;
 
-    newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
+    newPlayersCountObject[courtName] += 1;
 
+    console.log(newPlayersCountObject);
     setPlayersCount(newPlayersCountObject);
+  };
+
+  /**
+   *
+   * @param {*} courtName
+   */
+  const clearPlayerCount = courtName => {
+    if (currentLocation === courtName || currentLocation === "") {
+      const newPlayersCountObject = playersCount;
+
+      if (newPlayersCountObject[courtName] > 0) {
+        // newPlayersCountObject[courtName] -= 1;
+      }
+
+      setPlayersCount(newPlayersCountObject);
+      // setCurrentLocation("Empty");
+
+      console.log(`clear: ${courtName}`);
+    }
   };
 
   //*Fetch curent location
   useEffect(() => {
-    setGeolocation({ lat, lng });
+    const sendToServer = async (lat, lng) => {
+      //Send client location to server
+      const send = await axios.post("/updatePlayerCounts", {
+        geolocation: { lat, lng },
+        channel: "broadcast-location"
+      });
+
+      console.log(send.data);
+    };
+
+    if (lat) {
+      setGeolocation({ lat, lng });
+
+      sendToServer(lat, lng);
+    }
   }, [lat, lng]);
 
   //Fetch court data
@@ -79,29 +117,6 @@ const App = props => {
     initializeAllcourts();
   }, []);
 
-  //*Pusher channel logic
-  useEffect(() => {
-    /**
-     * Initialzes pusher channels for each court
-     */
-    const initializeChannels = async () => {
-      allCourts.forEach(court => {
-        // Pusher.logToConsole = true;
-        const channelName = toKebabCase(court.name);
-        let channel = pusherObject.subscribe(`${channelName}`);
-
-        //Listens for court updates
-        channel.bind("player-count", data => {
-          // console.log(`You are at court ${data.name}`);
-          const courtName = data.name;
-          updatePlayerCount(courtName);
-        });
-      });
-    };
-
-    initializeChannels();
-  }, [playersCount]);
-
   //*Court peak times
   useEffect(() => {
     //example function of peak times, currently prints on screen
@@ -113,13 +128,90 @@ const App = props => {
       // console.log(dailyPeakTimes, court.name);
 
       const weeklyPeakTimes = await getWeeklyPeakTimes(5);
-      console.log(weeklyPeakTimes);
 
       // });
     };
 
-    a();
+    // a();
   }, [allCourts, geolocation]);
+
+  useEffect(() => {
+    const google = window.google;
+    /**
+     * Return true if current position is within the court region at court
+     * @param {*} court
+     * @param {*} radius
+     * @param {*} currentPosition
+     */
+    const withinCourt = (court, radius, currentPosition) => {
+      const start = new google.maps.LatLng(court.lat, court.lng);
+      const end = new google.maps.LatLng(
+        currentPosition.lat,
+        currentPosition.lng
+      );
+      const distance = google.maps.geometry.spherical.computeDistanceBetween;
+      return distance(start, end) <= radius;
+    };
+
+    const withinAnyCourt = () => {
+      let result = "Empty";
+      if (allCourts.length > 0) {
+        allCourts.forEach(court => {
+          if (withinCourt(court, 400, geolocation)) {
+            result = court.name;
+          }
+        });
+      }
+      return result;
+    };
+
+    const sendToServer = async (courtName) => {
+      //Send client location to server
+      const send = await axios.post("/updatePlayerCounts/leaveCourt", {
+        courtName: courtName,
+        channel: "broadcast-location"
+      });
+
+      console.log(send.data);
+    };
+
+    if(withinAnyCourt() === "Empty"){
+      if(currentLocation !== "Empty" && Object.keys(playersCount).length > 0){
+        // console.log(`decrementing: ${currentLocation}`);
+        // let newPlayersCountObject = playersCount;
+        // newPlayersCountObject[currentLocation] -= 1;
+        // console.log(newPlayersCountObject);
+        // setPlayersCount(newPlayersCountObject);
+
+        sendToServer(currentLocation);
+      }
+    }
+    setCurrentLocation(withinAnyCourt());
+  }, [geolocation, allCourts, playersCount]);
+
+  useEffect(()=> {
+
+    const handleDecrementCourt = data => {
+      console.log(`Court to decrement: ${data.courtToDecrement}`);
+
+      const decrementPlayersCountObject = playersCount;
+      if(decrementPlayersCountObject[data.courtToDecrement] > 0){
+        decrementPlayersCountObject[data.courtToDecrement] -= 1;
+      }
+
+      console.log(decrementPlayersCountObject);
+      setPlayersCount(decrementPlayersCountObject);
+    } 
+
+    if(allCourts.length > 0 && Object.keys(playersCount).length > 0){
+      console.log("Initializing decrement broadcast");
+
+      console.log(allCourts, playersCount);
+
+      broadcastLocationChannel.bind('decrement-court', handleDecrementCourt);
+      return () => {broadcastLocationChannel.unbind('decrement-court', handleDecrementCourt)}
+    }
+  }, [allCourts, playersCount]);
 
   // Functions for rendering CourtCard
   const onClickDisplay = () => {
@@ -135,13 +227,29 @@ const App = props => {
         isTrue: true
       }));
     }
-  }
+ 
 
   return (
     <Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
+      <MapComponent
+        googleMapURL={MAP_URL}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+        allCourts={allCourts}
+        toKebabCase={toKebabCase}
+        geolocation={geolocation}
+        broadcastLocationChannel={broadcastLocationChannel}
+        updatePlayerCount={updatePlayerCount}
+        clearPlayerCount={clearPlayerCount}
+        currentLocation={currentLocation}
+        setPlayersCount={setPlayersCount}
+        playersCount={playersCount}
+      />
+      <CourtListContainer courts={allCourts} />
 
       <div style={{ position: 'absolute', zIndex: 10 }}>
         <CourtListContainer
@@ -167,9 +275,8 @@ const App = props => {
           geolocation={geolocation}
         />
       </div>
-
     </Fragment>
   );
 };
 
-export default App;
+export default withScriptjs(App);

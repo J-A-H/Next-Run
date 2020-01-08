@@ -120,22 +120,6 @@ const App = props => {
     a();
   }, [allCourts, geolocation]);
 
-  // Functions for rendering CourtCard
-  // const onClickDisplay = () => {
-  //   if (state.isTrue == true) {
-  //     setState(prevState => ({
-  //       ...prevState,
-  //       isTrue: false
-  //     }));
-  //   }
-  //   else if (state.isTrue == false) {
-  //     setState(prevState => ({
-  //       ...prevState,
-  //       isTrue: true
-  //     }));
-  //   }
-  // }
-
   return (
     <Fragment>
       <div className="App-header">
@@ -145,7 +129,6 @@ const App = props => {
       <div style={{ position: 'absolute', zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
-          // onClickDisplay={onClickDisplay}
         />
       </div>
 

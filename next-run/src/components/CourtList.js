@@ -5,12 +5,10 @@ const CourtList = props => {
   return (
     <div>
       {props.courts.map(court => (
-        <Link 
-        key={court.id} 
-        to={`/courts/${court.id}`}>
-          <CourtCard key={court.id} court={court} />
-        </Link>
-      ))}
+          <CourtCard key={court.id} court={court} onClick={props.onClickDisplay}/>
+      )
+      )
+    }
     </div>
   );
 };

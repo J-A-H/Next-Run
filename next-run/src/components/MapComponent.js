@@ -65,6 +65,8 @@ const MapComponent = withScriptjs(
             });
           }
         };
+
+        debugger;
         //listener for incoming geolocaitons
         broadcastLocationChannel.bind("transit", handlleIncomingLocation);
 

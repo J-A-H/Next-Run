@@ -2,7 +2,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
-import RecipeReviewCard from './CourtDetailShow'
+import RecipeReviewCard from "./CourtDetailShow";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 
@@ -31,7 +31,7 @@ const App = props => {
   const [playersCount, setPlayersCount] = useState({});
   const [currentLocation, setCurrentLocation] = useState("");
 
-  const [state, setState] = useState({isTrue: false});
+  const [state, setState] = useState({ isTrue: false });
 
   //*Helpers
   const {
@@ -165,7 +165,7 @@ const App = props => {
       return result;
     };
 
-    const sendToServer = async (courtName) => {
+    const sendToServer = async courtName => {
       //Send client location to server
       const send = await axios.post("/updatePlayerCounts/leaveCourt", {
         courtName: courtName,
@@ -175,8 +175,8 @@ const App = props => {
       console.log(send.data);
     };
 
-    if(withinAnyCourt() === "Empty"){
-      if(currentLocation !== "Empty" && Object.keys(playersCount).length > 0){
+    if (withinAnyCourt() === "Empty") {
+      if (currentLocation !== "Empty" && Object.keys(playersCount).length > 0) {
         // console.log(`decrementing: ${currentLocation}`);
         // let newPlayersCountObject = playersCount;
         // newPlayersCountObject[currentLocation] -= 1;
@@ -189,27 +189,31 @@ const App = props => {
     setCurrentLocation(withinAnyCourt());
   }, [geolocation, allCourts, playersCount]);
 
-  useEffect(()=> {
-
+  useEffect(() => {
     const handleDecrementCourt = data => {
       console.log(`Court to decrement: ${data.courtToDecrement}`);
 
       const decrementPlayersCountObject = playersCount;
-      if(decrementPlayersCountObject[data.courtToDecrement] > 0){
+      if (decrementPlayersCountObject[data.courtToDecrement] > 0) {
         decrementPlayersCountObject[data.courtToDecrement] -= 1;
       }
 
       console.log(decrementPlayersCountObject);
       setPlayersCount(decrementPlayersCountObject);
-    } 
+    };
 
-    if(allCourts.length > 0 && Object.keys(playersCount).length > 0){
+    if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
       console.log("Initializing decrement broadcast");
 
       console.log(allCourts, playersCount);
 
-      broadcastLocationChannel.bind('decrement-court', handleDecrementCourt);
-      return () => {broadcastLocationChannel.unbind('decrement-court', handleDecrementCourt)}
+      broadcastLocationChannel.bind("decrement-court", handleDecrementCourt);
+      return () => {
+        broadcastLocationChannel.unbind(
+          "decrement-court",
+          handleDecrementCourt
+        );
+      };
     }
   }, [allCourts, playersCount]);
 
@@ -220,37 +224,20 @@ const App = props => {
         ...prevState,
         isTrue: false
       }));
-    }
-    else if (state.isTrue == false) {
+    } else if (state.isTrue == false) {
       setState(prevState => ({
         ...prevState,
         isTrue: true
       }));
     }
- 
+  };
 
   return (
     <Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
-      <MapComponent
-        googleMapURL={MAP_URL}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-        allCourts={allCourts}
-        toKebabCase={toKebabCase}
-        geolocation={geolocation}
-        broadcastLocationChannel={broadcastLocationChannel}
-        updatePlayerCount={updatePlayerCount}
-        clearPlayerCount={clearPlayerCount}
-        currentLocation={currentLocation}
-        setPlayersCount={setPlayersCount}
-        playersCount={playersCount}
-      />
-      <CourtListContainer courts={allCourts} />
-
+      
       <div style={{ position: 'absolute', zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
@@ -266,14 +253,20 @@ const App = props => {
 
       <div style={{ zIndex: '1' }}>
         <MapComponent
-          googleMapURL={MAP_URL}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          allCourts={allCourts}
-          toKebabCase={toKebabCase}
-          geolocation={geolocation}
-        />
+        googleMapURL={MAP_URL}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+        allCourts={allCourts}
+        toKebabCase={toKebabCase}
+        geolocation={geolocation}
+        broadcastLocationChannel={broadcastLocationChannel}
+        updatePlayerCount={updatePlayerCount}
+        clearPlayerCount={clearPlayerCount}
+        currentLocation={currentLocation}
+        setPlayersCount={setPlayersCount}
+        playersCount={playersCount}
+      />
       </div>
     </Fragment>
   );

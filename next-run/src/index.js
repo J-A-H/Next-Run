@@ -21,7 +21,10 @@ const routing = (
       <li>
         <Link to="/">Update Location</Link>
       </li>
-      <Route exact path="/" component={ () => <App/>} 
+      <Route exact path="/" component={ () => <App 
+      googleMapURL={MAP_URL}
+      loadingElement={<div style={{ height: `100%` }} />}
+      />} 
       />
       <Route exact path="/courts/:courtID" component={CourtDetailsContainer}/>
     </div>

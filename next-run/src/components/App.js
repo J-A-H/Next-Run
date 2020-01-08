@@ -9,6 +9,7 @@ import { usePosition } from "../helpers/usePosition";
 import useDatabase from "../helpers/useDatabase";
 import helpers from "../helpers/helpers";
 import axios from "axios";
+import { withScriptjs } from "react-google-maps";
 
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
@@ -98,6 +99,7 @@ const App = props => {
 
     if (lat) {
       setGeolocation({ lat, lng });
+
       sendToServer(lat, lng);
     }
   }, [lat, lng]);
@@ -142,6 +144,35 @@ const App = props => {
     // a();
   }, [allCourts, geolocation]);
 
+  useEffect(() => {
+    const google = window.google;
+    /**
+     * Return true if current position is within the court region at court
+     * @param {*} court
+     * @param {*} radius
+     * @param {*} currentPosition
+     */
+    const withinCourt = (court, radius, currentPosition) => {
+      const start = new google.maps.LatLng(court.lat, court.lng);
+      const end = new google.maps.LatLng(
+        currentPosition.lat,
+        currentPosition.lng
+      );
+      const distance = google.maps.geometry.spherical.computeDistanceBetween;
+      return distance(start, end) <= radius;
+    };
+
+    if(allCourts.length > 0){
+      console.log(allCourts);
+
+      allCourts.forEach(court => {
+        if(withinCourt(court, 400, geolocation)){
+          console.log(`User is in court: ${court.name}`);
+        }
+      })
+    }
+  }, [geolocation, allCourts]);
+
   return (
     <Fragment>
       <div className="App-header">
@@ -167,4 +198,4 @@ const App = props => {
   );
 };
 
-export default App;
+export default withScriptjs(App);

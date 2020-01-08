@@ -48,38 +48,29 @@ const MapComponent = withScriptjs(
 
       //initialize pusher listener for incoming broadcasts
       useEffect(() => {
-        // if (currentLocation !== "") {
-          //listener for incoming geolocaitons
-          broadcastLocationChannel.bind("transit", data => {
-            console.log("Incoming locaiton");
 
-            const incomingLocation = data.incomingLocation;
-            console.log(incomingLocation);
+        const handlleIncomingLocation = (data) => {
+          console.log("Incoming locaiton");
 
-            console.log(`Current Location: ${
-              currentLocation
-            }`)
+          const incomingLocation = data.incomingLocation;
+          console.log(incomingLocation);
 
-            allCourts.forEach(court => {
-              if (withinCourt(court, 400, incomingLocation)) {
-                console.log(`increment: ${court.name}`);
-                updatePlayerCount(court.name);
-              } else {
-                clearPlayerCount(court.name);
-              }
-            });
+          allCourts.forEach(court => {
+            if (withinCourt(court, 400, incomingLocation)) {
+              console.log(`increment: ${court.name}`);
+              updatePlayerCount(court.name);
+            } else {
+              clearPlayerCount(court.name);
+            }
           });
-        // }
-      }, [currentLocation]);
+        }
+        //listener for incoming geolocaitons
+        broadcastLocationChannel.bind("transit", handlleIncomingLocation);
 
-      // useEffect(() => {
-      //   allCourts.forEach(court => {
-      //     const channelName = toKebabCase(court.name);
-      //     if (withinCourt(court, 400, geolocation)) {
-      //       axios.post("/add_visit", { channel: channelName, court: court });
-      //     }
-      //   });
-      // }, [geolocation.lat, geolocation.lng]);
+        return () => {
+          broadcastLocationChannel.unbind("transit", handlleIncomingLocation);
+        };
+      }, [currentLocation]);
 
       return (
         <GoogleMap

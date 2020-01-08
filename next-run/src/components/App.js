@@ -66,7 +66,7 @@ const App = props => {
       const newPlayersCountObject = playersCount;
 
       if (newPlayersCountObject[courtName] > 0) {
-        newPlayersCountObject[courtName] -= 1;
+        // newPlayersCountObject[courtName] -= 1;
       }
 
       setPlayersCount(newPlayersCountObject);
@@ -123,29 +123,6 @@ const App = props => {
 
     initializeAllcourts();
   }, []);
-
-  //*Pusher channel logic
-  useEffect(() => {
-    /**
-     * Initialzes pusher channels for each court
-     */
-    const initializeChannels = async () => {
-      allCourts.forEach(court => {
-        // Pusher.logToConsole = true;
-        const channelName = toKebabCase(court.name);
-        let channel = pusherObject.subscribe(`${channelName}`);
-
-        //Listens for court updates
-        channel.bind("player-count", data => {
-          // console.log(`You are at court ${data.name}`);
-          const courtName = data.name;
-          updatePlayerCount(courtName);
-        });
-      });
-    };
-
-    initializeChannels();
-  }, [playersCount]);
 
   //*Court peak times
   useEffect(() => {

@@ -5,6 +5,10 @@ import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './index.css';
 import CourtDetailsContainer from './components/CourtDetailsContainer';
 
+//API keys______________
+const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
+const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
+
 // // Import serviceWork for PWA
 // import * as serviceWorker from '../public/serviceWorker';
 
@@ -17,7 +21,8 @@ const routing = (
       <li>
         <Link to="/">Update Location</Link>
       </li>
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={ () => <App/>} 
+      />
       <Route exact path="/courts/:courtID" component={CourtDetailsContainer}/>
     </div>
   </Router>

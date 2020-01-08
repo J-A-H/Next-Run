@@ -24,7 +24,7 @@ const CourtListContainer = props => {
           </div>
         </div>
         <div>
-          <CourtList onClickDisplay={() => props.onClickDisplay} courts={props.courts}/>
+          <CourtList courts={props.courts}/>
         </div>
       </div>
 

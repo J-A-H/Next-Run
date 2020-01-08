@@ -28,8 +28,7 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
-  const [state, setState] = useState({isTrue: false});
-
+  
   //*Helpers
   const {
     getAllCourts,
@@ -39,24 +38,24 @@ const App = props => {
   } = useDatabase(); //Object destructure to use getAllcourts function
   const { toKebabCase } = helpers();
   const { lat, lng, error } = usePosition();
-
+  
   /**
    * Updates player count of court
    * @param {*} courtName
    */
   const updatePlayerCount = courtName => {
     const newPlayersCountObject = playersCount;
-
+    
     newPlayersCountObject[courtName] = newPlayersCountObject[courtName] += 1;
-
+    
     setPlayersCount(newPlayersCountObject);
   };
-
+  
   //*Fetch curent location
   useEffect(() => {
     setGeolocation({ lat, lng });
   }, [lat, lng]);
-
+  
   //Fetch court data
   useEffect(() => {
     /**
@@ -65,14 +64,14 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-
+      
       const playersCountObject = {};
-
+      
       allCourts.data.forEach(court => {
         const courtName = court.name;
         playersCountObject[courtName] = 0;
       });
-
+      
       setPlayersCount(playersCountObject);
     };
 
@@ -122,20 +121,20 @@ const App = props => {
   }, [allCourts, geolocation]);
 
   // Functions for rendering CourtCard
-  const onClickDisplay = () => {
-    if (state.isTrue == true) {
-      setState(prevState => ({
-        ...prevState,
-        isTrue: false
-      }));
-    }
-    else if (state.isTrue == false) {
-      setState(prevState => ({
-        ...prevState,
-        isTrue: true
-      }));
-    }
-  }
+  // const onClickDisplay = () => {
+  //   if (state.isTrue == true) {
+  //     setState(prevState => ({
+  //       ...prevState,
+  //       isTrue: false
+  //     }));
+  //   }
+  //   else if (state.isTrue == false) {
+  //     setState(prevState => ({
+  //       ...prevState,
+  //       isTrue: true
+  //     }));
+  //   }
+  // }
 
   return (
     <Fragment>
@@ -146,15 +145,9 @@ const App = props => {
       <div style={{ position: 'absolute', zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
-          onClickDisplay={onClickDisplay}
+          // onClickDisplay={onClickDisplay}
         />
       </div>
-
-      {state.isTrue && (
-        <div style={{ position: 'absolute', margin: 'auto', right: 0, left: 0, width: 600, height: 100, zIndex: 15 }}>
-          <RecipeReviewCard />
-        </div>
-      )}
 
       <div style={{ zIndex: '1' }}>
         <MapComponent

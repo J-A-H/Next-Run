@@ -16,6 +16,24 @@ var pusher = new Pusher({
   encrypted: true
 });
 
+const Chatkit = require("@pusher/chatkit-server");
+
+const chatkit = new Chatkit.default({
+  instanceLocator: "v1:us1:a397f28d-1285-488b-97bb-070321f261bf",
+  key:
+    "83bb6462-159b-4684-b510-f50386e4bf20:Zlblmj8vDCsXSvfSH0ntmJx+x5PoD9DLwV5Bar7DsSk="
+});
+
+// chatkit.createUser({
+//   id: 'userId',
+//   name: 'Andy',
+// })
+//   .then(() => {
+//     console.log('User created successfully');
+//   }).catch((err) => {
+//     console.log(err);
+//   });
+
 /**
  * Gets all courts in court table
  */
@@ -53,10 +71,8 @@ router.get("/visits", (req, res) => {
   pool.query(`SELECT * FROM visits`, (queryErr, queryRes) => {
     if (queryErr) {
       console.log(queryErr);
-    }
-    else{
+    } else {
       res.json(queryRes.rows);
-
     }
 
     //Converts query result to json to be used in client
@@ -69,12 +85,15 @@ router.get("/visits", (req, res) => {
 router.get("/visits/:id", (req, res) => {
   const court_id = req.params.id;
 
-  pool.query(`SELECT * FROM visits where court_id = ${court_id}`, (queryErr, queryRes) => {
-    if(queryErr){
-      console.log(queryErr);
+  pool.query(
+    `SELECT * FROM visits where court_id = ${court_id}`,
+    (queryErr, queryRes) => {
+      if (queryErr) {
+        console.log(queryErr);
+      }
+      res.json(queryRes.rows);
     }
-    res.json(queryRes.rows);
-  })
+  );
 });
 
 router.get("/visits/:id/:hour", (req, res) => {
@@ -96,11 +115,10 @@ router.post("/add_visit", (req, res) => {
   pool.query(
     `insert into visits (court_id, times_stamp) values ('${court.id}', current_timestamp)`,
     (queryErr, queryRes) => {
-      if(queryErr){
+      if (queryErr) {
         console.log(queryErr);
-      }
-      else{
-        res.json(queryRes.rows);        
+      } else {
+        res.json(queryRes.rows);
       }
     }
   );
@@ -111,10 +129,10 @@ router.post("/add_visit", (req, res) => {
   });
 });
 
-router.post('/pusher/auth', function(req, res) {
+router.post("/pusher/auth", function(req, res) {
   var socketId = req.body.socket_id;
   var channel = req.body.channel_name;
-  var data = {court: `court 1`, count: 1}
+  var data = { court: `court 1`, count: 1 };
   var auth = pusher.authenticate(socketId, channel, data);
   res.send(auth);
 });
@@ -122,33 +140,98 @@ router.post('/pusher/auth', function(req, res) {
 /**
  * Broadcasts location to clients to update current player counts
  */
-router.post('/updatePlayerCounts', (req, res) => {
-  const incomingLocation =  req.body.geolocation;
+router.post("/updatePlayerCounts", (req, res) => {
+  const incomingLocation = req.body.geolocation;
   const channel = req.body.channel;
 
-  req.setTimeout(0); 
+  req.setTimeout(0);
 
   console.log(channel);
-  
+
   //Broadcast location to all clients
-  pusher.trigger(channel, 'transit', {
+  pusher.trigger(channel, "transit", {
     incomingLocation: incomingLocation
   });
 
-  res.send('broadcast-sent');
+  res.send("broadcast-sent");
 });
 
-router.post('/updatePlayerCounts/leaveCourt', (req, res) => {
+router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
   const courtName = req.body.courtName;
   const channel = req.body.channel;
 
   console.log(courtName, channel);
 
-  pusher.trigger(channel, 'decrement-court', {
+  pusher.trigger(channel, "decrement-court", {
     courtToDecrement: courtName
-  })
+  });
 
   res.send("decrement-broadcast-sent");
+});
+
+router.post("/subscribe_to_room", (req, res) => {
+  const roomName = req.body.courtName;
+  const userId = req.body.userId;
+  console.log(`Subscribe: ${userId}`);
+
+  chatkit
+    .addUsersToRoom({
+      roomId: roomName,
+      userIds: [`${userId}`]
+    })
+    .then(() => {
+      console.log("added");
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+  res.send(roomName);
+});
+
+router.post("/create_user", (req, res) => {
+  const userId = req.body.userId;
+  console.log(`New user created: ${userId}`);
+  res.send(userId);
+
+  chatkit
+    .createUser({
+      id: `${userId}`,
+      name: `${userId}`
+    })
+    .then(() => {
+      console.log("User created successfully");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+router.post("/rooms/getMessages", (req, res) => {
+  const roomName = req.body.roomName;
+
+  console.log(roomName);
+
+  chatkit.fetchMultipartMessages({
+    roomId: roomName,
+    limit: 10
+  }).then (messages => {
+
+    let result = [];
+    messages.forEach(message => {
+      message.parts.forEach(part => {
+        result.push({
+          id: message.id,
+          user_id: message.user_id,
+          message: part.content
+         })
+      })
+    })
+
+    res.send(result);
+  }).catch(err=> {
+    console.log(err);
+  })
 })
 
 module.exports = router;

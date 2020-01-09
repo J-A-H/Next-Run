@@ -4,6 +4,7 @@ import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import RecipeReviewCard from "./CourtDetailShow";
 import MapComponent from "./MapComponent";
+import Chatbox from "./Chat/Chatbox";
 import { usePosition } from "../helpers/usePosition";
 
 // Database helper object
@@ -25,14 +26,6 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 });
 
 const App = props => {
-  //*States
-  const [geolocation, setGeolocation] = useState({});
-  const [allCourts, setAllCourts] = useState([]);
-  const [playersCount, setPlayersCount] = useState({});
-  const [currentLocation, setCurrentLocation] = useState("");
-
-  const [state, setState] = useState({ isTrue: false });
-
   //*Helpers
   const {
     getAllCourts,
@@ -40,9 +33,18 @@ const App = props => {
     getDailyPeakTimes,
     getWeeklyPeakTimes
   } = useDatabase(); //Object destructure to use getAllcourts function
-  const { toKebabCase } = helpers();
+  const { toKebabCase, randomId } = helpers();
   const { lat, lng, error } = usePosition();
   const broadcastLocationChannel = pusherObject.subscribe("broadcast-location");
+
+  //*States
+  const [geolocation, setGeolocation] = useState({});
+  const [allCourts, setAllCourts] = useState([]);
+  const [playersCount, setPlayersCount] = useState({});
+  const [currentLocation, setCurrentLocation] = useState("");
+
+  const [state, setState] = useState({ isTrue: false });
+  const [userId, setUserId] = useState(randomId());
 
   /**
    * Updates player count of court
@@ -95,7 +97,7 @@ const App = props => {
     }
   }, [lat, lng]);
 
-  //Fetch court data
+  //*Fetch court data
   useEffect(() => {
     /**
      * Initializes all court data
@@ -135,6 +137,7 @@ const App = props => {
     // a();
   }, [allCourts, geolocation]);
 
+  //*Checks if user in a court
   useEffect(() => {
     const google = window.google;
     /**
@@ -177,18 +180,13 @@ const App = props => {
 
     if (withinAnyCourt() === "Empty") {
       if (currentLocation !== "Empty" && Object.keys(playersCount).length > 0) {
-        // console.log(`decrementing: ${currentLocation}`);
-        // let newPlayersCountObject = playersCount;
-        // newPlayersCountObject[currentLocation] -= 1;
-        // console.log(newPlayersCountObject);
-        // setPlayersCount(newPlayersCountObject);
-
         sendToServer(currentLocation);
       }
     }
     setCurrentLocation(withinAnyCourt());
   }, [geolocation, allCourts, playersCount]);
 
+  //* Checks if user has left a court
   useEffect(() => {
     const handleDecrementCourt = data => {
       console.log(`Court to decrement: ${data.courtToDecrement}`);
@@ -217,6 +215,18 @@ const App = props => {
     }
   }, [allCourts, playersCount]);
 
+  //*Creates anonymous user
+  useEffect(() => {
+    axios
+      .post("/create_user", { userId: userId })
+      .then(res => {
+        console.log(`${res.data}`);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
   // Functions for rendering CourtCard
   const onClickDisplay = () => {
     if (state.isTrue == true) {
@@ -237,8 +247,8 @@ const App = props => {
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
       </div>
-      
-      <div style={{ position: 'absolute', zIndex: 10 }}>
+
+      <div style={{ position: "absolute", zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
           onClickDisplay={onClickDisplay}
@@ -246,27 +256,46 @@ const App = props => {
       </div>
 
       {state.isTrue && (
-        <div style={{ position: 'absolute', margin: 'auto', right: 0, left: 0, width: 600, height: 100, zIndex: 15 }}>
+        <div
+          style={{
+            position: "absolute",
+            margin: "auto",
+            right: 0,
+            left: 0,
+            width: 600,
+            height: 100,
+            zIndex: 15
+          }}
+        >
           <RecipeReviewCard />
         </div>
       )}
 
-      <div style={{ zIndex: '1' }}>
+      <div style={{ zIndex: "1" }}>
         <MapComponent
-        googleMapURL={MAP_URL}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-        allCourts={allCourts}
-        toKebabCase={toKebabCase}
-        geolocation={geolocation}
-        broadcastLocationChannel={broadcastLocationChannel}
-        updatePlayerCount={updatePlayerCount}
-        clearPlayerCount={clearPlayerCount}
-        currentLocation={currentLocation}
-        setPlayersCount={setPlayersCount}
-        playersCount={playersCount}
-      />
+          googleMapURL={MAP_URL}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          allCourts={allCourts}
+          toKebabCase={toKebabCase}
+          geolocation={geolocation}
+          broadcastLocationChannel={broadcastLocationChannel}
+          updatePlayerCount={updatePlayerCount}
+          clearPlayerCount={clearPlayerCount}
+          currentLocation={currentLocation}
+          setPlayersCount={setPlayersCount}
+          playersCount={playersCount}
+        />
+      </div>
+
+      <div>
+        <Chatbox
+          court={allCourts[0]}
+          geolocation={geolocation}
+          toKebabCase={toKebabCase}
+          userId={userId}
+        />
       </div>
     </Fragment>
   );

@@ -30,7 +30,7 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
           <Comment.Metadata>
             <div>Yesterday at 12:30AM</div>
           </Comment.Metadata>
-          <Comment.Text>{<p> {message} </p>}</Comment.Text>
+          <Comment.Text><p> {message} </p></Comment.Text>
         </Comment.Content>
       </Comment>
     );
@@ -84,6 +84,8 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
     }
   }, [court]);
 
+
+  console.log('messageItems', messageItems);
 
   return (
     <div>

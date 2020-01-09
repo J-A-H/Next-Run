@@ -24,16 +24,6 @@ const chatkit = new Chatkit.default({
     "83bb6462-159b-4684-b510-f50386e4bf20:Zlblmj8vDCsXSvfSH0ntmJx+x5PoD9DLwV5Bar7DsSk="
 });
 
-// chatkit.createUser({
-//   id: 'userId',
-//   name: 'Andy',
-// })
-//   .then(() => {
-//     console.log('User created successfully');
-//   }).catch((err) => {
-//     console.log(err);
-//   });
-
 /**
  * Gets all courts in court table
  */
@@ -216,6 +206,8 @@ router.post("/rooms/getMessages", (req, res) => {
     roomId: roomName,
     limit: 10
   }).then (messages => {
+
+    console.log()
 
     let result = [];
     messages.forEach(message => {

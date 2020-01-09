@@ -15,6 +15,12 @@ Visits seeds
 INSERT INTO visits (id, court_id, times_stamp) VALUES (1, 1, '2019-12-20 18:00:00');
 INSERT INTO visits (id, court_id, times_stamp) VALUES (2, 2, '2019-12-21 18:00:00');
 INSERT INTO visits (id, court_id, times_stamp) VALUES (3, 1, '2019-12-20 18:30:00');
+INSERT INTO visits (id, court_id, times_stamp) VALUES (4, 1, '2020-01-08 18:30:00');
+INSERT INTO visits (id, court_id, times_stamp) VALUES (5, 1, '2020-01-08 18:30:00');
+INSERT INTO visits (id, court_id, times_stamp) VALUES (6, 1, '2020-01-08 18:30:00');
+INSERT INTO visits (id, court_id, times_stamp) VALUES (7, 1, '2020-01-08 18:30:00');
+INSERT INTO visits (id, court_id, times_stamp) VALUES (8, 1, '2020-01-08 18:30:00');
+
 
 
 /*
@@ -24,4 +30,10 @@ courtVisits seeds
 INSERT INTO courtVisits (id, court_id, visit_id) VALUES (1,1,1);
 INSERT INTO courtVisits (id, court_id, visit_id) VALUES (2,1,3);
 INSERT INTO courtVisits (id, court_id, visit_id) VALUES (3,2,2);
+INSERT INTO courtVisits (id, court_id, visit_id) VALUES (4,1,4);
+INSERT INTO courtVisits (id, court_id, visit_id) VALUES (5,1,5);
+INSERT INTO courtVisits (id, court_id, visit_id) VALUES (6,1,6);
+INSERT INTO courtVisits (id, court_id, visit_id) VALUES (7,1,7);
+INSERT INTO courtVisits (id, court_id, visit_id) VALUES (8,1,8);
+
 

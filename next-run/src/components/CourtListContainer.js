@@ -24,7 +24,11 @@ const CourtListContainer = props => {
           </div>
         </div>
         <div>
-          <CourtList courts={props.courts}/>
+          <CourtList courts={props.courts}
+          getDailyPeakTimes={props.getDailyPeakTimes}
+          getWeeklyPeakTimes={props.getWeeklyPeakTimes}
+          getAllVisits={props.getAllVisits}
+          />
         </div>
       </div>
 

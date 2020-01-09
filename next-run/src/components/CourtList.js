@@ -1,43 +1,37 @@
+
 import React, { Fragment, useState } from "react";
 import CourtCard from "./CourtCard";
 import {Link} from "react-router-dom";
 
 const CourtList = props => {
 
-  const [state, setState] = useState({ activeCard: null });
-
-  const onClickDisplay = (courtId) => {
-      setState(prevState => ({
-        ...prevState,
-        activeCard: courtId
-      }));
-    
-
-
-    // if (state.cardModalStatus == true) {
-    //   setState(prevState => ({
-    //     ...prevState,
-    //     cardModalStatus: null
-    //   }));
-    // }
-    // else if (state.cardModalStatus == null) {
-    //   setState(prevState => ({
-    //     ...prevState,
-    //     cardModalStatus: true
-    //   }));
-    // }
-  }
-
-  return (
-
-    <div>
-      {props.courts.map(court => (
-          <CourtCard key={court.id} court={court} onClickDisplay={onClickDisplay} activeCard={state.activeCard} />
-      )
-      )
-    }
+import React, { Fragment } from "react";
+import { Modal, Button } from "semantic-ui-react";
+import CourtCard from "./CourtCard";
+import CourtDetailShow from "./CourtDetailShow";
+const CourtList = props => {
+  return props.courts.map(court => (
+    <div className="lit" style={{ zIndex: 100000 }}>
+      <Modal
+        key={court.id}
+        trigger={
+          <Button className="ui button">
+            <CourtCard key={court.id} court={court} />{" "}
+          </Button>
+        }
+        // header={court.name}
+        // content={court.address}
+        // actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
+      >
+        <CourtDetailShow
+          court={court}
+          getDailyPeakTimes={props.getDailyPeakTimes}
+          getWeeklyPeakTimes={props.getWeeklyPeakTimes}
+          getAllVisits={props.getAllVisits}
+        ></CourtDetailShow>
+      </Modal>
     </div>
-  );
+  ));
 };
 
 export default CourtList;

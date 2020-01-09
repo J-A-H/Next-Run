@@ -215,10 +215,13 @@ const App = props => {
     }
   }, [allCourts, playersCount]);
 
+
+
   return (
     <Fragment>
       <div className="App-header">
-        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
+        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />  
+        <img src={"images/Next-Run_name_logo.png"} className="App-name"/>
       </div>
       
       <div style={{ position: 'absolute', zIndex: 10 }}>
@@ -227,7 +230,7 @@ const App = props => {
         />
       </div>
 
-      <div style={{ zIndex: '1' }}>
+      <div style={{ zIndex: 1 }}>
         <MapComponent
         googleMapURL={MAP_URL}
         loadingElement={<div style={{ height: `100%` }} />}

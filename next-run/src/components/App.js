@@ -224,6 +224,10 @@ const App = props => {
       <div style={{ position: 'absolute', zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
+          getAllVisits={getAllVisits}
+          getDailyPeakTimes={getDailyPeakTimes}
+          getWeeklyPeakTimes={getWeeklyPeakTimes}
+
         />
       </div>
 

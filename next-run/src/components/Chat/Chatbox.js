@@ -26,14 +26,11 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
   const messageItems = messages.map(message => {
     return (<Comment>
       <Comment.Content>
-        <Comment.Author as="a">{message.id}</Comment.Author>
+        <Comment.Author as="a">{message.user_id}</Comment.Author>
         <Comment.Metadata>
           <div>Yesterday at 12:30AM</div>
         </Comment.Metadata>
         <Comment.Text>{<p> {message.message} </p>}</Comment.Text>
-        <Comment.Actions>
-          <Comment.Action>Reply</Comment.Action>
-        </Comment.Actions>
       </Comment.Content>
     </Comment>);
   });

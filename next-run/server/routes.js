@@ -159,6 +159,19 @@ router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
   res.send("decrement-broadcast-sent");
 });
 
+router.post('/chat/send', (req, res) => {
+  const message = req.body.message;
+  const channel = req.body.channel;
+
+  console.log(message, channel);
+
+  pusher.trigger(channel, "message", {
+    incomingMessage: message
+  })
+
+  res.send("message sent to pusher to broadcast!");
+})
+
 router.post("/subscribe_to_room", (req, res) => {
   const roomName = req.body.courtName;
   const userId = req.body.userId;

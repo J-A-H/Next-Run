@@ -217,16 +217,16 @@ const App = props => {
   }, [allCourts, playersCount]);
 
   //*Creates anonymous user
-  useEffect(() => {
-    axios
-      .post("/create_user", { userId: userId })
-      .then(res => {
-        console.log(`${res.data}`);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .post("/create_user", { userId: userId })
+  //     .then(res => {
+  //       console.log(`${res.data}`);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   // Functions for rendering CourtCard
   const onClickDisplay = () => {

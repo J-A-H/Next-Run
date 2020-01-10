@@ -12,7 +12,7 @@ const CourtList = props => {
         key={court.id}
         trigger={
           <Button className="ui button">
-            <CourtCard key={court.id} court={court} />{" "}
+            <CourtCard key={court.id} court={court} playerCount={props.playersCount[court.name]} />{" "}
           </Button>
         }
         // header={court.name}

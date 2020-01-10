@@ -40,7 +40,8 @@ const Chatbox = ({
     if (newMessage !== "") {
       axios.post("/chat/send", {
         message: newMessage,
-        channel: `${toKebabCase(court.name)}-chat`
+        channel: `${toKebabCase(court.name)}-chat`,
+        court_id: court.id
       });
     }
   };
@@ -49,12 +50,15 @@ const Chatbox = ({
 
   //* Subscribe chat channel for court
   useEffect(() => {
+
     /**
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
       addMessageToAllMessages(data.incomingMessage);
     };
+
+
 
     if (court !== undefined) {
       setRoom(court.name);

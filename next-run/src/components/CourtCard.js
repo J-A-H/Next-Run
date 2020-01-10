@@ -16,10 +16,14 @@ import {
 const CourtCard = (props) => {
 
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
-  // chatState = { chatOpen: false };
 
-  const handleDetailClick = () => setCourtDetailState(prevState => ({ open: !prevState.open }));
+  const [chatState, setChatState] = useState({ chatOpen: false });
+
+  const handleDetailClick = () => setCourtDetailState(prevState => ({ open: !prevState.chatOpen }));
   const handleDetailClose = () => setCourtDetailState({ open: false });
+
+  const handleChatClick = () => setChatState(prevState => ({ chatOpen: !prevState.chatOpen }))
+  const handleChatClose = () => setChatState(prevState => ({ chatOpen: false }))
 
   // handleChatClick = () =>
   //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
@@ -27,7 +31,7 @@ const CourtCard = (props) => {
 
   return (
     <div>
-        <Card style={{ alignSelf: "center", top: "20%" }} >
+        <Card style={{ float: "center", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",  }} >
           <Card.Content >
             <Image
               floated="right"
@@ -50,23 +54,23 @@ const CourtCard = (props) => {
                 positive={!courtDetailState.open}
                 onClick={handleDetailClick}
               />
-              {/* <Button
+              <Button
                 basic
                 color="blue"
                 content={"Chat"}
-                negative={chatOpen}
-                positive={!chatOpen}
-                onClick={this.handleChatClick}
+                negative={chatState.chatOpen}
+                positive={!chatState.chatOpen}
+                onClick={handleChatClick}
               >
                 Chat
-              </Button> */}
+              </Button>
             </div>
           </Card.Content>
         </Card>
 
       <TransitionablePortal onClose={handleDetailClose} open={courtDetailState.open}>
         <Segment
-          style={{ left: "30%", position: "fixed", top: "20%", zIndex: 1000 }}
+          style={{ left: "30%", position: "fixed", top: "20%", zIndex: 1000,  }}
         >
           <Header>This is a controlled portal</Header>
           <Table basic="very" celled collapsing>
@@ -131,7 +135,7 @@ const CourtCard = (props) => {
         </Segment>
       </TransitionablePortal>
 
-      {/* <TransitionablePortal onClose={this.handleChatClose} open={chatOpen}>
+      <TransitionablePortal onClose={handleChatClose} open={chatState.chatOpen}>
           <Segment
             style={{
               right: "10%",
@@ -194,7 +198,7 @@ const CourtCard = (props) => {
               </Form>
             </Comment.Group>
           </Segment>
-        </TransitionablePortal> */}
+        </TransitionablePortal>
     </div>
   );
 }

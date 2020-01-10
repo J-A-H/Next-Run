@@ -23,8 +23,12 @@ const CourtListContainer = props => {
             </DropdownButton>
           </div>
         </div>
-        <div onClick={props.onClickDisplay}>
-          <CourtList courts={props.courts} onClick={props.onClickDisplay}/>
+        <div>
+          <CourtList courts={props.courts}
+          getDailyPeakTimes={props.getDailyPeakTimes}
+          getWeeklyPeakTimes={props.getWeeklyPeakTimes}
+          getAllVisits={props.getAllVisits}
+          />
         </div>
       </div>
 

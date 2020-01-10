@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react'
+import React, { Component, useState, useEffect } from "react";
+import { Card } from "semantic-ui-react";
 import Link from "react-router-dom";
-
+import RecipeReviewCard from "./CourtDetailShow";
 const CourtCard = props => {
 
   return (
-    <div style={{ opacity: 1, margin: 10, zIndex: 10, }}>
+    <div
+      style={{ opacity: 1, margin: 10, zIndex: 10 }}
+    >
       <div className="ui card">
         <div className="content">
           <div className="header">{props.court.name}</div>
@@ -18,7 +20,7 @@ const CourtCard = props => {
       </div>
     </div>
   );
-}
+};
 
 
 export default CourtCard;

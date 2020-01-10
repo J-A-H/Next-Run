@@ -3,13 +3,18 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-bounce infinite 1s linear;
   height: 80px;
+}
+
+.App-name {
+  height: 90px;
+  padding: 30px;
 }
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 125px;
   padding: 20px;
   color: white;
 }
@@ -18,7 +23,8 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes App-logo-bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
 }

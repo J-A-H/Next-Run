@@ -25,7 +25,6 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   disableStats: true
 });
 
-
 const App = props => {
   //*Helpers
   const {
@@ -112,14 +111,14 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-
+      
       const playersCountObject = {};
-
+      
       allCourts.data.forEach(court => {
         const courtName = court.name;
         playersCountObject[courtName] = 0;
       });
-
+      
       setPlayersCount(playersCountObject);
     };
 
@@ -222,51 +221,26 @@ const App = props => {
     }
   }, [allCourts, playersCount]);
 
-  // Functions for rendering CourtCard
-  const onClickDisplay = () => {
-    if (state.isTrue == true) {
-      setState(prevState => ({
-        ...prevState,
-        isTrue: false
-      }));
-    } else if (state.isTrue == false) {
-      setState(prevState => ({
-        ...prevState,
-        isTrue: true
-      }));
-    }
-  };
+
 
   return (
     <Fragment>
       <div className="App-header">
-        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
+        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />  
+        <img src={"images/Next-Run_name_logo.png"} className="App-name"/>
       </div>
 
       <div style={{ position: "absolute", zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
-          onClickDisplay={onClickDisplay}
+          getAllVisits={getAllVisits}
+          getDailyPeakTimes={getDailyPeakTimes}
+          getWeeklyPeakTimes={getWeeklyPeakTimes}
+
         />
       </div>
 
-      {state.isTrue && (
-        <div
-          style={{
-            position: "absolute",
-            margin: "auto",
-            right: 0,
-            left: 0,
-            width: 600,
-            height: 100,
-            zIndex: 15
-          }}
-        >
-          <RecipeReviewCard />
-        </div>
-      )}
-
-      <div style={{ zIndex: "1" }}>
+      <div style={{ zIndex: 1 }}>
         <MapComponent
           googleMapURL={MAP_URL}
           loadingElement={<div style={{ height: `100%` }} />}

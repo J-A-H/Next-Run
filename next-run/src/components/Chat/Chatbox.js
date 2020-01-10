@@ -101,7 +101,7 @@ const Chatbox = ({
         </div>
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea type="text" onChange={onTextChange} />
+          <Form.TextArea type="text" onChange={onTextChange} style={{height: 100}} />
           <Button
             content="Add Reply"
             labelPosition="left"

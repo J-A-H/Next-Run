@@ -50,7 +50,6 @@ const Chatbox = ({
 
   //* Subscribe chat channel for court
   useEffect(() => {
-
     /**
      * Subscribes to Court chat and listens for incoming messages
      */
@@ -58,9 +57,21 @@ const Chatbox = ({
       addMessageToAllMessages(data.incomingMessage);
     };
 
-
-
     if (court !== undefined) {
+      axios
+        .get(`/chat/getMessages/${court.id}`)
+        .then(res => {
+          const incomingMessagesArray = res.data;
+
+          incomingMessagesArray.forEach(obj => {
+            console.log(obj.content);
+            addMessageToAllMessages(obj.content);
+          })
+        })
+        .catch(err => {
+          console.log(`Query Error`);
+        });
+
       setRoom(court.name);
       const courtChatChannel = pusherObject.subscribe(
         `${toKebabCase(court.name)}-chat`
@@ -105,7 +116,11 @@ const Chatbox = ({
         </div>
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea type="text" onChange={onTextChange} style={{height: 100}} />
+          <Form.TextArea
+            type="text"
+            onChange={onTextChange}
+            style={{ height: 100 }}
+          />
           <Button
             content="Add Reply"
             labelPosition="left"

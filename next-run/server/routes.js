@@ -163,17 +163,20 @@ router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
  * Get last 50 messages of chat for court with court_id
  */
 router.get("/chat/getMessages/:court_id", (req, res) => {
-  const court_id = req.params;
+  const params = req.params;
+  const court_id = params.court_id;
 
   pool.query(
-    `SELECT * FROM messags where court_id = ${court_id}`,
+    `SELECT * FROM messages where court_id = ${court_id} order by times_stamp asc limit 10`,
     (queryErr, queryRes) => {
       if (queryErr) {
         console.log(queryErr);
       }
+      else{
 
       //Converts query result to json to be used in client
       res.json(queryRes.rows);
+      }
     }
   );
 });

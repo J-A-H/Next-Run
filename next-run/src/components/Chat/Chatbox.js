@@ -22,9 +22,9 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  const messageItems = messages.map(message => {
+  const messageItems = messages.map((message, index) => {
     return (
-      <Comment>
+      <Comment key={index}>
         <Comment.Content>
           <Comment.Author as="a">{`Random`}</Comment.Author>
           <Comment.Metadata>
@@ -37,10 +37,12 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
   });
 
   const onTextChange = e => {
+    e.preventDefault();
     setNewMessage(e.target.value);
   };
 
   const sendMessage = () => {
+
     if (newMessage !== "") {
       axios
         .post("/chat/send", {
@@ -59,17 +61,16 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
 
   //* Subscribe chat channel for court
   useEffect(() => {
+
     /**
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
-      console.log(data.incomingMessage);
+      console.log("tesing", data.incomingMessage);
       const newMessagesArr = messages;
       newMessagesArr.push(data.incomingMessage);
       setMessages(newMessagesArr);
     };
-
-    console.log(court);
 
     if (court !== undefined) {
 
@@ -78,14 +79,12 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
         `${toKebabCase(court.name)}-chat`
       );
       courtChatChannel.bind("message", handelIncomingMessage);
+
       return () => {
         courtChatChannel.unbind("message", handelIncomingMessage);
       };
     }
-  }, [court]);
-
-
-  console.log('messageItems', messageItems);
+  }, [court, messages, messageItems]);
 
   return (
     <div>
@@ -97,7 +96,7 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
         {messages.length > 0 && messageItems}
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea type="text" onChange={onTextChange} />
+          <Form.TextArea type="text" onChange={onTextChange}/>
           <Button
             content="Add Reply"
             labelPosition="left"

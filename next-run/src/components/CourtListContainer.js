@@ -32,8 +32,6 @@ const CourtListContainer = props => {
         </div>
       </div>
 
-      <ActivityLevelFilterList />
-
     </Fragment>
 
   );

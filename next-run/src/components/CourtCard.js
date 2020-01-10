@@ -3,6 +3,7 @@ import { Card } from "semantic-ui-react";
 import Link from "react-router-dom";
 import RecipeReviewCard from "./CourtDetailShow";
 const CourtCard = props => {
+
   return (
     <div
       style={{ opacity: 1, margin: 10, zIndex: 10 }}
@@ -20,5 +21,6 @@ const CourtCard = props => {
     </div>
   );
 };
+
 
 export default CourtCard;

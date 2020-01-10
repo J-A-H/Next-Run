@@ -29,6 +29,16 @@ const CourtCard = (props) => {
   //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
   // handleChatClose = () => this.setCourtDetailState({ chatOpen: false });
 
+  const [weekly, setWeekly] = useState({});
+
+  useEffect(() =>{
+    async function retrieveWeekly(id) {
+      const weeklydata = await props.getWeeklyPeakTimes(id);
+      setWeekly(weeklydata)
+    }
+    retrieveWeekly(props.court.id);
+  }, [weekly])
+
   return (
     <div>
         <Card style={{ float: "center", boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",  }} >
@@ -38,10 +48,10 @@ const CourtCard = (props) => {
               size="mini"
               src="https://img.icons8.com/dotty/80/000000/basketball-2.png"
             />
-            <Card.Header>Christie Pitts Park</Card.Header>
-            <Card.Meta>Toronto</Card.Meta>
+            <Card.Header>{props.court.name}</Card.Header>
+            <Card.Meta>{props.court.address}</Card.Meta>
             <Card.Description>
-              Steve wants to add you to the group <strong>best friends</strong>
+              Current Activity Level: {props.playerCount}
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
@@ -72,7 +82,7 @@ const CourtCard = (props) => {
         <Segment
           style={{ left: "30%", position: "fixed", top: "20%", zIndex: 1000,  }}
         >
-          <Header>This is a controlled portal</Header>
+          <Header>{props.court.name}</Header>
           <Table basic="very" celled collapsing>
             <Table.Header>
               <Table.Row>
@@ -96,7 +106,7 @@ const CourtCard = (props) => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>Hot</Table.Cell>
+                <Table.Cell>{weekly[0]}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>

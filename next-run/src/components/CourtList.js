@@ -4,15 +4,13 @@ import CourtCard from "./CourtCard";
 import { Link } from "react-router-dom";
 import { Modal, Button, onActionClick } from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
-
 const CourtList = props => {
-
   return props.courts.map(court => (
     <div style={{ zIndex: 100000 }}>
       <Modal className="Modal"
         key={court.id}
         trigger={
-          <CourtCard onClick={onActionClick} key={court.id} court={court} />
+          <CourtCard onClick={onActionClick} key={court.id} court={court} playerCount={props.playersCount[court.name]}/>
         }
       // header={court.name}
       // content={court.address}
@@ -28,5 +26,4 @@ const CourtList = props => {
     </div>
   ));
 };
-
 export default CourtList;

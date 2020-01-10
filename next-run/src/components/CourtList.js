@@ -1,23 +1,20 @@
 import React, { Fragment, useState } from "react";
+import './CourtList.css'
 import CourtCard from "./CourtCard";
-import {Link} from "react-router-dom";
-import { Modal, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Modal, Button, onActionClick } from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
-
 const CourtList = props => {
-
   return props.courts.map(court => (
-    <div className="lit" style={{ zIndex: 100000 }}>
-      <Modal
+    <div style={{ zIndex: 100000 }}>
+      <Modal className="Modal"
         key={court.id}
         trigger={
-          <Button className="ui button">
-            <CourtCard key={court.id} court={court} />{" "}
-          </Button>
+          <CourtCard onClick={onActionClick} key={court.id} court={court} playerCount={props.playersCount[court.name]}/>
         }
-        // header={court.name}
-        // content={court.address}
-        // actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
+      // header={court.name}
+      // content={court.address}
+      // actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
       >
         <CourtDetailShow
           court={court}
@@ -29,5 +26,4 @@ const CourtList = props => {
     </div>
   ));
 };
-
 export default CourtList;

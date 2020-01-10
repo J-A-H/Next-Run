@@ -1,0 +1,32 @@
+.card {
+  align-self: center;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 290px;
+}
+
+.card:hover {
+  box-shadow: 0 80px 160px 0 rgba(0, 0, 0, 0.5);
+}
+
+.detailPortal {
+  left: 30%;
+  position: fixed;
+  top: 20%;
+  z-Index: 10000000;
+}
+
+
+.modal {
+  background: red;
+  max-height: 400px;
+  max-width: 300px;
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
+
+.button {
+  background-color: rgba(0,0,0,0.1);
+}

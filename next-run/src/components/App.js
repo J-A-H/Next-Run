@@ -43,7 +43,6 @@ const App = props => {
   const [playersCount, setPlayersCount] = useState({});
   const [currentLocation, setCurrentLocation] = useState("");
   const [allMessages, setAllMessages] = useState([]);
-
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
 
@@ -111,7 +110,6 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-      
       const playersCountObject = {};
       
       allCourts.data.forEach(court => {
@@ -236,6 +234,7 @@ const App = props => {
           getAllVisits={getAllVisits}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
+          playersCount={playersCount}
 
         />
       </div>

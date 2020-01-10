@@ -25,7 +25,17 @@ const CourtCard = (props) => {
   //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
   // handleChatClose = () => this.setCourtDetailState({ chatOpen: false });
 
+const CourtCard = props => {
+  const [weekly, setWeekly] = useState(0);
+
+  useEffect(() =>{
+    async function retrieveWeekly(id) {
+      const weeklydata = await props.getWeeklyPeakTimes(id);
+      setWeekly(weeklydata)
+    }
+  }, [weekly])
   return (
+
     <div>
         <Card style={{ alignSelf: "center", top: "20%" }} >
           <Card.Content >
@@ -195,6 +205,21 @@ const CourtCard = (props) => {
             </Comment.Group>
           </Segment>
         </TransitionablePortal> */}
+
+    <div
+      style={{ opacity: 1, margin: 10, zIndex: 10 }}
+    >
+      <div className="ui card">
+        <div className="content">
+          <div className="header">{props.court.name}</div>
+          <div className="meta">
+            <span className="date">{props.court.address}</span>
+          </div>
+          <div className="description">Current Activity Level: {props.playerCount}</div>
+        </div>
+        <div className="extra content"></div>
+      </div>
+
     </div>
   );
 }

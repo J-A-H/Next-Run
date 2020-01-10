@@ -13,6 +13,10 @@ const CourtList = props => {
         key={court.id}
         trigger={
           <CourtCard onClick={onActionClick} key={court.id} court={court} />
+          <Button className="ui button">
+            <CourtCard key={court.id} court={court} playerCount={props.playersCount[court.name]} />{" "}
+          </Button>
+ 
         }
       // header={court.name}
       // content={court.address}

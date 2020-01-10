@@ -7,7 +7,12 @@ const helpers = () => {
   const toKebabCase = (string) => {
     return string.split(" ").join("-");
   }
-  return {toKebabCase}
+
+  const randomId = () => {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  }
+
+  return {toKebabCase, randomId}
 }
 
 export default helpers;

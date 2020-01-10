@@ -17,12 +17,11 @@ const commentStyle = {
   display: "table"
 };
 
-const Chatbox = ({ court, toKebabCase, userId }) => {
+const Chatbox = ({ court, toKebabCase, allMessages, addMessageToAllMessages}) => {
   const [room, setRoom] = useState("");
-  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  const messageItems = messages.map((message, index) => {
+  const messageItems = allMessages.map((message, index) => {
     return (
       <Comment key={index}>
         <Comment.Content>
@@ -30,7 +29,9 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
           <Comment.Metadata>
             <div>Yesterday at 12:30AM</div>
           </Comment.Metadata>
-          <Comment.Text><p> {message} </p></Comment.Text>
+          <Comment.Text>
+            <p> {message} </p>
+          </Comment.Text>
         </Comment.Content>
       </Comment>
     );
@@ -42,7 +43,6 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
   };
 
   const sendMessage = () => {
-
     if (newMessage !== "") {
       axios
         .post("/chat/send", {
@@ -50,8 +50,7 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
           channel: `${toKebabCase(court.name)}-chat`
         })
         .then(res => {
-          const newStr = "";
-          setNewMessage(newStr);
+          console.log(res.data);
         })
         .catch(err => {
           console.log(err);
@@ -66,14 +65,10 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
-      console.log("tesing", data.incomingMessage);
-      const newMessagesArr = messages;
-      newMessagesArr.push(data.incomingMessage);
-      setMessages(newMessagesArr);
+      addMessageToAllMessages(data.incomingMessage);
     };
 
     if (court !== undefined) {
-
       setRoom(court.name);
       const courtChatChannel = pusherObject.subscribe(
         `${toKebabCase(court.name)}-chat`
@@ -84,7 +79,7 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
         courtChatChannel.unbind("message", handelIncomingMessage);
       };
     }
-  }, [court, messages, messageItems]);
+  }, [court]);
 
   return (
     <div>
@@ -93,10 +88,10 @@ const Chatbox = ({ court, toKebabCase, userId }) => {
           {room}
         </Header>
 
-        {messages.length > 0 && messageItems}
+        {allMessages.length > 0 && messageItems}
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea type="text" onChange={onTextChange}/>
+          <Form.TextArea type="text" onChange={onTextChange} />
           <Button
             content="Add Reply"
             labelPosition="left"

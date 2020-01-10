@@ -43,9 +43,15 @@ const App = props => {
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
   const [currentLocation, setCurrentLocation] = useState("");
+  const [allMessages, setAllMessages] = useState([]);
 
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
+
+  const addMessageToAllMessages = (message) => {
+    console.log(`Adding to allMessages: ${message}`)
+    setAllMessages((prevState => ([...prevState, message])));
+  }
 
   /**
    * Updates player count of court
@@ -216,18 +222,6 @@ const App = props => {
     }
   }, [allCourts, playersCount]);
 
-  //*Creates anonymous user
-  // useEffect(() => {
-  //   axios
-  //     .post("/create_user", { userId: userId })
-  //     .then(res => {
-  //       console.log(`${res.data}`);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   // Functions for rendering CourtCard
   const onClickDisplay = () => {
     if (state.isTrue == true) {
@@ -296,6 +290,8 @@ const App = props => {
           geolocation={geolocation}
           toKebabCase={toKebabCase}
           userId={userId}
+          allMessages={allMessages}
+          addMessageToAllMessages={addMessageToAllMessages}
         />
       </div>
     </Fragment>

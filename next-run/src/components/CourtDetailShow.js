@@ -48,7 +48,7 @@ export default function CourtDetailShow({
 }) {
   return (
     <div>
-{      court.name
-}    </div>
+      {court.name}
+    </div>
   );
 }

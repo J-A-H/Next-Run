@@ -235,6 +235,13 @@ const App = props => {
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           playersCount={playersCount}
+
+          court={allCourts[0]}
+          geolocation={geolocation}
+          toKebabCase={toKebabCase}
+          userId={userId}
+          allMessages={allMessages}
+          addMessageToAllMessages={addMessageToAllMessages}
         />
       </div>
 
@@ -256,16 +263,6 @@ const App = props => {
         />
       </div>
 
-      <div>
-        <Chatbox
-          court={allCourts[0]}
-          geolocation={geolocation}
-          toKebabCase={toKebabCase}
-          userId={userId}
-          allMessages={allMessages}
-          addMessageToAllMessages={addMessageToAllMessages}
-        />
-      </div>
     </Fragment>
   );
 };

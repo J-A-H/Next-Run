@@ -10,26 +10,25 @@ const CourtListContainer = props => {
 
   return (
     <Fragment>
-      <div
+      <div 
         style={{
           position: "relative",
           zIndex: 3,
           maxWidth: 350,
-          maxHeight: 400,
           overflow: "auto",
+          height: '70vh',
           backgroundColor: "rgba(52, 52, 52, 0.5)"
         }}
       >
-        <div
+        
+        <div className="blue filter bar"
           style={{
             position: "relative",
             backgroundColor: "rgba(0, 153, 255, 0.5)",
-            position: "relative",
             zIndex: "4",
             height: 60,
             maxWidth: 350,
-            maxHeight: 400,
-            padding: 10
+            padding: '15px'
           }}
         >
           <Container />
@@ -41,7 +40,7 @@ const CourtListContainer = props => {
             </DropdownButton>
           </div>
         </div>
-        <div>
+        <div className="Court-list" >
           <CourtList
             playersCount={props.playersCount}
             courts={props.courts}

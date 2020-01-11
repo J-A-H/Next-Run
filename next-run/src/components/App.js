@@ -228,14 +228,13 @@ const App = props => {
         <img src={"images/Next-Run_name_logo.png"} className="App-name"/>
       </div>
 
-      <div style={{ position: "absolute", zIndex: 10 }}>
+      <div className="Court-list-container" style={{ position: "absolute", zIndex: 10 }}>
         <CourtListContainer
           courts={allCourts}
           getAllVisits={getAllVisits}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           playersCount={playersCount}
-
         />
       </div>
 
@@ -243,7 +242,7 @@ const App = props => {
         <MapComponent
           googleMapURL={MAP_URL}
           loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
+          containerElement={<div style={{ height: `90vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}
           allCourts={allCourts}
           toKebabCase={toKebabCase}

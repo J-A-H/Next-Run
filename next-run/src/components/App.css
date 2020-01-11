@@ -4,17 +4,17 @@
 
 .App-logo {
   animation: App-logo-bounce infinite 1s linear;
-  height: 80px;
+  height: 50px;
 }
 
 .App-name {
-  height: 90px;
-  padding: 30px;
+  height: 60px;
+  padding: 20px;
 }
 
 .App-header {
   background-color: #222;
-  height: 125px;
+  height: 10vh;
   padding: 20px;
   color: white;
 }
@@ -27,4 +27,20 @@
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-20px); }
   100% { transform: translateY(0); }
+}
+
+.Court-list-container {
+  margin: 10px;
+  height: 70vh;
+}
+
+.Court-list-container:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.Court-list {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  justify-content: center;
 }

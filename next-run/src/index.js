@@ -18,9 +18,9 @@ import "semantic-ui-css/semantic.min.css";
 const routing = (
   <Router>
     <div>
-      <li>
+      {/* <li>
         <Link to="/">Update Location</Link>
-      </li>
+      </li> */}
       <Route exact path="/" component={ () => <App 
       googleMapURL={MAP_URL}
       loadingElement={<div style={{ height: `100%` }} />}

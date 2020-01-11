@@ -8,6 +8,8 @@ import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
 
+  const {clearAllMessages} = props;
+
   const [filteredCourts, setfilteredCourts] = useState(null);
 
   // let low = props.playersCount.filter(court => props.playersCount[court] < 5);
@@ -79,6 +81,8 @@ const CourtListContainer = props => {
             userId={props.userId}
             allMessages={props.allMessages}
             addMessageToAllMessages={props.addMessageToAllMessages}
+
+            clearAllMessages={clearAllMessages}
           />
         </div>
       </div>

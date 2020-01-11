@@ -14,18 +14,23 @@ import {
 } from "semantic-ui-react";
 import Chatbox from "./Chat/Chatbox";
 
-
-const CourtCard = (props) => {
+const CourtCard = props => {
+  const { clearAllMessages } = props;
 
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
 
   const [chatState, setChatState] = useState({ chatOpen: false });
 
-  const handleDetailClick = () => setCourtDetailState(prevState => ({ open: !prevState.chatOpen }));
+  const handleDetailClick = () =>
+    setCourtDetailState(prevState => ({ open: !prevState.chatOpen }));
   const handleDetailClose = () => setCourtDetailState({ open: false });
 
-  const handleChatClick = () => setChatState(prevState => ({ chatOpen: !prevState.chatOpen }))
-  const handleChatClose = () => setChatState(prevState => ({ chatOpen: false }))
+  const handleChatClick = () =>
+    setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
+  const handleChatClose = () => {
+    setChatState(prevState => ({ chatOpen: false }));
+    clearAllMessages();
+  };
 
   // handleChatClick = () =>
   //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
@@ -36,15 +41,15 @@ const CourtCard = (props) => {
   useEffect(() => {
     async function retrieveWeekly(id) {
       const weeklydata = await props.getWeeklyPeakTimes(id);
-      setWeekly(weeklydata)
+      setWeekly(weeklydata);
     }
     retrieveWeekly(props.court.id);
-  }, [weekly])
+  }, [weekly]);
 
   return (
-    <div className='card'>
+    <div className="card">
       <Card>
-        <Card.Content >
+        <Card.Content>
           <Image
             floated="right"
             size="mini"
@@ -75,12 +80,15 @@ const CourtCard = (props) => {
               onClick={handleChatClick}
             >
               Chat
-              </Button>
+            </Button>
           </div>
         </Card.Content>
       </Card>
 
-      <TransitionablePortal onClose={handleDetailClose} open={courtDetailState.open}>
+      <TransitionablePortal
+        onClose={handleDetailClose}
+        open={courtDetailState.open}
+      >
         <Segment
           style={{
             position: "fixed",
@@ -89,7 +97,7 @@ const CourtCard = (props) => {
             right: "25%",
             bottom: "10%",
             height: "70vh",
-            zIndex: 1000,
+            zIndex: 1000
           }}
         >
           <Header>{props.court.name}</Header>
@@ -112,7 +120,7 @@ const CourtCard = (props) => {
                     />
                     <Header.Content>
                       Monday
-                        <Header.Subheader>Human Resources</Header.Subheader>
+                      <Header.Subheader>Human Resources</Header.Subheader>
                     </Header.Content>
                   </Header>
                 </Table.Cell>
@@ -128,7 +136,7 @@ const CourtCard = (props) => {
                     />
                     <Header.Content>
                       Tuesday
-                        <Header.Subheader>Fabric Design</Header.Subheader>
+                      <Header.Subheader>Fabric Design</Header.Subheader>
                     </Header.Content>
                   </Header>
                 </Table.Cell>
@@ -144,7 +152,7 @@ const CourtCard = (props) => {
                     />
                     <Header.Content>
                       Wednesday
-                        <Header.Subheader>Entertainment</Header.Subheader>
+                      <Header.Subheader>Entertainment</Header.Subheader>
                     </Header.Content>
                   </Header>
                 </Table.Cell>
@@ -169,19 +177,19 @@ const CourtCard = (props) => {
           <Header>Chat</Header>
 
           <div>
-        <Chatbox
-          court={props.court}
-          geolocation={props.geolocation}
-          toKebabCase={props.toKebabCase}
-          userId={props.userId}
-          allMessages={props.allMessages}
-          addMessageToAllMessages={props.addMessageToAllMessages}
-        />
-      </div>
+            <Chatbox
+              court={props.court}
+              geolocation={props.geolocation}
+              toKebabCase={props.toKebabCase}
+              userId={props.userId}
+              allMessages={props.allMessages}
+              addMessageToAllMessages={props.addMessageToAllMessages}
+            />
+          </div>
         </Segment>
       </TransitionablePortal>
     </div>
   );
-}
+};
 
 export default CourtCard;

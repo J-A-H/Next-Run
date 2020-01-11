@@ -63,7 +63,7 @@ const Chatbox = ({
         .then(res => {
           const incomingMessagesArray = res.data;
 
-          incomingMessagesArray.forEach(obj => {
+          incomingMessagesArray.reverse().forEach(obj => {
             console.log(obj.content);
             addMessageToAllMessages(obj.content);
           })

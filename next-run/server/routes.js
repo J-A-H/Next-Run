@@ -167,13 +167,13 @@ router.get("/chat/getMessages/:court_id", (req, res) => {
   const court_id = params.court_id;
 
   pool.query(
-    `SELECT * FROM messages where court_id = ${court_id} order by times_stamp asc limit 10`,
+    `SELECT * FROM messages where court_id = ${court_id} order by times_stamp desc limit 10`,
     (queryErr, queryRes) => {
       if (queryErr) {
         console.log(queryErr);
       }
       else{
-
+      console.log(queryRes.rows);
       //Converts query result to json to be used in client
       res.json(queryRes.rows);
       }
@@ -194,7 +194,7 @@ router.post("/chat/send", (req, res) => {
       if (queryErr) {
         console.log(queryErr);
       } else {
-        // res.json(`Chat added to database`);
+        res.json(`Chat added to database`);
       }
     }
   );
@@ -202,8 +202,6 @@ router.post("/chat/send", (req, res) => {
   pusher.trigger(channel, "message", {
     incomingMessage: message
   });
-
-  res.send("message sent to pusher to broadcast!");
 });
 
 router.post("/subscribe_to_room", (req, res) => {

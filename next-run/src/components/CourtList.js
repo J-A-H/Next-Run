@@ -4,6 +4,7 @@ import CourtCard from "./CourtCard";
 import { Link } from "react-router-dom";
 import { Modal, Button, onActionClick } from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
+
 const CourtList = props => {
   return props.courts.map(court => (
     <div style={{ zIndex: 100000 }}>

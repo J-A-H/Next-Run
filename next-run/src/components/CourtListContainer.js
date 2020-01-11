@@ -7,28 +7,52 @@ import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
+<<<<<<< HEAD
 
   const {clearAllMessages} = props;
 
+=======
+>>>>>>> c9bcf1aefe5f5ee2e9ae600520cb2165545402a1
   const [filteredCourts, setfilteredCourts] = useState(null);
 
-  // let low = props.playersCount.filter(court => props.playersCount[court] < 5);
-  // let medium = props.playersCount.filter(
-  //   court => props.playersCount[court] > 5
-  // );
-  // let high = props.playersCount.filter(court => props.playersCount[court] > 10);
+  let low = Object.keys(props.playersCount).filter(
+    court => props.playersCount[court] < 5
+  );
+  let medium = Object.keys(props.playersCount).filter(
+    court => props.playersCount[court] > 5
+  );
+  let high = Object.keys(props.playersCount).filter(
+    court => props.playersCount[court] > 10
+  );
 
-  // function showHigh() {
-  //   setfilteredCourts(high);
-  // }
+  function showHigh() {
+    setfilteredCourts(high);
+    props.courts = Object.keys(props.courts).filter(court =>
+      filteredCourts.includes(court)
+    );
+  }
 
-  // function showMedium() {
-  //   setfilteredCourts(medium);
-  // }
+  function showMedium() {
+    setfilteredCourts(medium);
+    props.courts = Object.keys(props.courts).filter(court =>
+      filteredCourts.includes(court)
+    );
+  }
 
-  // function showLow() {
-  //   setfilteredCourts(low);
-  // }
+  function showLow() {
+    setfilteredCourts(low);
+    console.log(filteredCourts);
+    let allowed = filteredCourts;
+    //props.courts = Object.keys(props.courts).filter(court => filteredCourts.includes(court));
+    const filtered = () => {Object.keys(props.courts)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = props.courts[key];
+        return obj;
+      }, {});
+    }
+    props.courts = filtered();
+  }
 
   return (
     <Fragment>
@@ -57,13 +81,11 @@ const CourtListContainer = props => {
           <div style={{ float: "left" }}>
             <DropdownButton
               id="dropdown-basic-button"
-              title="Filter By Activity Level"
+              title="Activity Level"
             >
-              {/* <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
+              <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
               <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
-              <Dropdown.Item onClick={showLow}>
-                Low
-              </Dropdown.Item> */}
+              <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
             </DropdownButton>
           </div>
         </div>

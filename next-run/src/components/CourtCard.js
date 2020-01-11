@@ -29,15 +29,15 @@ const CourtCard = (props) => {
   //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
   // handleChatClose = () => this.setCourtDetailState({ chatOpen: false });
 
-  const [weekly, setWeekly] = useState({});
+  // const [weekly, setWeekly] = useState({});
 
-  useEffect(() => {
-    async function retrieveWeekly(id) {
-      const weeklydata = await props.getWeeklyPeakTimes(id);
-      setWeekly(weeklydata)
-    }
-    retrieveWeekly(props.court.id);
-  }, [weekly])
+  // useEffect(() => {
+  //   async function retrieveWeekly(id) {
+  //     const weeklydata = await props.getWeeklyPeakTimes(id);
+  //     setWeekly(weeklydata)
+  //   }
+  //   retrieveWeekly(props.court.id);
+  // }, [weekly])
 
   return (
     <div className='card'>
@@ -114,7 +114,7 @@ const CourtCard = (props) => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>{weekly[0]}</Table.Cell>
+                <Table.Cell>24</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>

@@ -11,7 +11,14 @@ const CourtList = props => {
       <Modal className="Modal"
         key={court.id}
         trigger={
-          <CourtCard onClick={onActionClick} key={court.id} court={court} playerCount={props.playersCount[court.name]}/>
+          <CourtCard onClick={onActionClick} key={court.id} court={court} playerCount={props.playersCount[court.name]}
+          
+          geolocation={props.geolocation}
+          toKebabCase={props.toKebabCase}
+          userId={props.userId}
+          allMessages={props.allMessages}
+          addMessageToAllMessages={props.addMessageToAllMessages}
+          />
         }
       // header={court.name}
       // content={court.address}

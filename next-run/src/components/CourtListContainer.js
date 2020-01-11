@@ -34,7 +34,7 @@ const CourtListContainer = props => {
         style={{
           position: "relative",
           zIndex: 3,
-          maxWidth: 350,
+          maxWidth: 310,
           overflow: "auto",
           height: "70vh",
           backgroundColor: "rgba(52, 52, 52, 0.5)"
@@ -72,6 +72,13 @@ const CourtListContainer = props => {
             getDailyPeakTimes={props.getDailyPeakTimes}
             getWeeklyPeakTimes={props.getWeeklyPeakTimes}
             getAllVisits={props.getAllVisits}
+
+            court={props.court}
+            geolocation={props.geolocation}
+            toKebabCase={props.toKebabCase}
+            userId={props.userId}
+            allMessages={props.allMessages}
+            addMessageToAllMessages={props.addMessageToAllMessages}
           />
         </div>
       </div>

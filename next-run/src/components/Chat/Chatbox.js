@@ -40,7 +40,8 @@ const Chatbox = ({
     if (newMessage !== "") {
       axios.post("/chat/send", {
         message: newMessage,
-        channel: `${toKebabCase(court.name)}-chat`
+        channel: `${toKebabCase(court.name)}-chat`,
+        court_id: court.id
       });
     }
   };
@@ -57,6 +58,20 @@ const Chatbox = ({
     };
 
     if (court !== undefined) {
+      axios
+        .get(`/chat/getMessages/${court.id}`)
+        .then(res => {
+          const incomingMessagesArray = res.data;
+
+          incomingMessagesArray.forEach(obj => {
+            console.log(obj.content);
+            addMessageToAllMessages(obj.content);
+          })
+        })
+        .catch(err => {
+          console.log(`Query Error`);
+        });
+
       setRoom(court.name);
       const courtChatChannel = pusherObject.subscribe(
         `${toKebabCase(court.name)}-chat`
@@ -101,7 +116,11 @@ const Chatbox = ({
         </div>
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea type="text" onChange={onTextChange} style={{height: 100}} />
+          <Form.TextArea
+            type="text"
+            onChange={onTextChange}
+            style={{ height: 100 }}
+          />
           <Button
             content="Add Reply"
             labelPosition="left"

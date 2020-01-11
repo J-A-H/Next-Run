@@ -159,18 +159,52 @@ router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
   res.send("decrement-broadcast-sent");
 });
 
-router.post('/chat/send', (req, res) => {
+/**
+ * Get last 50 messages of chat for court with court_id
+ */
+router.get("/chat/getMessages/:court_id", (req, res) => {
+  const params = req.params;
+  const court_id = params.court_id;
+
+  pool.query(
+    `SELECT * FROM messages where court_id = ${court_id} order by times_stamp asc limit 10`,
+    (queryErr, queryRes) => {
+      if (queryErr) {
+        console.log(queryErr);
+      }
+      else{
+
+      //Converts query result to json to be used in client
+      res.json(queryRes.rows);
+      }
+    }
+  );
+});
+
+router.post("/chat/send", (req, res) => {
   const message = req.body.message;
   const channel = req.body.channel;
+  const court_id = req.body.court_id;
 
-  console.log(message, channel);
+  console.log(message, channel, court_id);
+
+  pool.query(
+    `insert into messages (court_id, content, times_stamp) values (${court_id}, '${message}', current_timestamp)`,
+    (queryErr, queryRes) => {
+      if (queryErr) {
+        console.log(queryErr);
+      } else {
+        // res.json(`Chat added to database`);
+      }
+    }
+  );
 
   pusher.trigger(channel, "message", {
     incomingMessage: message
-  })
+  });
 
   res.send("message sent to pusher to broadcast!");
-})
+});
 
 router.post("/subscribe_to_room", (req, res) => {
   const roomName = req.body.courtName;
@@ -215,28 +249,30 @@ router.post("/rooms/getMessages", (req, res) => {
 
   console.log(roomName);
 
-  chatkit.fetchMultipartMessages({
-    roomId: roomName,
-    limit: 10
-  }).then (messages => {
-
-    console.log()
-
-    let result = [];
-    messages.forEach(message => {
-      message.parts.forEach(part => {
-        result.push({
-          id: message.id,
-          user_id: message.user_id,
-          message: part.content
-         })
-      })
+  chatkit
+    .fetchMultipartMessages({
+      roomId: roomName,
+      limit: 10
     })
+    .then(messages => {
+      console.log();
 
-    res.send(result);
-  }).catch(err=> {
-    console.log(err);
-  })
-})
+      let result = [];
+      messages.forEach(message => {
+        message.parts.forEach(part => {
+          result.push({
+            id: message.id,
+            user_id: message.user_id,
+            message: part.content
+          });
+        });
+      });
+
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 module.exports = router;

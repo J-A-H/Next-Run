@@ -26,3 +26,12 @@ create table courtVisits (
   quantity integer default 0
 );
 
+Drop table if EXISTS messages cascade;
+create table messages (
+  id serial primary key,
+  court_id integer references courts(id) not null,
+  content varchar(255) Not null,
+  times_stamp TIMESTAMP not null
+
+);
+

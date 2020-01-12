@@ -150,8 +150,78 @@ const CourtCard = props => {
                       rounded
                       size="mini"
                     />
+
                     <Header.Content>
                       Wednesday
+                        <Header.Subheader>Human Resources</Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Table.Cell>
+                <Table.Cell>{weekly[0]}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Header as="h4" image>
+                    <Image
+                      src="/images/avatar/small/matthew.png"
+                      rounded
+                      size="mini"
+                    />
+
+                    <Header.Content>
+                      Thursday
+                        <Header.Subheader>Human Resources</Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Table.Cell>
+                <Table.Cell>{weekly[0]}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Header as="h4" image>
+                    <Image
+                      src="/images/avatar/small/matthew.png"
+                      rounded
+                      size="mini"
+                    />
+
+                    <Header.Content>
+                      Friday
+                        <Header.Subheader>Human Resources</Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Table.Cell>
+                <Table.Cell>{weekly[0]}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Header as="h4" image>
+                    <Image
+                      src="/images/avatar/small/matthew.png"
+                      rounded
+                      size="mini"
+                    />
+
+                    <Header.Content>
+                      Saturday
+                        <Header.Subheader>Human Resources</Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Table.Cell>
+                <Table.Cell>{weekly[0]}</Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Header as="h4" image>
+                    <Image
+                      src="/images/avatar/small/matthew.png"
+                      rounded
+                      size="mini"
+                    />
+
+                    <Header.Content>
+                      Sunday
+                        <Header.Subheader>Entertainment</Header.Subheader>
                       <Header.Subheader>Entertainment</Header.Subheader>
                     </Header.Content>
                   </Header>
@@ -174,7 +244,7 @@ const CourtCard = props => {
             zIndex: 1001
           }}
         >
-          <Header>Chat</Header>
+          <Header>Court Chat</Header>
 
           <div>
             <Chatbox

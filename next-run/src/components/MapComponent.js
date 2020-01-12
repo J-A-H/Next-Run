@@ -30,59 +30,7 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
-      const google = window.google;
-      /**
-       * Return true if current position is within the court region at court
-       * @param {*} court
-       * @param {*} radius
-       * @param {*} currentPosition
-       */
-      const withinCourt = (court, radius, currentPosition) => {
-        const start = new google.maps.LatLng(court.lat, court.lng);
-        const end = new google.maps.LatLng(
-          currentPosition.lat,
-          currentPosition.lng
-        );
-        const distance = google.maps.geometry.spherical.computeDistanceBetween;
-        return distance(start, end) <= radius;
-      };
-
-      //initialize pusher listener for incoming broadcasts
-      useEffect(() => {
-        const handlleIncomingLocation = data => {
-          console.log("Incoming locaiton");
-
-          const incomingLocation = data.incomingLocation;
-          console.log(incomingLocation);
-
-          if (allCourts.length > 0) {
-            allCourts.forEach(court => {
-              if (withinCourt(court, 400, incomingLocation)) {
-                console.log(`increment: ${court.name}`);
-                updatePlayerCount(court.name);
-              } else {
-                // clearPlayerCount(court.name);
-              }
-            });
-          }
-        };
-
-        //listener for incoming geolocaitons
-        broadcastLocationChannel.bind("transit", handlleIncomingLocation);
-
-        return () => {
-          broadcastLocationChannel.unbind("transit", handlleIncomingLocation);
-        };
-      }, [allCourts, playersCount]);
-
-      const points = [
-        // {location:[-1.131592, 52.629729], weight: 2},
-        // {location:[-1.141592, 52.629729], weight: 3},
-        // {location:[-1.161592, 53.629729], weight: 1},
-        { location: [43.649785, -78.364159], weight: 5 },
-        { location: [44.649785, -79.364159], weight: 5 }
-      ];
-
+      
       return (
         <GoogleMap
           defaultZoom={14}

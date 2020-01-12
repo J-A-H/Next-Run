@@ -128,22 +128,25 @@ router.post("/pusher/auth", function(req, res) {
 });
 
 /**
- * Broadcasts location to clients to update current player counts
+ * increase player count of court by 1
  */
 router.post("/updatePlayerCounts", (req, res) => {
-  const incomingLocation = req.body.geolocation;
+  const courtName = req.body.courtName;
   const channel = req.body.channel;
 
-  req.setTimeout(0);
+  console.log(channel, courtName)
 
   //Broadcast location to all clients
-  pusher.trigger(channel, "transit", {
-    incomingLocation: incomingLocation
+  pusher.trigger(channel, "increment-court", {
+    courtToIncrement: courtName
   });
 
-  res.send("broadcast-sent");
+  res.send("increment broadcast-sent");
 });
 
+/**
+ * decrease player count of court by 1;
+ */
 router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
   const courtName = req.body.courtName;
   const channel = req.body.channel;

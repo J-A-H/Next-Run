@@ -7,14 +7,14 @@ import CourtDetailShow from "./CourtDetailShow";
 
 const CourtList = props => {
 
-  const {clearAllMessages} = props;
+  const {clearAllMessages, playersCount} = props;
 
   return props.courts.map(court => (
     <div style={{ zIndex: 100000 }}>
       <Modal className="Modal"
-        key={court.id}
+        key={court.id + 100}
         trigger={
-          <CourtCard onClick={onActionClick} key={court.id} court={court} playerCount={props.playersCount[court.name]}
+          <CourtCard onClick={onActionClick} key={playersCount[court.name]} court={court} playersCount={playersCount}
           
           geolocation={props.geolocation}
           toKebabCase={props.toKebabCase}

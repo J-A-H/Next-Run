@@ -99,7 +99,6 @@ const CourtListContainer = props => {
             userId={props.userId}
             allMessages={props.allMessages}
             addMessageToAllMessages={props.addMessageToAllMessages}
-
             clearAllMessages={clearAllMessages}
           />
         </div>

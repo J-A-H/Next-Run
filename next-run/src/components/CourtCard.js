@@ -34,10 +34,6 @@ const CourtCard = props => {
     clearAllMessages();
   };
 
-  useEffect(()=>{
-    console.log("Players count from court Card", playersCount);
-  })
-
   return (
     <div className="card">
       <Card>

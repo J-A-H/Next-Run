@@ -2,10 +2,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "./App.css";
 import CourtListContainer from "./CourtListContainer";
-import RecipeReviewCard from "./CourtDetailShow";
 import MapComponent from "./MapComponent";
-import Chatbox from "./Chat/Chatbox";
 import { usePosition } from "../helpers/usePosition";
+import Cookies from 'universal-cookie';
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -36,6 +35,7 @@ const App = props => {
   const { toKebabCase, randomId } = helpers();
   const { lat, lng, error } = usePosition();
   const broadcastLocationChannel = pusherObject.subscribe("broadcast-location");
+  const cookies = new Cookies();
 
   //*States
   const [geolocation, setGeolocation] = useState({});
@@ -73,7 +73,7 @@ const App = props => {
     });
 
     // console.log(send.data);
-
+    cookies.set('prev_location', courtName);
     setCurrentLocation(courtName);
   };
 
@@ -133,7 +133,7 @@ const App = props => {
     // console.log(playersCount);
   };
 
-  console.log("Players count from app: ", playersCount);
+  // console.log("Players count from app: ", playersCount);
 
   //*Fetch curent location
   useEffect(() => {
@@ -154,7 +154,7 @@ const App = props => {
       const newPlayersCountReq = await axios.get("/initialialPlayerCounts");
       const newPlayersCount = newPlayersCountReq.data;
 
-      console.log("Global player counts", newPlayersCount);
+      // console.log("Global player counts", newPlayersCount);
 
       setPlayersCount(newPlayersCount);
     };
@@ -200,6 +200,7 @@ const App = props => {
       //If not in a court
       if (withinAnyCourt() === "Empty") {
         setCurrentLocation("Empty");
+        cookies.set("prev_location", "Empty");
         if (
           currentLocation !== "Empty" &&
           Object.keys(playersCount).length > 0
@@ -213,7 +214,11 @@ const App = props => {
       else {
         if (currentLocation === "Empty") {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
-          sendIncrementToServer(withinAnyCourt());
+
+          if(cookies.get('prev_location') !== withinAnyCourt()){
+            sendIncrementToServer(withinAnyCourt());
+          };
+
         } else if (currentLocation !== withinAnyCourt()) {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
           console.log(`Broadcast: Decrement court ${currentLocation}`);

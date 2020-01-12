@@ -248,6 +248,7 @@ const App = props => {
 
   const filterCourts = courts => {
     setAllCourts(prevState => [...prevState, courts]);
+    //setAllCourts(courts)
   };
 
   return (

@@ -6,8 +6,8 @@ import {
   withGoogleMap,
   withScriptjs,
   Circle,
-  HeatmapLayer
 } from "react-google-maps";
+import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import axios from "axios";
 
@@ -17,6 +17,7 @@ import CourtMarkerComponent from "./CourtMarkerComponent";
 /**
  * Generates Map component other props are used with withScriptjs and withGoogleMap
  */
+
 const MapComponent = withScriptjs(
   withGoogleMap(
     ({
@@ -30,15 +31,22 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
+      // const points = [
+      //   // {location:[-1.131592, 52.629729], weight: 2},
+      //   // {location:[-1.141592, 52.629729], weight: 3},
+      //   // {location:[-1.161592, 53.629729], weight: 1},
+      //   { location: [43.649785, -78.364159], weight: 5 },
+      //   { location: [44.649785, -79.364159], weight: 5 }
+      // ];
 
-      const points = [
-        // {location:[-1.131592, 52.629729], weight: 2},
-        // {location:[-1.141592, 52.629729], weight: 3},
-        // {location:[-1.161592, 53.629729], weight: 1},
-        { location: [43.649785, -78.364159], weight: 5 },
-        { location: [44.649785, -79.364159], weight: 5 }
+      var data = [
+        new window.google.maps.LatLng(43.649785, -78.3641591),
+        new window.google.maps.LatLng(42.649785, -78.3641591),
+        new window.google.maps.LatLng(43.649785, -79.3641591),
+        new window.google.maps.LatLng(43.649785, -77.3641591),
+        new window.google.maps.LatLng(44.649785, -78.3641591)
       ];
-      
+
       return (
         <GoogleMap
           defaultZoom={14}
@@ -63,20 +71,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          onGoogleApiLoaded=
-          {({ map, maps }) => {
-            console.log(points[0]);
-            const heatmap = new maps.visualization.HeatmapLayer({
-              data: points.map(point => ({
-                location: new maps.LatLng(
-                  point["location"][0],
-                  point["location"][1]
-                ),
-                weight: point["weight"]
-              }))
-            });
-            heatmap.setMap(map);
-          }}
+          {/* <HeatmapLayer data={data} /> */}
         </GoogleMap>
       );
     }

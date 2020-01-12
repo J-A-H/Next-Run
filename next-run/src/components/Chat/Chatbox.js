@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Header, Form, Button, Comment, Segment } from "semantic-ui-react";
 
-import helpers from "/home/aliang/lighthouse/Next-Run/next-run/src/helpers/helpers.js";
+import helpers from "../../helpers/helpers";
 
 //PUSHER________________
 const Pusher = require("pusher-js");

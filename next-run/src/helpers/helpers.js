@@ -14,7 +14,7 @@ const helpers = () => {
 
   const getTimeStamp = (time) => {
 
-    let result = [];
+    let result = "";
 
     //Get hours;
 
@@ -24,29 +24,29 @@ const helpers = () => {
 
     const currentDate = new Date(Date.now());
 
-    const diff = currentDate.getHours - hours;
+    const diff = currentDate.getHours() - hours;
 
     if(diff > 23){
-      result.push(`${date.toDateString()} `);
+      result += `${date.toDateString()} `;
     }
     
     if(hours > 12){
-      result.push(hours - 11);
+      result += `${hours - 12}:`;
     }
     else{
-      result.push(hours);
+      result += `${hours}`;
     }
 
-    result.push(`${minutes} `);
+    result += `${minutes} `;
 
     if(hours >= 12){
-      result.push("PM")
+      result += ("PM")
     }
     else{
-      result.push("AM")
+      result+= "AM";
     }
 
-    return result.join();
+    return result;
   }
 
   return {toKebabCase, randomId, getTimeStamp}

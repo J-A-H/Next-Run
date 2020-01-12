@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Header, Form, Button, Comment, Segment } from "semantic-ui-react";
 
+import helpers from "/home/aliang/lighthouse/Next-Run/next-run/src/helpers/helpers.js"
+
 //PUSHER________________
 const Pusher = require("pusher-js");
 
@@ -31,6 +33,8 @@ const Chatbox = ({
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const {getTimeStamp} = helpers();
+
   const onTextChange = e => {
     e.preventDefault();
     setNewMessage(e.target.value);
@@ -54,6 +58,11 @@ const Chatbox = ({
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
+
+      const currentTime = Date.now();
+
+      console.log(getTimeStamp(currentTime));
+      
       addMessageToAllMessages(data.incomingMessage);
     };
 

@@ -24,6 +24,24 @@ const chatkit = new Chatkit.default({
     "83bb6462-159b-4684-b510-f50386e4bf20:Zlblmj8vDCsXSvfSH0ntmJx+x5PoD9DLwV5Bar7DsSk="
 });
 
+const globalPlayersCount = {};
+
+//*Initialized globalPlayersCount
+pool
+  .query(`SELECT * FROM courts`)
+  .then(res => {
+    const allcourtsArray = res.rows;
+
+    allcourtsArray.forEach(court => {
+      globalPlayersCount[court.name] = 0;
+    });
+
+    console.log(globalPlayersCount);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
 /**
  * Gets all courts in court table
  */
@@ -134,13 +152,16 @@ router.post("/updatePlayerCounts", (req, res) => {
   const courtName = req.body.courtName;
   const channel = req.body.channel;
 
-  console.log(channel, courtName)
+  console.log(channel, courtName);
 
   //Broadcast location to all clients
   pusher.trigger(channel, "increment-court", {
     courtToIncrement: courtName
   });
 
+  globalPlayersCount[courtName] += 1;
+
+  console.log(globalPlayersCount);
   res.send("increment broadcast-sent");
 });
 
@@ -155,6 +176,11 @@ router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
     courtToDecrement: courtName
   });
 
+  if(globalPlayersCount[courtName] > 0){
+    globalPlayersCount[courtName] -= 1;
+
+    console.log(globalPlayersCount);
+  }
   res.send("decrement-broadcast-sent");
 });
 
@@ -170,10 +196,9 @@ router.get("/chat/getMessages/:court_id", (req, res) => {
     (queryErr, queryRes) => {
       if (queryErr) {
         console.log(queryErr);
-      }
-      else{
-      //Converts query result to json to be used in client
-      res.json(queryRes.rows);
+      } else {
+        //Converts query result to json to be used in client
+        res.json(queryRes.rows);
       }
     }
   );

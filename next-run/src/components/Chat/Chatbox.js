@@ -13,7 +13,7 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 //CSS
 
 const commentStyle = {
-  padding: "5%",
+  padding: "1%",
   display: "table"
 };
 
@@ -110,7 +110,16 @@ const Chatbox = ({
           {room}
         </Header>
 
-        <div style={{ overflow: "auto", maxHeight: 200, height: 200 }}>
+        <div
+          style={{
+            overflow: "auto",
+            height: '52vh',
+            padding: '10px',
+            border: "solid",
+            borderWidth: 'thin',
+            borderRadius: '5px'
+          }}>
+
           {allMessages.length > 0 && messageItems}
           <div ref={messagesEndRef} />
         </div>
@@ -119,11 +128,13 @@ const Chatbox = ({
           <Form.TextArea
             type="text"
             onChange={onTextChange}
-            style={{ height: 100 }}
+            style={{ 
+              height: 55,
+            }}
           />
           <Button
-            content="Add Reply"
-            labelPosition="left"
+            content="Send"
+            labelPosition="right"
             icon="edit"
             primary
             type="submit"

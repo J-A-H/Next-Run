@@ -6,6 +6,9 @@ import { Modal, Button, onActionClick } from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
 
 const CourtList = props => {
+
+  const {clearAllMessages} = props;
+
   return props.courts.map(court => (
     <div style={{ zIndex: 100000 }}>
       <Modal className="Modal"
@@ -18,11 +21,9 @@ const CourtList = props => {
           userId={props.userId}
           allMessages={props.allMessages}
           addMessageToAllMessages={props.addMessageToAllMessages}
+          clearAllMessages={clearAllMessages}
           />
         }
-      // header={court.name}
-      // content={court.address}
-      // actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
       >
         <CourtDetailShow
           court={court}

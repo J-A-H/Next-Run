@@ -102,7 +102,8 @@ const App = props => {
 
     // console.log(incrementPlayersObject);
     setPlayersCount(incrementPlayersObject);
-
+    setGeolocation(geolocation);
+    setAllCourts(allCourts);
     console.log(playersCount);
   };
 
@@ -120,6 +121,9 @@ const App = props => {
 
     // console.log(decrementPlayersCountObject);
     setPlayersCount(decrementPlayersCountObject);
+
+    setGeolocation(geolocation);
+    setAllCourts(allCourts);
 
     console.log(playersCount);
   };

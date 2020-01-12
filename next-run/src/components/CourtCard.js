@@ -15,7 +15,9 @@ import {
 import Chatbox from "./Chat/Chatbox";
 
 const CourtCard = props => {
-  const { clearAllMessages } = props;
+  const { clearAllMessages, playersCount, court } = props;
+
+  const [cardPlayersCount, setCardPlayersCount] = useState({});
 
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
 
@@ -46,10 +48,6 @@ const CourtCard = props => {
   //   retrieveWeekly(props.court.id);
   // }, [weekly])
 
-  useEffect(()=>{
-    console.log()
-  }, [props.playerCount]);
-
   return (
     <div className="card">
       <Card>
@@ -59,10 +57,10 @@ const CourtCard = props => {
             size="mini"
             src="https://img.icons8.com/dotty/80/000000/basketball-2.png"
           />
-          <Card.Header>{props.court.name}</Card.Header>
+          <Card.Header>{court.name}</Card.Header>
           <Card.Meta>{props.court.address}</Card.Meta>
           <Card.Description>
-            Current Activity Level: {props.playerCount}
+            Current Activity Level: {playersCount[court.name]}
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
@@ -82,9 +80,7 @@ const CourtCard = props => {
               negative={chatState.chatOpen}
               positive={!chatState.chatOpen}
               onClick={handleChatClick}
-            >
-              Chat
-            </Button>
+            />
           </div>
         </Card.Content>
       </Card>

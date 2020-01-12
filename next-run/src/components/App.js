@@ -83,6 +83,13 @@ const App = props => {
     }
   };
 
+  /**
+   * Clears all messages state after chat portal close
+   */
+  const clearAllMessages = () => {
+    setAllMessages([]);
+  }
+
   //*Fetch curent location
   useEffect(() => {
     const sendToServer = async (lat, lng) => {
@@ -242,6 +249,8 @@ const App = props => {
           userId={userId}
           allMessages={allMessages}
           addMessageToAllMessages={addMessageToAllMessages}
+
+          clearAllMessages={clearAllMessages}
         />
       </div>
 

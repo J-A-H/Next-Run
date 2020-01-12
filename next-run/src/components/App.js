@@ -291,6 +291,7 @@ const App = props => {
           currentLocation={currentLocation}
           setPlayersCount={setPlayersCount}
           playersCount={playersCount}
+          //testData={testData}
         />
       </div>
     </Fragment>

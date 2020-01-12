@@ -5,7 +5,8 @@ import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Circle
+  Circle,
+  HeatmapLayer
 } from "react-google-maps";
 
 import axios from "axios";
@@ -54,6 +55,20 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
+          onGoogleApiLoaded=
+          {({ map, maps }) => {
+            console.log(points[0]);
+            const heatmap = new maps.visualization.HeatmapLayer({
+              data: points.map(point => ({
+                location: new maps.LatLng(
+                  point["location"][0],
+                  point["location"][1]
+                ),
+                weight: point["weight"]
+              }))
+            });
+            heatmap.setMap(map);
+          }}
         </GoogleMap>
       );
     }

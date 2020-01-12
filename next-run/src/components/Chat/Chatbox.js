@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Header, Form, Button, Comment, Segment } from "semantic-ui-react";
 
-import helpers from "/home/aliang/lighthouse/Next-Run/next-run/src/helpers/helpers.js"
+import helpers from "/home/aliang/lighthouse/Next-Run/next-run/src/helpers/helpers.js";
 
 //PUSHER________________
 const Pusher = require("pusher-js");
@@ -33,7 +33,7 @@ const Chatbox = ({
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const {getTimeStamp} = helpers();
+  const { getTimeStamp } = helpers();
 
   const onTextChange = e => {
     e.preventDefault();
@@ -58,12 +58,14 @@ const Chatbox = ({
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
-
       const currentTime = Date.now();
 
-      console.log(getTimeStamp(currentTime));
-      
-      addMessageToAllMessages(data.incomingMessage);
+      const timeStamp = getTimeStamp(currentTime);
+
+      addMessageToAllMessages({
+        message: data.incomingMessage,
+        time: timeStamp
+      });
     };
 
     if (court !== undefined) {
@@ -73,9 +75,11 @@ const Chatbox = ({
           const incomingMessagesArray = res.data;
 
           incomingMessagesArray.reverse().forEach(obj => {
-            console.log(obj.content);
-            addMessageToAllMessages(obj.content);
-          })
+            addMessageToAllMessages({
+              message: obj.content,
+              time: getTimeStamp(obj.times_stamp)
+            });
+          });
         })
         .catch(err => {
           console.log(`Query Error`);
@@ -102,10 +106,10 @@ const Chatbox = ({
         <Comment.Content>
           <Comment.Author as="a">{`Random`}</Comment.Author>
           <Comment.Metadata>
-            <div>Yesterday at 12:30AM</div>
+            <div> {message.time}</div>
           </Comment.Metadata>
           <Comment.Text>
-            <p> {message} </p>
+            <p> {message.message} </p>
           </Comment.Text>
         </Comment.Content>
       </Comment>

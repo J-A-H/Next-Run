@@ -37,7 +37,12 @@ const helpers = () => {
       result += `${hours}`;
     }
 
-    result += `${minutes} `;
+    if(minutes < 10){
+      result += `0${minutes} `;
+    }
+    else{
+      result += `${minutes} `;
+    }
 
     if(hours >= 12){
       result += ("PM")

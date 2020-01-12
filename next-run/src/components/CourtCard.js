@@ -157,7 +157,7 @@ const CourtCard = props => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>{weekly[0]}</Table.Cell>
+                <Table.Cell>{}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
@@ -174,7 +174,7 @@ const CourtCard = props => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>{weekly[0]}</Table.Cell>
+                <Table.Cell>{}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
@@ -191,7 +191,7 @@ const CourtCard = props => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>{weekly[0]}</Table.Cell>
+                <Table.Cell>{}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>
@@ -208,7 +208,7 @@ const CourtCard = props => {
                     </Header.Content>
                   </Header>
                 </Table.Cell>
-                <Table.Cell>{weekly[0]}</Table.Cell>
+                <Table.Cell>{}</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>

@@ -7,13 +7,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
-  const [filteredCourts, setfilteredCourts] = useState([]);
+  const [filteredCourts, setfilteredCourts] = useState([props.courts]);
 
   // React.useEffect(() => {
   //   setfilteredCourts(props.courts)
   // }, [filteredCourts]);
 
-  let low = Object.keys(props.playersCount).filter(
+  const low = (Object.keys(props.playersCount)).filter(
     court => props.playersCount[court] < 5
   );
   let medium = Object.keys(props.playersCount).filter(
@@ -25,29 +25,28 @@ const CourtListContainer = props => {
 
   function showHigh() {
     setfilteredCourts(high);
-    props.courts = Object.keys(props.courts).filter(court =>
-      filteredCourts.includes(court)
-    );
+    // props.courts = Object.keys(props.courts).filter(court =>
+    //   filteredCourts.includes(court)
+    // );
+    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+
   }
 
   function showMedium() {
     setfilteredCourts(medium);
-    props.courts = Object.keys(props.courts).filter(court =>
-      filteredCourts.includes(court)
-    );
+    // props.courts = Object.keys(props.courts).filter(court =>
+    //   filteredCourts.includes(court)
+    // );
+    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+
   }
 
   function showLow() {
     setfilteredCourts(low);
-    console.log(filteredCourts);
 
-    function filteredObject() {
-      Object.keys(props.courts).reduce(function(r, e) {
-        if (filteredCourts.includes(props.courts[e])) r[e] = props.courts[e];
-        return r;
-      }, {});
-    }
-    props.filterCourts(filteredObject());
+    //console.log(props.courts);
+    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+    
      
   }
 

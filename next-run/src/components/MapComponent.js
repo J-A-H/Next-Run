@@ -30,6 +30,14 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
+
+      const points = [
+        // {location:[-1.131592, 52.629729], weight: 2},
+        // {location:[-1.141592, 52.629729], weight: 3},
+        // {location:[-1.161592, 53.629729], weight: 1},
+        { location: [43.649785, -78.364159], weight: 5 },
+        { location: [44.649785, -79.364159], weight: 5 }
+      ];
       
       return (
         <GoogleMap

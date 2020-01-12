@@ -222,7 +222,6 @@ const CourtCard = props => {
                     <Header.Content>
                       Sunday
                         <Header.Subheader>Entertainment</Header.Subheader>
-                      <Header.Subheader>Entertainment</Header.Subheader>
                     </Header.Content>
                   </Header>
                 </Table.Cell>

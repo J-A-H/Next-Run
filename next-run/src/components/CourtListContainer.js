@@ -7,12 +7,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
-<<<<<<< HEAD
 
   const {clearAllMessages} = props;
-
-=======
->>>>>>> c9bcf1aefe5f5ee2e9ae600520cb2165545402a1
+  
   const [filteredCourts, setfilteredCourts] = useState(null);
 
   let low = Object.keys(props.playersCount).filter(

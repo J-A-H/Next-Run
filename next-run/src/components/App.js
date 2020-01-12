@@ -219,6 +219,10 @@ const App = props => {
     }
   }, [allCourts, playersCount]);
 
+  const filterCourts = (courts) => {
+    setAllCourts((prevState => ([...prevState, courts])));
+
+  }
 
 
   return (
@@ -242,6 +246,7 @@ const App = props => {
           userId={userId}
           allMessages={allMessages}
           addMessageToAllMessages={addMessageToAllMessages}
+          filterCourts={filterCourts}
         />
       </div>
 

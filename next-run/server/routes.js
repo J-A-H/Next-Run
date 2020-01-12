@@ -114,6 +114,10 @@ router.get("/visits/:id/:hour", (req, res) => {
   // });
 });
 
+router.get("/initialialPlayerCounts", (req, res) => {
+  res.send(globalPlayersCount);
+})
+
 router.post("/");
 
 router.post("/add_visit", (req, res) => {

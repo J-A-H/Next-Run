@@ -47,7 +47,6 @@ const App = props => {
   const [userId, setUserId] = useState(randomId());
   //const [testData, setTestData] = useState([new google.maps.LatLng: 43.649785, -78.364159, LatLng: 44.649785, -79.364159])
   const addMessageToAllMessages = (message) => {
-    console.log(`Adding to allMessages: ${message}`)
     setAllMessages((prevState => ([...prevState, message])));
   }
 
@@ -82,6 +81,13 @@ const App = props => {
       console.log(`clear: ${courtName}`);
     }
   };
+
+  /**
+   * Clears all messages state after chat portal close
+   */
+  const clearAllMessages = () => {
+    setAllMessages([]);
+  }
 
   //*Fetch curent location
   useEffect(() => {
@@ -246,7 +252,12 @@ const App = props => {
           userId={userId}
           allMessages={allMessages}
           addMessageToAllMessages={addMessageToAllMessages}
+
           filterCourts={filterCourts}
+
+
+          clearAllMessages={clearAllMessages}
+
         />
       </div>
 

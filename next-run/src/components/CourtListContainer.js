@@ -13,7 +13,11 @@ const CourtListContainer = props => {
   //   setfilteredCourts(props.courts)
   // }, [filteredCourts]);
 
-  const low = (Object.keys(props.playersCount)).filter(
+
+  const {clearAllMessages} = props;
+  
+
+  let low = Object.keys(props.playersCount).filter(
     court => props.playersCount[court] < 5
   );
   let medium = Object.keys(props.playersCount).filter(
@@ -56,7 +60,7 @@ const CourtListContainer = props => {
         style={{
           position: "relative",
           zIndex: 3,
-          maxWidth: 310,
+          width: 310,
           overflow: "auto",
           height: "70vh",
           backgroundColor: "rgba(52, 52, 52, 0.5)"
@@ -65,11 +69,11 @@ const CourtListContainer = props => {
         <div
           className="blue filter bar"
           style={{
-            position: "relative",
-            backgroundColor: "rgba(0, 153, 255, 0.5)",
+            position: "fixed",
+            backgroundColor: "rgb(0, 153, 255, 1)",
             zIndex: "4",
             height: 60,
-            maxWidth: 350,
+            width: 310,
             padding: "15px"
           }}
         >
@@ -95,6 +99,8 @@ const CourtListContainer = props => {
             userId={props.userId}
             allMessages={props.allMessages}
             addMessageToAllMessages={props.addMessageToAllMessages}
+
+            clearAllMessages={clearAllMessages}
           />
         </div>
       </div>

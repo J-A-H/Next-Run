@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Header, Form, Button, Comment, Segment } from "semantic-ui-react";
 
+import helpers from "/home/aliang/lighthouse/Next-Run/next-run/src/helpers/helpers.js";
+
 //PUSHER________________
 const Pusher = require("pusher-js");
 
@@ -13,7 +15,7 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 //CSS
 
 const commentStyle = {
-  padding: "5%",
+  padding: "1%",
   display: "table"
 };
 
@@ -30,6 +32,8 @@ const Chatbox = ({
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const { getTimeStamp } = helpers();
 
   const onTextChange = e => {
     e.preventDefault();
@@ -54,7 +58,14 @@ const Chatbox = ({
      * Subscribes to Court chat and listens for incoming messages
      */
     const handelIncomingMessage = data => {
-      addMessageToAllMessages(data.incomingMessage);
+      const currentTime = Date.now();
+
+      const timeStamp = getTimeStamp(currentTime);
+
+      addMessageToAllMessages({
+        message: data.incomingMessage,
+        time: timeStamp
+      });
     };
 
     if (court !== undefined) {
@@ -64,9 +75,11 @@ const Chatbox = ({
           const incomingMessagesArray = res.data;
 
           incomingMessagesArray.reverse().forEach(obj => {
-            console.log(obj.content);
-            addMessageToAllMessages(obj.content);
-          })
+            addMessageToAllMessages({
+              message: obj.content,
+              time: getTimeStamp(obj.times_stamp)
+            });
+          });
         })
         .catch(err => {
           console.log(`Query Error`);
@@ -93,10 +106,10 @@ const Chatbox = ({
         <Comment.Content>
           <Comment.Author as="a">{`Random`}</Comment.Author>
           <Comment.Metadata>
-            <div>Yesterday at 12:30AM</div>
+            <div> {message.time}</div>
           </Comment.Metadata>
           <Comment.Text>
-            <p> {message} </p>
+            <p> {message.message} </p>
           </Comment.Text>
         </Comment.Content>
       </Comment>
@@ -110,7 +123,16 @@ const Chatbox = ({
           {room}
         </Header>
 
-        <div style={{ overflow: "auto", maxHeight: 200, height: 200 }}>
+        <div
+          style={{
+            overflow: "auto",
+            height: '52vh',
+            padding: '10px',
+            border: "solid",
+            borderWidth: 'thin',
+            borderRadius: '5px'
+          }}>
+
           {allMessages.length > 0 && messageItems}
           <div ref={messagesEndRef} />
         </div>
@@ -119,11 +141,13 @@ const Chatbox = ({
           <Form.TextArea
             type="text"
             onChange={onTextChange}
-            style={{ height: 100 }}
+            style={{ 
+              height: 55,
+            }}
           />
           <Button
-            content="Add Reply"
-            labelPosition="left"
+            content="Send"
+            labelPosition="right"
             icon="edit"
             primary
             type="submit"

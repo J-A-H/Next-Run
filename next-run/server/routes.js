@@ -136,8 +136,6 @@ router.post("/updatePlayerCounts", (req, res) => {
 
   req.setTimeout(0);
 
-  console.log(channel);
-
   //Broadcast location to all clients
   pusher.trigger(channel, "transit", {
     incomingLocation: incomingLocation
@@ -149,8 +147,6 @@ router.post("/updatePlayerCounts", (req, res) => {
 router.post("/updatePlayerCounts/leaveCourt", (req, res) => {
   const courtName = req.body.courtName;
   const channel = req.body.channel;
-
-  console.log(courtName, channel);
 
   pusher.trigger(channel, "decrement-court", {
     courtToDecrement: courtName
@@ -173,7 +169,6 @@ router.get("/chat/getMessages/:court_id", (req, res) => {
         console.log(queryErr);
       }
       else{
-      console.log(queryRes.rows);
       //Converts query result to json to be used in client
       res.json(queryRes.rows);
       }
@@ -185,8 +180,6 @@ router.post("/chat/send", (req, res) => {
   const message = req.body.message;
   const channel = req.body.channel;
   const court_id = req.body.court_id;
-
-  console.log(message, channel, court_id);
 
   pool.query(
     `insert into messages (court_id, content, times_stamp) values (${court_id}, '${message}', current_timestamp)`,

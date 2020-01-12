@@ -5,7 +5,8 @@ import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Circle
+  Circle,
+  HeatmapLayer
 } from "react-google-maps";
 
 import axios from "axios";
@@ -74,6 +75,14 @@ const MapComponent = withScriptjs(
         };
       }, [allCourts, playersCount]);
 
+      const points = [
+        // {location:[-1.131592, 52.629729], weight: 2},
+        // {location:[-1.141592, 52.629729], weight: 3},
+        // {location:[-1.161592, 53.629729], weight: 1},
+        { location: [43.649785, -78.364159], weight: 5 },
+        { location: [44.649785, -79.364159], weight: 5 }
+      ];
+
       return (
         <GoogleMap
           defaultZoom={14}
@@ -98,6 +107,20 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
+          onGoogleApiLoaded=
+          {({ map, maps }) => {
+            console.log(points[0]);
+            const heatmap = new maps.visualization.HeatmapLayer({
+              data: points.map(point => ({
+                location: new maps.LatLng(
+                  point["location"][0],
+                  point["location"][1]
+                ),
+                weight: point["weight"]
+              }))
+            });
+            heatmap.setMap(map);
+          }}
         </GoogleMap>
       );
     }

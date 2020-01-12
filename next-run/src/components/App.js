@@ -45,7 +45,7 @@ const App = props => {
   const [allMessages, setAllMessages] = useState([]);
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
-
+  //const [testData, setTestData] = useState([new google.maps.LatLng: 43.649785, -78.364159, LatLng: 44.649785, -79.364159])
   const addMessageToAllMessages = (message) => {
     setAllMessages((prevState => ([...prevState, message])));
   }
@@ -276,6 +276,7 @@ const App = props => {
           currentLocation={currentLocation}
           setPlayersCount={setPlayersCount}
           playersCount={playersCount}
+          //testData={testData}
         />
       </div>
 

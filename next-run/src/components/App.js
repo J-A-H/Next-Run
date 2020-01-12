@@ -47,7 +47,6 @@ const App = props => {
   const [userId, setUserId] = useState(randomId());
 
   const addMessageToAllMessages = (message) => {
-    console.log(`Adding to allMessages: ${message}`)
     setAllMessages((prevState => ([...prevState, message])));
   }
 

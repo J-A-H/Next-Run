@@ -46,6 +46,10 @@ const CourtCard = props => {
   //   retrieveWeekly(props.court.id);
   // }, [weekly])
 
+  useEffect(()=>{
+    console.log()
+  }, [props.playerCount]);
+
   return (
     <div className="card">
       <Card>

@@ -38,6 +38,18 @@ const CourtCard = props => {
     console.log("Players count from court Card", playersCount);
   })
 
+  const convertActivityLevel = num => {
+    if (num > 10){
+      return "Hot"
+    }
+    else if (num > 5 && num < 10){
+      return "Warm"
+    }
+    else{
+      return "Cold"
+    }
+  }
+
   return (
     <div className="card">
       <Card>
@@ -50,7 +62,7 @@ const CourtCard = props => {
           <Card.Header>{court.name}</Card.Header>
           <Card.Meta>{props.court.address}</Card.Meta>
           <Card.Description>
-            Current Activity Level: {playersCount[court.name]}
+            Current Activity Level: {convertActivityLevel(playersCount[court.name])}
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

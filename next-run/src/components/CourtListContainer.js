@@ -8,9 +8,15 @@ import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
 
+  const [filteredCourts, setfilteredCourts] = useState([]);
+
+  // React.useEffect(() => {
+  //   setfilteredCourts(props.courts)
+  // }, [filteredCourts]);
+
+
   const {clearAllMessages} = props;
   
-  const [filteredCourts, setfilteredCourts] = useState(null);
 
   let low = Object.keys(props.playersCount).filter(
     court => props.playersCount[court] < 5
@@ -39,16 +45,15 @@ const CourtListContainer = props => {
   function showLow() {
     setfilteredCourts(low);
     console.log(filteredCourts);
-    let allowed = filteredCourts;
-    //props.courts = Object.keys(props.courts).filter(court => filteredCourts.includes(court));
-    const filtered = () => {Object.keys(props.courts)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = props.courts[key];
-        return obj;
+
+    function filteredObject() {
+      Object.keys(props.courts).reduce(function(r, e) {
+        if (filteredCourts.includes(props.courts[e])) r[e] = props.courts[e];
+        return r;
       }, {});
     }
-    props.courts = filtered();
+    props.filterCourts(filteredObject());
+     
   }
 
   return (
@@ -76,10 +81,7 @@ const CourtListContainer = props => {
         >
           <Container />
           <div style={{ float: "left" }}>
-            <DropdownButton
-              id="dropdown-basic-button"
-              title="Activity Level"
-            >
+            <DropdownButton id="dropdown-basic-button" title="Activity Level">
               <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
               <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
               <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
@@ -93,7 +95,6 @@ const CourtListContainer = props => {
             getDailyPeakTimes={props.getDailyPeakTimes}
             getWeeklyPeakTimes={props.getWeeklyPeakTimes}
             getAllVisits={props.getAllVisits}
-
             court={props.court}
             geolocation={props.geolocation}
             toKebabCase={props.toKebabCase}

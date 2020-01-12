@@ -150,14 +150,13 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-      const playersCountObject = {};
 
-      allCourts.data.forEach(court => {
-        const courtName = court.name;
-        playersCountObject[courtName] = 0;
-      });
+      const newPlayersCountReq = await axios.get("/initialialPlayerCounts");
+      const newPlayersCount = newPlayersCountReq.data;
 
-      setPlayersCount(playersCountObject);
+      console.log("Global player counts", newPlayersCount);
+
+      setPlayersCount(newPlayersCount);
     };
 
     initializeAllcourts();

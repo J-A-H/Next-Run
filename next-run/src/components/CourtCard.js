@@ -34,19 +34,9 @@ const CourtCard = props => {
     clearAllMessages();
   };
 
-  // handleChatClick = () =>
-  //   this.setCourtDetailState(prevState => ({ chatOpen: !prevState.chatOpen }));
-  // handleChatClose = () => this.setCourtDetailState({ chatOpen: false });
-
-  // const [weekly, setWeekly] = useState({});
-
-  // useEffect(() => {
-  //   async function retrieveWeekly(id) {
-  //     const weeklydata = await props.getWeeklyPeakTimes(id);
-  //     setWeekly(weeklydata)
-  //   }
-  //   retrieveWeekly(props.court.id);
-  // }, [weekly])
+  useEffect(()=>{
+    console.log("Players count from court Card", playersCount);
+  })
 
   return (
     <div className="card">

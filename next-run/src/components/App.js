@@ -97,14 +97,17 @@ const App = props => {
    */
   const handleIncrementCourt = data => {
     console.log(`Court to incrmenet: ${data.courtToIncrement}`);
-    const incrementPlayersObject = playersCount;
-    incrementPlayersObject[data.courtToIncrement] += 1;
+    const name = data.courtToIncrement;
 
     // console.log(incrementPlayersObject);
-    setPlayersCount(incrementPlayersObject);
+    setPlayersCount((prevState) => {
+      let newPlayersCount = {...playersCount};
+      newPlayersCount[name] += 1;
+      return newPlayersCount
+    });
     setGeolocation(geolocation);
     setAllCourts(allCourts);
-    console.log(playersCount);
+    // console.log(playersCount);
   };
 
   /**
@@ -114,19 +117,23 @@ const App = props => {
   const handleDecrementCourt = data => {
     console.log(`Court to decrement: ${data.courtToDecrement}`);
 
-    const decrementPlayersCountObject = playersCount;
-    if (decrementPlayersCountObject[data.courtToDecrement] > 0) {
-      decrementPlayersCountObject[data.courtToDecrement] -= 1;
-    }
-
     // console.log(decrementPlayersCountObject);
-    setPlayersCount(decrementPlayersCountObject);
+    setPlayersCount((prevState) => {
+      const newPlayersCount = {...prevState};
+      if(newPlayersCount[data.courtToDecrement] > 0){
+        newPlayersCount[data.courtToDecrement] -= 1;
+      }
+
+      return newPlayersCount;
+    });
 
     setGeolocation(geolocation);
     setAllCourts(allCourts);
 
-    console.log(playersCount);
+    // console.log(playersCount);
   };
+
+  console.log("Players count from app: ", playersCount);
 
   //*Fetch curent location
   useEffect(() => {

@@ -41,45 +41,17 @@ const App = props => {
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
-  const [currentLocation, setCurrentLocation] = useState("");
+  const [currentLocation, setCurrentLocation] = useState("Empty");
   const [allMessages, setAllMessages] = useState([]);
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
 
-  const addMessageToAllMessages = (message) => {
-    setAllMessages((prevState => ([...prevState, message])));
-  }
-
   /**
-   * Updates player count of court
-   * @param {*} courtName
+   * Adds message to allMessages
+   * @param {*} message
    */
-  const updatePlayerCount = courtName => {
-    const newPlayersCountObject = playersCount;
-
-    newPlayersCountObject[courtName] += 1;
-
-    console.log(newPlayersCountObject);
-    setPlayersCount(newPlayersCountObject);
-  };
-
-  /**
-   *
-   * @param {*} courtName
-   */
-  const clearPlayerCount = courtName => {
-    if (currentLocation === courtName || currentLocation === "") {
-      const newPlayersCountObject = playersCount;
-
-      if (newPlayersCountObject[courtName] > 0) {
-        // newPlayersCountObject[courtName] -= 1;
-      }
-
-      setPlayersCount(newPlayersCountObject);
-      // setCurrentLocation("Empty");
-
-      console.log(`clear: ${courtName}`);
-    }
+  const addMessageToAllMessages = message => {
+    setAllMessages(prevState => [...prevState, message]);
   };
 
   /**
@@ -87,24 +59,75 @@ const App = props => {
    */
   const clearAllMessages = () => {
     setAllMessages([]);
-  }
+  };
+
+  /**
+   * Sends increment broadcast to pusher
+   * @param {*} courtName
+   */
+  const sendIncrementToServer = async courtName => {
+    //Send client location to server
+    const send = await axios.post("/updatePlayerCounts", {
+      courtName: courtName,
+      channel: "broadcast-location"
+    });
+
+    // console.log(send.data);
+
+    setCurrentLocation(courtName);
+  };
+
+  /**
+   * Sends decrement braodcast to pusher
+   * @param {*} courtName
+   */
+  const sendDecrementToServer = async courtName => {
+    //Send client location to server
+    const send = await axios.post("/updatePlayerCounts/leaveCourt", {
+      courtName: courtName,
+      channel: "broadcast-location"
+    });
+
+    // console.log(send.data);
+  };
+
+  /**
+   * Increment player count for court
+   * @param {*} data
+   */
+  const handleIncrementCourt = data => {
+    console.log(`Court to incrmenet: ${data.courtToIncrement}`);
+    const incrementPlayersObject = playersCount;
+    incrementPlayersObject[data.courtToIncrement] += 1;
+
+    // console.log(incrementPlayersObject);
+    setPlayersCount(incrementPlayersObject);
+
+    console.log(playersCount);
+  };
+
+  /**
+   * Decrement player count for court
+   * @param {} data
+   */
+  const handleDecrementCourt = data => {
+    console.log(`Court to decrement: ${data.courtToDecrement}`);
+
+    const decrementPlayersCountObject = playersCount;
+    if (decrementPlayersCountObject[data.courtToDecrement] > 0) {
+      decrementPlayersCountObject[data.courtToDecrement] -= 1;
+    }
+
+    // console.log(decrementPlayersCountObject);
+    setPlayersCount(decrementPlayersCountObject);
+
+    console.log(playersCount);
+  };
 
   //*Fetch curent location
   useEffect(() => {
-    const sendToServer = async (lat, lng) => {
-      //Send client location to server
-      const send = await axios.post("/updatePlayerCounts", {
-        geolocation: { lat, lng },
-        channel: "broadcast-location"
-      });
-
-      console.log(send.data);
-    };
-
     if (lat) {
       setGeolocation({ lat, lng });
-
-      sendToServer(lat, lng);
     }
   }, [lat, lng]);
 
@@ -117,35 +140,17 @@ const App = props => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
       const playersCountObject = {};
-      
+
       allCourts.data.forEach(court => {
         const courtName = court.name;
         playersCountObject[courtName] = 0;
       });
-      
+
       setPlayersCount(playersCountObject);
     };
 
     initializeAllcourts();
   }, []);
-
-  //*Court peak times
-  useEffect(() => {
-    //example function of peak times, currently prints on screen
-    //TODO: add to state?
-    const a = async () => {
-      // allCourts.forEach( async court => {
-
-      // const dailyPeakTimes = await getDailyPeakTimes(court.id);
-      // console.log(dailyPeakTimes, court.name);
-
-      const weeklyPeakTimes = await getWeeklyPeakTimes(5);
-
-      // });
-    };
-
-    // a();
-  }, [allCourts, geolocation]);
 
   //*Checks if user in a court
   useEffect(() => {
@@ -178,86 +183,87 @@ const App = props => {
       return result;
     };
 
-    const sendToServer = async courtName => {
-      //Send client location to server
-      const send = await axios.post("/updatePlayerCounts/leaveCourt", {
-        courtName: courtName,
-        channel: "broadcast-location"
-      });
+    if (allCourts.length > 0) {
+      console.log("Prev location: ", currentLocation);
+      console.log("Within court: ", withinAnyCourt());
 
-      console.log(send.data);
-    };
+      //If not in a court
+      if (withinAnyCourt() === "Empty") {
+        setCurrentLocation("Empty");
+        if (
+          currentLocation !== "Empty" &&
+          Object.keys(playersCount).length > 0
+        ) {
+          //Broadcast leaving event
+          sendDecrementToServer(currentLocation);
+        }
+      }
 
-    if (withinAnyCourt() === "Empty") {
-      if (currentLocation !== "Empty" && Object.keys(playersCount).length > 0) {
-        sendToServer(currentLocation);
+      //If in a court
+      else {
+        if (currentLocation === "Empty") {
+          console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
+          sendIncrementToServer(withinAnyCourt());
+        } else if (currentLocation !== withinAnyCourt()) {
+          console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
+          console.log(`Broadcast: Decrement court ${currentLocation}`);
+          sendIncrementToServer(withinAnyCourt());
+          sendDecrementToServer(currentLocation);
+        }
       }
     }
-    setCurrentLocation(withinAnyCourt());
-  }, [geolocation, allCourts, playersCount]);
+  }, [allCourts, geolocation]);
 
-  //* Checks if user has left a court
+  //*Initialize court location listeners
   useEffect(() => {
-    const handleDecrementCourt = data => {
-      console.log(`Court to decrement: ${data.courtToDecrement}`);
-
-      const decrementPlayersCountObject = playersCount;
-      if (decrementPlayersCountObject[data.courtToDecrement] > 0) {
-        decrementPlayersCountObject[data.courtToDecrement] -= 1;
-      }
-
-      console.log(decrementPlayersCountObject);
-      setPlayersCount(decrementPlayersCountObject);
-    };
-
     if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
-      console.log("Initializing decrement broadcast");
-
-      console.log(allCourts, playersCount);
-
       broadcastLocationChannel.bind("decrement-court", handleDecrementCourt);
+
+      broadcastLocationChannel.bind("increment-court", handleIncrementCourt);
+
       return () => {
         broadcastLocationChannel.unbind(
           "decrement-court",
           handleDecrementCourt
         );
+
+        broadcastLocationChannel.unbind(
+          "increment-court",
+          handleIncrementCourt
+        );
       };
     }
-  }, [allCourts, playersCount]);
+  }, [allCourts, playersCount, geolocation]);
 
-  const filterCourts = (courts) => {
-    setAllCourts((prevState => ([...prevState, courts])));
-
-  }
-
+  const filterCourts = courts => {
+    setAllCourts(prevState => [...prevState, courts]);
+  };
 
   return (
     <Fragment>
       <div className="App-header">
-        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />  
-        <img src={"images/Next-Run_name_logo.png"} className="App-name"/>
+        <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
+        <img src={"images/Next-Run_name_logo.png"} className="App-name" />
       </div>
 
-      <div className="Court-list-container" style={{ position: "absolute", zIndex: 10 }}>
+      <div
+        className="Court-list-container"
+        style={{ position: "absolute", zIndex: 10 }}
+      >
         <CourtListContainer
           courts={allCourts}
           getAllVisits={getAllVisits}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           playersCount={playersCount}
-
           court={allCourts[0]}
           geolocation={geolocation}
           toKebabCase={toKebabCase}
           userId={userId}
           allMessages={allMessages}
           addMessageToAllMessages={addMessageToAllMessages}
-
           filterCourts={filterCourts}
-
-
           clearAllMessages={clearAllMessages}
-
         />
       </div>
 
@@ -271,14 +277,11 @@ const App = props => {
           toKebabCase={toKebabCase}
           geolocation={geolocation}
           broadcastLocationChannel={broadcastLocationChannel}
-          updatePlayerCount={updatePlayerCount}
-          clearPlayerCount={clearPlayerCount}
           currentLocation={currentLocation}
           setPlayersCount={setPlayersCount}
           playersCount={playersCount}
         />
       </div>
-
     </Fragment>
   );
 };

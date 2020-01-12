@@ -29,51 +29,7 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
-      const google = window.google;
-      /**
-       * Return true if current position is within the court region at court
-       * @param {*} court
-       * @param {*} radius
-       * @param {*} currentPosition
-       */
-      const withinCourt = (court, radius, currentPosition) => {
-        const start = new google.maps.LatLng(court.lat, court.lng);
-        const end = new google.maps.LatLng(
-          currentPosition.lat,
-          currentPosition.lng
-        );
-        const distance = google.maps.geometry.spherical.computeDistanceBetween;
-        return distance(start, end) <= radius;
-      };
-
-      //initialize pusher listener for incoming broadcasts
-      useEffect(() => {
-        const handlleIncomingLocation = data => {
-          console.log("Incoming locaiton");
-
-          const incomingLocation = data.incomingLocation;
-          console.log(incomingLocation);
-
-          if (allCourts.length > 0) {
-            allCourts.forEach(court => {
-              if (withinCourt(court, 400, incomingLocation)) {
-                console.log(`increment: ${court.name}`);
-                updatePlayerCount(court.name);
-              } else {
-                // clearPlayerCount(court.name);
-              }
-            });
-          }
-        };
-
-        //listener for incoming geolocaitons
-        broadcastLocationChannel.bind("transit", handlleIncomingLocation);
-
-        return () => {
-          broadcastLocationChannel.unbind("transit", handlleIncomingLocation);
-        };
-      }, [allCourts, playersCount]);
-
+      
       return (
         <GoogleMap
           defaultZoom={14}

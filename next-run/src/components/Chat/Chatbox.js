@@ -38,6 +38,7 @@ const Chatbox = ({
   const onTextChange = e => {
     e.preventDefault();
     setNewMessage(e.target.value);
+    setNewMessage("");
   };
 
   const sendMessage = () => {

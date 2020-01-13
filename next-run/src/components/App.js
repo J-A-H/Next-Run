@@ -38,6 +38,8 @@ const App = props => {
   const cookies = new Cookies();
 
   //*States
+  const [filteredCourts, setfilteredCourts] = useState(null);
+  const [courtCopy, setCourtCopy] = useState([]);
   const [geolocation, setGeolocation] = useState({});
   const [allCourts, setAllCourts] = useState([]);
   const [playersCount, setPlayersCount] = useState({});
@@ -150,7 +152,9 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-
+      setfilteredCourts(allCourts.data.map((court) => court.name));
+      const allCourts1 = await getAllCourts();
+      setCourtCopy(allCourts1.data)
       const newPlayersCountReq = await axios.get("/initialialPlayerCounts");
       const newPlayersCount = newPlayersCountReq.data;
 
@@ -250,10 +254,51 @@ const App = props => {
     }
   }, [allCourts, playersCount, geolocation]);
 
+  // Filter logic
   const filterCourts = courts => {
-    setAllCourts(prevState => [...prevState, courts]);
-    //setAllCourts(courts)
+    //setCourtCopy(prevState => [...prevState, courts]);
+    setCourtCopy(courts);
+    // setAllCourts(allCourts);
   };
+
+  let low = Object.keys(playersCount).filter(
+    court => playersCount[court] < 5
+  );
+  let medium = Object.keys(playersCount).filter(
+    court => playersCount[court] > 5
+  );
+  let high = Object.keys(playersCount).filter(
+    court => playersCount[court] > 10
+  );
+
+  function showHigh() {
+    setfilteredCourts(high);
+    // props.courts = Object.keys(props.courts).filter(court =>
+    //   filteredCourts.includes(court)
+    // );
+    filterCourts(allCourts.filter(court => high.includes(court.name)));
+
+  }
+
+  function showMedium() {
+    setfilteredCourts(medium);
+    // props.courts = Object.keys(props.courts).filter(court =>
+    //   filteredCourts.includes(court)
+    // );
+    filterCourts(allCourts.filter(court => medium.includes(court.name)));
+
+  }
+
+  function showLow() {
+    setfilteredCourts(low);
+    console.log('low', low);
+
+    // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
+    filterCourts(allCourts.filter(court => low.includes(court.name)));
+    
+     
+  }
+
 
   return (
     <Fragment>
@@ -267,7 +312,7 @@ const App = props => {
         style={{ position: "absolute", zIndex: 10 }}
       >
         <CourtListContainer
-          courts={allCourts}
+          courts={courtCopy}
           getAllVisits={getAllVisits}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
@@ -280,6 +325,9 @@ const App = props => {
           addMessageToAllMessages={addMessageToAllMessages}
           filterCourts={filterCourts}
           clearAllMessages={clearAllMessages}
+          showLow={showLow}
+          showMedium={showMedium}
+          showHigh={showHigh}
         />
       </div>
 

@@ -71,7 +71,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          {/* <HeatmapLayer data={data} /> */}
+          <HeatmapLayer data={data} />
         </GoogleMap>
       );
     }

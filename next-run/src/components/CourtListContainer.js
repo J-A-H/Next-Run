@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
 
 const CourtListContainer = props => {
-  const [filteredCourts, setfilteredCourts] = useState([props.courts]);
+  // const [filteredCourts, setfilteredCourts] = useState([props.courts]);
 
   // React.useEffect(() => {
   //   setfilteredCourts(props.courts)
@@ -17,42 +17,42 @@ const CourtListContainer = props => {
   const {clearAllMessages} = props;
   
 
-  let low = Object.keys(props.playersCount).filter(
-    court => props.playersCount[court] < 5
-  );
-  let medium = Object.keys(props.playersCount).filter(
-    court => props.playersCount[court] > 5
-  );
-  let high = Object.keys(props.playersCount).filter(
-    court => props.playersCount[court] > 10
-  );
+  // let low = Object.keys(props.playersCount).filter(
+  //   court => props.playersCount[court] < 5
+  // );
+  // let medium = Object.keys(props.playersCount).filter(
+  //   court => props.playersCount[court] > 5
+  // );
+  // let high = Object.keys(props.playersCount).filter(
+  //   court => props.playersCount[court] > 10
+  // );
 
-  function showHigh() {
-    setfilteredCourts(high);
-    // props.courts = Object.keys(props.courts).filter(court =>
-    //   filteredCourts.includes(court)
-    // );
-    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+  // function showHigh() {
+  //   setfilteredCourts(high);
+  //   // props.courts = Object.keys(props.courts).filter(court =>
+  //   //   filteredCourts.includes(court)
+  //   // );
+  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
 
-  }
+  // }
 
-  function showMedium() {
-    setfilteredCourts(medium);
-    // props.courts = Object.keys(props.courts).filter(court =>
-    //   filteredCourts.includes(court)
-    // );
-    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+  // function showMedium() {
+  //   setfilteredCourts(medium);
+  //   // props.courts = Object.keys(props.courts).filter(court =>
+  //   //   filteredCourts.includes(court)
+  //   // );
+  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
 
-  }
+  // }
 
-  function showLow() {
-    setfilteredCourts(low);
+  // function showLow() {
+  //   setfilteredCourts(low);
 
-    //console.log(props.courts);
-    props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
+  //   //console.log(props.courts);
+  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
     
      
-  }
+  // }
 
   return (
     <Fragment>
@@ -80,9 +80,9 @@ const CourtListContainer = props => {
           <Container />
           <div style={{ float: "left" }}>
             <DropdownButton id="dropdown-basic-button" title="Activity Level">
-              <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
-              <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
-              <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
+              <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
+              <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
+              <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
             </DropdownButton>
           </div>
         </div>

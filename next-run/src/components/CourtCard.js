@@ -41,9 +41,9 @@ const CourtCard = props => {
     clearAllMessages();
   };
 
-  useEffect(() => {
-    console.log("Players count from court Card", playersCount);
-  })
+  // useEffect(() => {
+  //   console.log("Players count from court Card", playersCount);
+  // })
 
   const convertActivityLevel = num => {
     if (num > 10) {

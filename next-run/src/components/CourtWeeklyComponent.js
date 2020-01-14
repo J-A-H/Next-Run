@@ -6,13 +6,6 @@ const CourtWeeklyComponent = props => {
 
   return (
     <Table basic="very" celled collapsing>
-      <Table.Header>
-        {/* <Table.Row>
-          <Table.HeaderCell>Day</Table.HeaderCell>
-          <Table.HeaderCell>Activity Level</Table.HeaderCell>
-        </Table.Row> */}
-      </Table.Header>
-
       <Table.Body>
         <Table.Row>
           <Table.Cell>

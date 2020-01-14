@@ -10,7 +10,8 @@ import {
   Table,
   Comment,
   Form,
-  onActionClick
+  onActionClick,
+  Label
 } from "semantic-ui-react";
 import Chatbox from "./Chat/Chatbox";
 import CourtDetailShow from "./CourtDetailShow";
@@ -47,15 +48,25 @@ const CourtCard = props => {
 
   const convertActivityLevel = num => {
     if (num > 10) {
-      return "Hot"
+      return (
+        <Label size="medium" circular color="hot">
+          Hot
+        </Label>
+      );
+    } else if (num > 5 && num < 10) {
+      return (
+        <Label size="medium" circular color="orange">
+          Warm
+        </Label>
+      );
+    } else {
+      return (
+        <Label size="medium" circular color="blue">
+          Cold
+        </Label>
+      );
     }
-    else if (num > 5 && num < 10) {
-      return "Warm"
-    }
-    else {
-      return "Cold"
-    }
-  }
+  };
 
   return (
     <div className="card">
@@ -100,39 +111,38 @@ const CourtCard = props => {
         open={courtDetailState.open}
       >
         <div className="Court-portal">
-        <Segment>
-          <div>
-            <CourtDetailShow
-              court={court}
-              getDailyPeakTimes={getDailyPeakTimes}
-              getWeeklyPeakTimes={getWeeklyPeakTimes}
-            />
-          </div>
-        </Segment>
+          <Segment>
+            <div>
+              <CourtDetailShow
+                court={court}
+                getDailyPeakTimes={getDailyPeakTimes}
+                getWeeklyPeakTimes={getWeeklyPeakTimes}
+              />
+            </div>
+          </Segment>
         </div>
-
       </TransitionablePortal>
 
       {/* Chat portal */}
       <TransitionablePortal onClose={handleChatClose} open={chatState.chatOpen}>
-      <div className="Chat-portal">
-        <Segment>
-          <Header>Court Chat</Header>
+        <div className="Chat-portal">
+          <Segment>
+            <Header>Court Chat</Header>
 
-          <div>
-            <Chatbox
-              court={props.court}
-              geolocation={props.geolocation}
-              toKebabCase={props.toKebabCase}
-              userId={props.userId}
-              allMessages={props.allMessages}
-              addMessageToAllMessages={props.addMessageToAllMessages}
-            />
-          </div>
-        </Segment>
+            <div>
+              <Chatbox
+                court={props.court}
+                geolocation={props.geolocation}
+                toKebabCase={props.toKebabCase}
+                userId={props.userId}
+                allMessages={props.allMessages}
+                addMessageToAllMessages={props.addMessageToAllMessages}
+              />
+            </div>
+          </Segment>
         </div>
       </TransitionablePortal>
-    </div >
+    </div>
   );
 };
 

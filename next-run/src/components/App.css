@@ -51,8 +51,10 @@
     margin: 0;
     bottom: 0;
     height: 230px;
-    }
+    width: 100%;
+  }
   .Court-list {
     display: inline-flex;
+    width: 100%;
   }
 }

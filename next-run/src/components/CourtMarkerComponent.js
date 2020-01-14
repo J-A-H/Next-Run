@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Marker } from "react-google-maps";
 import {TransitionablePortal, Segment} from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
-
 import myMarker from "../../public/images/Next-Run_logo.png";
+
 /**
  * Generates a court marker  for each court
  * @param {*} param0

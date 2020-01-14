@@ -343,6 +343,8 @@ const App = props => {
           currentLocation={currentLocation}
           setPlayersCount={setPlayersCount}
           playersCount={playersCount}
+          getDailyPeakTimes={getDailyPeakTimes}
+          getWeeklyPeakTimes={getWeeklyPeakTimes}
           //testData={testData}
         />
       </div>

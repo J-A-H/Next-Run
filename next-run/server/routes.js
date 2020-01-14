@@ -213,6 +213,8 @@ router.post("/chat/send", (req, res) => {
   const channel = req.body.channel;
   const court_id = req.body.court_id;
 
+  console.log("Server: send route hit");
+
   pool.query(
     `insert into messages (court_id, content, times_stamp) values (${court_id}, '${message}', current_timestamp)`,
     (queryErr, queryRes) => {

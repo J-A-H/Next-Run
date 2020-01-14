@@ -29,12 +29,14 @@ const Chatbox = ({
   const { getTimeStamp } = helpers();
 
   const onTextChange = e => {
+    
     e.preventDefault();
     setNewMessage(e.target.value);
-    setNewMessage("");
+
   };
 
   const sendMessage = () => {
+
     if (newMessage !== "") {
       axios.post("/chat/send", {
         message: newMessage,

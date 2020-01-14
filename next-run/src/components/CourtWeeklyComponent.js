@@ -5,7 +5,7 @@ const CourtWeeklyComponent = props => {
   const { displayWeeklyActivityLevel } = props;
 
   return (
-    <div>
+    <div className="Weekly">
     <Table basic="very" celled collapsing>
       <Table.Body>
         <Table.Row>

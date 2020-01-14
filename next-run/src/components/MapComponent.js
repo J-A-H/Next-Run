@@ -52,6 +52,7 @@ const MapComponent = withScriptjs(
           defaultZoom={14}
           defaultCenter={geolocation}
           center={geolocation}
+          mapTypeId={'satellite'}
         >
           <CurrentLocationMarkerComponent geolocation={geolocation} />
           {allCourts.map(court => {

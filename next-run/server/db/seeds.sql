@@ -6,6 +6,7 @@ INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (2, 43.655862, -
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (3, 43.664321, -79.420391, 'Christie Pitts Park', '750 Bloor St W', 4.5);
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (4, 43.746711, -79.473363, 'Hoopdome', '75 Carl Hall Rd', 3.8);
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (5, 43.656711, -79.432733, 'Dufferin Grove Park', '875 Dufferin St', 4.5);
+INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (6, 43.656711, -79.432733, 'Lighthouse Labs', '662 King St W', 4.5);
 
 
 /*

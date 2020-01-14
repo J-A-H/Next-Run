@@ -1,35 +1,154 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { Header, Label, Image, Button, Card, Popup } from "semantic-ui-react";
 import CourtWeeklyComponent from "./CourtWeeklyComponent";
+import objectAssign from "object-assign";
 
 const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
+  const [state, setState] = useState({});
+  const [weeklyState, setWeeklyState] = useState({})
+
   /**
-   * Returns correct activity label according to count returned by getter functions
+   * Updates state with correct daily and weekly information
    * @param {*} count
    */
-  const displayDailyAcitivityLevel = (timeOfDay) => {
+  const initializeDailyAcitivtyLevels = async timeOfDay => {
+    const hoursData = await getDailyPeakTimes(court.id);
 
-    let variable = null;
+    console.log(hoursData);
 
-    const getData = (data) => {
-      variable = data;
+    let result = 0;
+
+    switch (timeOfDay) {
+      case "Morning":
+        // let result = 0;
+        Object.keys(hoursData).forEach(hour => {
+          if (hour >= 5 && hour <= 12) {
+            result += hoursData[hour];
+          }
+        });
+
+        setState(prevState => ({
+          ...prevState,
+          Morning: result
+        }));
+
+        break;
+      case "Afternoon":
+        // let result = 0;
+        Object.keys(hoursData).forEach(hour => {
+          if (hour >= 13 && hour <= 17) {
+            result += hoursData[hour];
+          }
+        });
+
+        setState(prevState => ({
+          ...prevState,
+          Afternoon: result
+        }));
+
+        break;
+      case "Evening":
+        // let result = 0;
+        Object.keys(hoursData).forEach(hour => {
+          if (hour >= 18 && hour <= 22) {
+            result += hoursData[hour];
+          }
+        });
+
+        setState(prevState => ({
+          ...prevState,
+          Evening: result
+        }));
+
+        break;
+      case "Night":
+        // let result = 0;
+        Object.keys(hoursData).forEach(hour => {
+          if (hour >= 23 && hour <= 4) {
+            result += hoursData[hour];
+          }
+        });
+
+        setState(prevState => ({
+          ...prevState,
+          Night: result
+        }));
+
+        break;
+    }
+  };
+
+  /**
+   * Updates state with correct weekly information
+   * @param {*} timeOfWeek
+   */
+  const initializeWeeklyActivityLevels = async () => {
+    const dailyData = await getWeeklyPeakTimes(court.id);
+
+    Object.keys(dailyData).forEach(day => {
+      let newState = {...weeklyState};
+      weeklyState[day]= dailyData[day];
+
+      setWeeklyState(newState);
+    });
+  };
+
+  const displayActivityLevel = count => {
+    if (count < 3) {
+      return (
+        <Label size="large" circular color="blue">
+          Cold
+        </Label>
+      );
+    } else if (count < 6 && count >= 3) {
+      return (
+        <Label size="large" circular color="orange">
+          Warm
+        </Label>
+      );
+    } else {
+      return (
+        <Label size="large" circular color="red">
+          Hot
+        </Label>
+      );
+    }
+  };
+
+  const displayWeeklyActivityLevel = count => {
+    if (count <= 1) {
+      return (
+        <Label size="large" circular color="blue">
+          Cold
+        </Label>
+      );
     }
 
-    getDailyPeakTimes(court.id).then(res => getData(res))
+    else if(count < 20 && count > 1 ){
+      return (
+        <Label size="large" circular color="orange">
+          Warm
+        </Label>
+      );
+    }
 
-    // switch (timeOfDay) {
-    //   case "Morning":
-    //   case "Afternoon":
-    //   case "Evening":
-    //   case "Night":
-    // }
-
-    return (
-      <Label size="large" circular color="red">
-        {variable[3]}
-      </Label>
-    );
+    else {
+      return (
+        <Label size="large" circular color="red">
+          Hot
+        </Label>
+      );
+    }
   };
+
+  useEffect(() => {
+    initializeDailyAcitivtyLevels("Morning");
+    initializeDailyAcitivtyLevels("Afternoon");
+    initializeDailyAcitivtyLevels("Evening");
+    initializeDailyAcitivtyLevels("Night");
+
+    initializeWeeklyActivityLevels();
+  }, []);
 
   return (
     <div>
@@ -52,12 +171,12 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
                 </Button>
               }
             >
-              <CourtWeeklyComponent />
+              <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
             </Popup>
             <Card.Header>Morning</Card.Header>
-            <Card.Meta>Activity level</Card.Meta>
+            <Card.Meta>Usual activity level</Card.Meta>
             <Card.Description>
-              {displayDailyAcitivityLevel("Morning")}
+              {displayActivityLevel(state.Morning)}
             </Card.Description>
           </Card.Content>
         </Card>
@@ -73,14 +192,12 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
                 </Button>
               }
             >
-              <CourtWeeklyComponent />
+               <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
             </Popup>
             <Card.Header>Afternoon</Card.Header>
-            <Card.Meta>Activity level</Card.Meta>
+            <Card.Meta>Usual activity level</Card.Meta>
             <Card.Description>
-              <Label size="large" circular color="red">
-                Hot
-              </Label>
+              {displayActivityLevel(state.Afternoon)}
             </Card.Description>
           </Card.Content>
         </Card>
@@ -96,14 +213,12 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
                 </Button>
               }
             >
-              <CourtWeeklyComponent />
+               <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
             </Popup>
             <Card.Header>Evening</Card.Header>
-            <Card.Meta>Activity level</Card.Meta>
+            <Card.Meta>Usual activity level</Card.Meta>
             <Card.Description>
-              <Label size="large" circular color="red">
-                Hot
-              </Label>
+              {displayActivityLevel(state.Evening)}
             </Card.Description>
           </Card.Content>
         </Card>
@@ -119,14 +234,12 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
                 </Button>
               }
             >
-              <CourtWeeklyComponent />
+               <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
             </Popup>
             <Card.Header>Night</Card.Header>
-            <Card.Meta>Activity level</Card.Meta>
+            <Card.Meta>Usual activity level</Card.Meta>
             <Card.Description>
-              <Label size="large" circular color="red">
-                Hot
-              </Label>
+              {displayActivityLevel(state.Night)}
             </Card.Description>
           </Card.Content>
         </Card>

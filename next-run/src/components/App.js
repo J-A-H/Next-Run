@@ -335,7 +335,7 @@ const App = props => {
           googleMapURL={MAP_URL}
           loadingElement={<div style={{ height: `400px` }} />}
           containerElement={<div style={{ height: `90vh` }} />}
-          mapElement={<div style={{ height: `400px`, width: `400px`, left:`50%` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
           allCourts={allCourts}
           toKebabCase={toKebabCase}
           geolocation={geolocation}

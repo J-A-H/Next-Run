@@ -100,7 +100,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          <HeatmapLayer data={heatMapData} options={{radius:`100`}}/>
+          <HeatmapLayer data={heatMapData} options={{radius:`50`}}/>
         </GoogleMap>
       );
     }

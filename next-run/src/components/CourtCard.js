@@ -13,6 +13,7 @@ import {
   onActionClick
 } from "semantic-ui-react";
 import Chatbox from "./Chat/Chatbox";
+import CourtDetailShow from "./CourtDetailShow";
 
 const CourtCard = props => {
   const { clearAllMessages, playersCount, court } = props;
@@ -62,7 +63,8 @@ const CourtCard = props => {
           <Card.Header>{court.name}</Card.Header>
           <Card.Meta>{props.court.address}</Card.Meta>
           <Card.Description>
-            Current Activity Level: {convertActivityLevel(playersCount[court.name])}
+            Current Activity Level:{" "}
+            {convertActivityLevel(playersCount[court.name])}
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
@@ -92,140 +94,16 @@ const CourtCard = props => {
         open={courtDetailState.open}
       >
         <div className="Court-portal">
-          <Segment>
-            <Header>{props.court.name}</Header>
-            <Table basic="very" celled collapsing>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Day</Table.HeaderCell>
-                  <Table.HeaderCell>Activity</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/lena.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>
-                        Monday
-                      <Header.Subheader>Human Resources</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>24</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>
-                        Tuesday
-                      <Header.Subheader>Fabric Design</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>Warm</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/lindsay.png"
-                        rounded
-                        size="mini"
-                      />
-
-                      <Header.Content>
-                        Wednesday
-                        <Header.Subheader>Human Resources</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>{}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-
-                      <Header.Content>
-                        Thursday
-                        <Header.Subheader>Human Resources</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>{}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-
-                      <Header.Content>
-                        Friday
-                        <Header.Subheader>Human Resources</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>{}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-
-                      <Header.Content>
-                        Saturday
-                        <Header.Subheader>Human Resources</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>{}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h4" image>
-                      <Image
-                        src="/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-
-                      <Header.Content>
-                        Sunday
-                        <Header.Subheader>Entertainment</Header.Subheader>
-                      </Header.Content>
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell>Cold</Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-          </Segment>
+        <Segment>
+          <div>
+            <CourtDetailShow/>
+          </div>
+        </Segment>
         </div>
+
       </TransitionablePortal>
 
+      {/* Chat portal */}
       <TransitionablePortal onClose={handleChatClose} open={chatState.chatOpen}>
       <div className="Chat-portal">
         <Segment>

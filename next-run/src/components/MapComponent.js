@@ -78,12 +78,18 @@ const MapComponent = withScriptjs(
         }
       }, [allCourts, playersCount]);
 
+      const defaultMapOptions = {
+        fullscreenControl: false,
+        disableDefaultUI: true
+      };
+
       return (
         <GoogleMap
           defaultZoom={14}
           defaultCenter={geolocation}
           center={geolocation}
           mapTypeId={'satellite'}
+          defaultOptions={defaultMapOptions}
         >
           <CurrentLocationMarkerComponent geolocation={geolocation} />
           {allCourts.map(court => {

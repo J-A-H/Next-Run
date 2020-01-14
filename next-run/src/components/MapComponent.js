@@ -81,6 +81,8 @@ const MapComponent = withScriptjs(
           defaultZoom={14}
           defaultCenter={geolocation}
           center={geolocation}
+          defaultClickableIcons={false}
+          clickableIcons={false}
         >
           <CurrentLocationMarkerComponent geolocation={geolocation} />
           {allCourts.map(court => {

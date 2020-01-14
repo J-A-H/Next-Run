@@ -1,10 +1,11 @@
 import React, { useEffect, Fragment } from "react";
 import { Segment, Header, Table, Image, List, Label } from "semantic-ui-react";
-
+import './CourtCard.css'
 const CourtWeeklyComponent = props => {
   const { displayWeeklyActivityLevel } = props;
 
   return (
+    <div>
     <Table basic="very" celled collapsing>
       <Table.Body>
         <Table.Row>
@@ -93,6 +94,7 @@ const CourtWeeklyComponent = props => {
         </Table.Row>
       </Table.Body>
     </Table>
+    </div>
   );
 };
 

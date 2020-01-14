@@ -7,7 +7,7 @@ import {
   withScriptjs,
   Circle,
 } from "react-google-maps";
-import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
+//import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import axios from "axios";
 

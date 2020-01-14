@@ -10,7 +10,7 @@ import {
 import CourtDetailShow from "./CourtDetailShow";
 import myMarker from "../../public/images/Next-Run_logo_marker.png";
 
-import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel"
+import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
 
 /**
  * Generates a court marker  for each court
@@ -43,15 +43,22 @@ const CourtMarkerComponent = ({
 
   return (
     <div>
-      <Marker
-        position={location}
-        onClick={handleMarkerClick}
-        defaultIcon={myMarker}
-      >
-        <InfoWindow>
-          <div>ANDY</div>
-        </InfoWindow>
-      </Marker>
+      <Popup
+        header={court.name}
+        trigger={
+          <MarkerWithLabel
+            position={location}
+            labelAnchor={{ x: 0, y: 100 }}
+            defaultIcon={myMarker}
+            onClick={handleMarkerClick}
+          >
+            <Label as="a" color="teal" image>
+              {court.name}
+              <Label.Detail>Friend</Label.Detail>
+            </Label>
+          </MarkerWithLabel>
+        }
+      />
 
       <TransitionablePortal
         onClose={handleMarkerClose}

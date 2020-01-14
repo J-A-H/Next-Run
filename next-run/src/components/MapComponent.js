@@ -32,34 +32,49 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
-      const points = [
-        { location: [-1.131592, 52.629729], weight: 2 },
-        { location: [-1.141592, 52.629729], weight: 3 },
-        { location: [-1.161592, 53.629729], weight: 1 },
-        { location: [43.649785, -78.364159], weight: 5 },
-        { location: [44.649785, -79.364159], weight: 5 }
-      ];
-
-
       const [heatMapData, setHeatMapData] = useState([]);
 
       const initializeHeatMapData = (allCourts, playersCount) => {
         const newHeatMapData = [];
 
         allCourts.forEach(court => {
-          const newHeatMapPoint = { location: null, weight: null };
-          const googlePoint = new window.google.maps.LatLng(
-            court.lat,
-            court.lng
-          );
+          var y0 = Number(court.lat);
+          var x0 = Number(court.lng);
+          var rd = 200 / 111300;
+          for(let i=0; i<playersCount[court.name]; i++) {
+            let newHeatMapPoint = { location: null, weight: null };
 
-          //Sets location
-          newHeatMapPoint.location = googlePoint;
-          newHeatMapPoint.weight = playersCount[court.name]* 5;
+            var u = Math.random();
+            var v = Math.random();
 
-          console.log(newHeatMapPoint);
+            var w = rd * Math.sqrt(u);
+            var t = 2 * Math.PI * v;
+            var x = w * Math.cos(t);
+            var y = w * Math.sin(t);
 
-          newHeatMapData.push(newHeatMapPoint);
+            let latitude = y + y0;
+            console.log(latitude)
+            let longitude = x + x0;
+            console.log(longitude)
+
+            const googlePoint = new window.google.maps.LatLng(
+              //  court.lat + Math.cos(angle) * 400,
+              //  court.lng + Math.sin(angle) * 400
+              //court.lat,
+              //court.lng
+              latitude,
+              longitude
+            );
+
+            //Sets location
+            newHeatMapPoint.location = googlePoint;
+            //newHeatMapPoint.weight = playersCount[court.name] * 1;
+            newHeatMapPoint.weight = 1;
+
+            console.log(newHeatMapPoint);
+
+            newHeatMapData.push(newHeatMapPoint);
+          }
         });
 
         console.log(newHeatMapData);
@@ -83,12 +98,29 @@ const MapComponent = withScriptjs(
         disableDefaultUI: true
       };
 
+      var gradient = [
+        "rgba(0, 255, 255, 0)",
+        "rgba(0, 255, 255, 1)",
+        "rgba(0, 191, 255, 1)",
+        "rgba(0, 127, 255, 1)",
+        "rgba(0, 63, 255, 1)",
+        "rgba(0, 0, 255, 1)",
+        "rgba(0, 0, 223, 1)",
+        "rgba(0, 0, 191, 1)",
+        "rgba(0, 0, 159, 1)",
+        "rgba(0, 0, 127, 1)",
+        "rgba(63, 0, 91, 1)",
+        "rgba(127, 0, 63, 1)",
+        "rgba(191, 0, 31, 1)",
+        "rgba(255, 0, 0, 1)"
+      ];
+
       return (
         <GoogleMap
           defaultZoom={14}
           defaultCenter={geolocation}
           center={geolocation}
-          mapTypeId={'satellite'}
+          mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
         >
           <CurrentLocationMarkerComponent geolocation={geolocation} />
@@ -109,7 +141,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          <HeatmapLayer data={heatMapData} options={{radius:`50`}}/>
+          <HeatmapLayer data={heatMapData} options={{ radius: `50` }} />
         </GoogleMap>
       );
     }

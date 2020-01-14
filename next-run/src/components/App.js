@@ -14,7 +14,7 @@ import { withScriptjs } from "react-google-maps";
 
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;
-const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry`;
+const MAP_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry&libraries=visualization`;
 
 //PUSHER________________
 const Pusher = require("pusher-js");
@@ -333,7 +333,7 @@ const App = props => {
       <div style={{ zIndex: 1 }}>
         <MapComponent
           googleMapURL={MAP_URL}
-          loadingElement={<div style={{ height: `100%` }} />}
+          loadingElement={<div style={{ height: `400px` }} />}
           containerElement={<div style={{ height: `90vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}
           allCourts={allCourts}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Header, Form, Button, Comment, Segment } from "semantic-ui-react";
-
+import '../CourtCard.css'
 import helpers from "../../helpers/helpers";
 
 //PUSHER________________
@@ -11,13 +11,6 @@ const pusherObject = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
   cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
   disableStats: true
 });
-
-//CSS
-
-const commentStyle = {
-  padding: "1%",
-  display: "table"
-};
 
 //* Functions
 const Chatbox = ({
@@ -118,21 +111,12 @@ const Chatbox = ({
 
   return (
     <div>
-      <Comment.Group style={commentStyle}>
+      <Comment.Group>
         <Header as="h3" dividing>
           {room}
         </Header>
 
-        <div
-          style={{
-            overflow: "auto",
-            height: '52vh',
-            padding: '10px',
-            border: "solid",
-            borderWidth: 'thin',
-            borderRadius: '5px'
-          }}>
-
+        <div className="Chat-history-box">
           {allMessages.length > 0 && messageItems}
           <div ref={messagesEndRef} />
         </div>

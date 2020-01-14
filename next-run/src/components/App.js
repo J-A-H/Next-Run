@@ -264,7 +264,6 @@ const App = props => {
 
       <div
         className="Court-list-container"
-        style={{ position: "absolute", zIndex: 10 }}
       >
         <CourtListContainer
           courts={allCourts}

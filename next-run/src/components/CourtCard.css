@@ -6,3 +6,59 @@
 .card:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.Court-portal {
+  position: fixed;
+  left: 350px;
+  top: 11%;
+  right: 25%;
+  bottom: 10%;
+  height: 70vh;
+  z-index: 1000;
+}
+
+.Chat-portal {
+  position: fixed;
+  width: 23%;
+  left: 76%;
+  top: 11%;
+  right: 10px;
+  bottom: 10px;
+  z-index: 10001;
+}
+
+.Chat-history-box {
+  overflow: auto;
+  max-height: 52vh;
+  height: 52vh;
+  padding: 10px;
+  border: solid;
+  border-width: thin;
+  border-radius: 5px;
+  max-width: 200%;
+}
+
+@media only screen and (max-width: 600px) {
+  .Court-portal {
+    position: fixed;
+    margin: 1%;
+    width: 305px;
+    top: 10%;
+    left: 0%;
+    height: 57vh;
+    z-index: 10001;
+    overflow: auto;
+  }
+  .Chat-portal {
+    position: fixed;
+    margin: 1%;
+    width: 305px;
+    top: 10%;
+    left: 0%;
+    height: 57vh;
+    z-index: 10001;
+  }
+  .Chat-history-box {
+    height: 27vh;
+  }
+}

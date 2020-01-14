@@ -34,18 +34,18 @@ const CourtCard = props => {
     clearAllMessages();
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("Players count from court Card", playersCount);
   })
 
   const convertActivityLevel = num => {
-    if (num > 10){
+    if (num > 10) {
       return "Hot"
     }
-    else if (num > 5 && num < 10){
+    else if (num > 5 && num < 10) {
       return "Warm"
     }
-    else{
+    else {
       return "Cold"
     }
   }
@@ -91,160 +91,144 @@ const CourtCard = props => {
         onClose={handleDetailClose}
         open={courtDetailState.open}
       >
-        <Segment
-          style={{
-            position: "fixed",
-            left: "350px",
-            top: "10%",
-            right: "25%",
-            bottom: "10%",
-            height: "70vh",
-            zIndex: 1000
-          }}
-        >
-          <Header>{props.court.name}</Header>
-          <Table basic="very" celled collapsing>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Day</Table.HeaderCell>
-                <Table.HeaderCell>Activity</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+        <div className="Court-portal">
+          <Segment>
+            <Header>{props.court.name}</Header>
+            <Table basic="very" celled collapsing>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Day</Table.HeaderCell>
+                  <Table.HeaderCell>Activity</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/lena.png"
-                      rounded
-                      size="mini"
-                    />
-                    <Header.Content>
-                      Monday
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/lena.png"
+                        rounded
+                        size="mini"
+                      />
+                      <Header.Content>
+                        Monday
                       <Header.Subheader>Human Resources</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>24</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/matthew.png"
-                      rounded
-                      size="mini"
-                    />
-                    <Header.Content>
-                      Tuesday
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>24</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
+                      <Header.Content>
+                        Tuesday
                       <Header.Subheader>Fabric Design</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>Warm</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/lindsay.png"
-                      rounded
-                      size="mini"
-                    />
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>Warm</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/lindsay.png"
+                        rounded
+                        size="mini"
+                      />
 
-                    <Header.Content>
-                      Wednesday
+                      <Header.Content>
+                        Wednesday
                         <Header.Subheader>Human Resources</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>{}</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/matthew.png"
-                      rounded
-                      size="mini"
-                    />
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>{}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
 
-                    <Header.Content>
-                      Thursday
+                      <Header.Content>
+                        Thursday
                         <Header.Subheader>Human Resources</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>{}</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/matthew.png"
-                      rounded
-                      size="mini"
-                    />
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>{}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
 
-                    <Header.Content>
-                      Friday
+                      <Header.Content>
+                        Friday
                         <Header.Subheader>Human Resources</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>{}</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/matthew.png"
-                      rounded
-                      size="mini"
-                    />
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>{}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
 
-                    <Header.Content>
-                      Saturday
+                      <Header.Content>
+                        Saturday
                         <Header.Subheader>Human Resources</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>{}</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Header as="h4" image>
-                    <Image
-                      src="/images/avatar/small/matthew.png"
-                      rounded
-                      size="mini"
-                    />
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>{}</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h4" image>
+                      <Image
+                        src="/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
 
-                    <Header.Content>
-                      Sunday
+                      <Header.Content>
+                        Sunday
                         <Header.Subheader>Entertainment</Header.Subheader>
-                    </Header.Content>
-                  </Header>
-                </Table.Cell>
-                <Table.Cell>Cold</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </Segment>
+                      </Header.Content>
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell>Cold</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+          </Segment>
+        </div>
       </TransitionablePortal>
 
       <TransitionablePortal onClose={handleChatClose} open={chatState.chatOpen}>
-        <Segment
-          style={{
-            position: "fixed",
-            left: "76%",
-            top: "10%",
-            right: "10px",
-            bottom: "10px",
-            zIndex: 1001
-          }}
-        >
+      <div className="Chat-portal">
+        <Segment>
           <Header>Court Chat</Header>
 
           <div>
@@ -258,8 +242,9 @@ const CourtCard = props => {
             />
           </div>
         </Segment>
+        </div>
       </TransitionablePortal>
-    </div>
+    </div >
   );
 };
 

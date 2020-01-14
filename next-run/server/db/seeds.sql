@@ -1,7 +1,7 @@
 /*
 Court seeds
 */
-INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (1, 43.649785, -79.364159, 'David Crombie Park Basketball Court', '115 Scadding Ave', 4.6);
+INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (1, 43.649785, -79.364159, 'David Crombie Park', '115 Scadding Ave', 4.6);
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (2, 43.655862, -79.354595, 'Underpass Park', '29 Lower River Street', 4.5);
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (3, 43.664321, -79.420391, 'Christie Pitts Park', '750 Bloor St W', 4.5);
 INSERT INTO courts (id, lat, lng, name, address, rating) VALUES (4, 43.746711, -79.473363, 'Hoopdome', '75 Carl Hall Rd', 3.8);

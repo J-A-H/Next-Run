@@ -16,7 +16,13 @@ import Chatbox from "./Chat/Chatbox";
 import CourtDetailShow from "./CourtDetailShow";
 
 const CourtCard = props => {
-  const { clearAllMessages, playersCount, court } = props;
+  const {
+    clearAllMessages,
+    playersCount,
+    court,
+    getWeeklyPeakTimes,
+    getDailyPeakTimes
+  } = props;
 
   const [cardPlayersCount, setCardPlayersCount] = useState({});
 
@@ -102,9 +108,12 @@ const CourtCard = props => {
             zIndex: 1000
           }}
         >
-
           <div>
-            <CourtDetailShow/>
+            <CourtDetailShow
+              court={court}
+              getDailyPeakTimes={getDailyPeakTimes}
+              getWeeklyPeakTimes={getWeeklyPeakTimes}
+            />
           </div>
         </Segment>
       </TransitionablePortal>

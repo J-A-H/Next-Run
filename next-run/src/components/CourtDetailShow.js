@@ -2,8 +2,35 @@ import React, { useEffect, Fragment } from "react";
 import { Header, Label, Image, Button, Card, Popup } from "semantic-ui-react";
 import CourtWeeklyComponent from "./CourtWeeklyComponent";
 
-const CourtDetailShow = () => {
-  
+const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
+  /**
+   * Returns correct activity label according to count returned by getter functions
+   * @param {*} count
+   */
+  const displayDailyAcitivityLevel = (timeOfDay) => {
+
+    let variable = null;
+
+    const getData = (data) => {
+      variable = data;
+    }
+
+    getDailyPeakTimes(court.id).then(res => getData(res))
+
+    // switch (timeOfDay) {
+    //   case "Morning":
+    //   case "Afternoon":
+    //   case "Evening":
+    //   case "Night":
+    // }
+
+    return (
+      <Label size="large" circular color="red">
+        {variable[3]}
+      </Label>
+    );
+  };
+
   return (
     <div>
       <Header as="h2">
@@ -11,7 +38,7 @@ const CourtDetailShow = () => {
           circular
           src="https://img.icons8.com/dotty/80/000000/basketball-2.png"
         />
-        David Crombie Court
+        {court.name}
       </Header>
       <Card.Group>
         <Card>
@@ -30,9 +57,7 @@ const CourtDetailShow = () => {
             <Card.Header>Morning</Card.Header>
             <Card.Meta>Activity level</Card.Meta>
             <Card.Description>
-              <Label size="large" circular color="red">
-                Hot
-              </Label>
+              {displayDailyAcitivityLevel("Morning")}
             </Card.Description>
           </Card.Content>
         </Card>

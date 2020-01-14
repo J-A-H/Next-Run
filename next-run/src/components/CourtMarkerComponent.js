@@ -9,7 +9,7 @@ import myMarker from "../../public/images/Next-Run_logo.png"
    * @param {*} param0
    */
   const CourtMarkerComponent = ({ location }) => {
-    return <Marker position={location} defaultIcon ={myMarker}/>;
+    return <Marker position={location} />;
   };
 
 export default CourtMarkerComponent;

@@ -32,6 +32,8 @@
 .Court-list-container {
   margin: 10px;
   height: 70vh;
+  position: absolute;
+  z-index: 10;
 }
 
 .Court-list-container:hover {
@@ -41,4 +43,16 @@
 .Court-list {
   margin-top: 21%;
   justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .Court-list-container {
+    position: fixed;
+    margin: 0;
+    bottom: 0;
+    height: 230px;
+    }
+  .Court-list {
+    display: inline-flex;
+  }
 }

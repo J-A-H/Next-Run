@@ -5,11 +5,10 @@ import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Circle,
+  Circle
 } from "react-google-maps";
-import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
-import axios from "axios";
+import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import CurrentLocationMarkerComponent from "./CurrentLocationMarkerComponent";
 import CourtMarkerComponent from "./CourtMarkerComponent";
@@ -31,21 +30,51 @@ const MapComponent = withScriptjs(
       playersCount,
       setPlayersCount
     }) => {
-      // const points = [
-      //   // {location:[-1.131592, 52.629729], weight: 2},
-      //   // {location:[-1.141592, 52.629729], weight: 3},
-      //   // {location:[-1.161592, 53.629729], weight: 1},
-      //   { location: [43.649785, -78.364159], weight: 5 },
-      //   { location: [44.649785, -79.364159], weight: 5 }
-      // ];
-
-      var data = [
-        new window.google.maps.LatLng(43.649785, -78.3641591),
-        new window.google.maps.LatLng(42.649785, -78.3641591),
-        new window.google.maps.LatLng(43.649785, -79.3641591),
-        new window.google.maps.LatLng(43.649785, -77.3641591),
-        new window.google.maps.LatLng(44.649785, -78.3641591)
+      const points = [
+        { location: [-1.131592, 52.629729], weight: 2 },
+        { location: [-1.141592, 52.629729], weight: 3 },
+        { location: [-1.161592, 53.629729], weight: 1 },
+        { location: [43.649785, -78.364159], weight: 5 },
+        { location: [44.649785, -79.364159], weight: 5 }
       ];
+
+
+      const [heatMapData, setHeatMapData] = useState([]);
+
+      const initializeHeatMapData = (allCourts, playersCount) => {
+        const newHeatMapData = [];
+
+        allCourts.forEach(court => {
+          const newHeatMapPoint = { location: null, weight: null };
+          const googlePoint = new window.google.maps.LatLng(
+            court.lat,
+            court.lng
+          );
+
+          //Sets location
+          newHeatMapPoint.location = googlePoint;
+          newHeatMapPoint.weight = playersCount[court.name]* 5;
+
+          console.log(newHeatMapPoint);
+
+          newHeatMapData.push(newHeatMapPoint);
+        });
+
+        console.log(newHeatMapData);
+
+        setHeatMapData(newHeatMapData);
+      };
+
+      useEffect(() => {
+        if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
+          console.log(allCourts);
+          console.log(playersCount);
+
+          //Both states are populated
+
+          initializeHeatMapData(allCourts, playersCount);
+        }
+      }, [allCourts, playersCount]);
 
       return (
         <GoogleMap
@@ -71,7 +100,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          {/* <HeatmapLayer data={data} /> */}
+          <HeatmapLayer data={heatMapData} options={{radius:`100`}}/>
         </GoogleMap>
       );
     }

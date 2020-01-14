@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Marker } from "react-google-maps";
 import {TransitionablePortal, Segment} from "semantic-ui-react";
 import CourtDetailShow from "./CourtDetailShow";
-import myMarker from "../../public/images/Next-Run_logo.png";
+import myMarker from "../../public/images/Next-Run_logo_marker.png";
 
 /**
  * Generates a court marker  for each court
@@ -30,7 +30,7 @@ const CourtMarkerComponent = ({ location, court, getDailyPeakTimes, getWeeklyPea
 
   return (
     <div>
-      <Marker position={location} onClick={handleMarkerClick} />
+      <Marker position={location} onClick={handleMarkerClick} defaultIcon= {myMarker}/>
 
       <TransitionablePortal
         onClose={handleMarkerClose}

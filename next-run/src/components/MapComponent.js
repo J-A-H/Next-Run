@@ -24,13 +24,9 @@ const MapComponent = withScriptjs(
     ({
       allCourts,
       geolocation,
-      toKebabCase,
-      broadcastLocationChannel,
-      updatePlayerCount,
-      clearPlayerCount,
-      currentLocation,
       playersCount,
-      setPlayersCount
+      getDailyPeakTimes,
+      getWeeklyPeakTimes
     }) => {
       const [heatMapData, setHeatMapData] = useState([]);
 
@@ -128,7 +124,7 @@ const MapComponent = withScriptjs(
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
             return (
               <Fragment key={court.id}>
-                <CourtMarkerComponent location={coords} />
+                <CourtMarkerComponent location={coords} court={court} getDailyPeakTimes={getDailyPeakTimes} getWeeklyPeakTimes={getWeeklyPeakTimes} />
                 <Circle
                   center={coords}
                   radius={400}

@@ -35,19 +35,21 @@ const CourtCard = props => {
     clearAllMessages();
   };
 
-  // useEffect(()=>{
-  //   console.log("Players count from court Card", playersCount);
-  // })
+  useEffect(() => {
+    console.log("Players count from court Card", playersCount);
+  })
 
   const convertActivityLevel = num => {
     if (num > 10) {
-      return "Hot";
-    } else if (num > 5 && num < 10) {
-      return "Warm";
-    } else {
-      return "Cold";
+      return "Hot"
     }
-  };
+    else if (num > 5 && num < 10) {
+      return "Warm"
+    }
+    else {
+      return "Cold"
+    }
+  }
 
   return (
     <div className="card">
@@ -91,36 +93,20 @@ const CourtCard = props => {
         onClose={handleDetailClose}
         open={courtDetailState.open}
       >
-        <Segment
-          style={{
-            position: "fixed",
-            left: "350px",
-            top: "10%",
-            right: "25%",
-            bottom: "10%",
-            height: "70vh",
-            zIndex: 1000
-          }}
-        >
-
+        <div className="Court-portal">
+        <Segment>
           <div>
             <CourtDetailShow/>
           </div>
         </Segment>
+        </div>
+
       </TransitionablePortal>
 
       {/* Chat portal */}
       <TransitionablePortal onClose={handleChatClose} open={chatState.chatOpen}>
-        <Segment
-          style={{
-            position: "fixed",
-            left: "76%",
-            top: "10%",
-            right: "10px",
-            bottom: "10px",
-            zIndex: 1001
-          }}
-        >
+      <div className="Chat-portal">
+        <Segment>
           <Header>Court Chat</Header>
 
           <div>
@@ -134,8 +120,9 @@ const CourtCard = props => {
             />
           </div>
         </Segment>
+        </div>
       </TransitionablePortal>
-    </div>
+    </div >
   );
 };
 

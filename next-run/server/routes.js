@@ -36,6 +36,9 @@ pool
       globalPlayersCount[court.name] = 0;
     });
 
+    globalPlayersCount["David Crombie Park Basketball Court"] = 5;
+    globalPlayersCount["Hoopdome"] = 12;
+
     console.log(globalPlayersCount);
   })
   .catch(err => {

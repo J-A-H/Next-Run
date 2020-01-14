@@ -49,7 +49,7 @@ const CourtCard = props => {
   const convertActivityLevel = num => {
     if (num > 10) {
       return (
-        <Label size="medium" circular color="hot">
+        <Label size="medium" circular color="red">
           Hot
         </Label>
       );

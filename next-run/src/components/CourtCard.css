@@ -1,6 +1,7 @@
 .card {
   margin: 5px;
   width: 292px;
+  height: 153px;
 }
 
 .card:hover {
@@ -13,8 +14,14 @@
   top: 11%;
   right: 25%;
   bottom: 10%;
-  height: 70vh;
+  max-height: 70vh;
   z-index: 1000;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.Weekly {
+
 }
 
 .Chat-portal {
@@ -22,43 +29,48 @@
   width: 23%;
   left: 76%;
   top: 11%;
+  max-height: 90vh;
   right: 10px;
   bottom: 10px;
   z-index: 10001;
+  border-radius: 5px;
 }
 
 .Chat-history-box {
-  overflow: auto;
-  max-height: 52vh;
-  height: 52vh;
+  height: 40vh;
   padding: 10px;
   border: solid;
   border-width: thin;
   border-radius: 5px;
-  max-width: 200%;
+  background-color: rgba(139, 206, 239, 0.2);
 }
 
 @media only screen and (max-width: 600px) {
   .Court-portal {
     position: fixed;
     margin: 1%;
-    width: 305px;
+    width: 100%;
     top: 10%;
     left: 0%;
-    height: 57vh;
-    z-index: 10001;
+    right: 0%;
+    bottom: 170px;
+    /* z-index: 10001; */
     overflow: auto;
   }
   .Chat-portal {
     position: fixed;
     margin: 1%;
-    width: 305px;
+    width: 98%;
     top: 10%;
     left: 0%;
-    height: 57vh;
+    right: 0px;
+    bottom: 170px;
     z-index: 10001;
+    overflow: auto;
   }
   .Chat-history-box {
-    height: 27vh;
+    height: 30vh;
+    bottom: 170px;
+    overflow: auto;
   }
 }

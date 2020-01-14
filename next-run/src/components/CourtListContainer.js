@@ -5,6 +5,7 @@ import { Container } from "semantic-ui-react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
+import './CourtListContainer.css'
 
 const CourtListContainer = props => {
   // const [filteredCourts, setfilteredCourts] = useState([props.courts]);
@@ -56,27 +57,8 @@ const CourtListContainer = props => {
 
   return (
     <Fragment>
-      <div
-        style={{
-          position: "relative",
-          zIndex: 3,
-          width: 310,
-          overflow: "auto",
-          height: "70vh",
-          backgroundColor: "rgba(52, 52, 52, 0.5)"
-        }}
-      >
-        <div
-          className="blue filter bar"
-          style={{
-            position: "fixed",
-            backgroundColor: "rgb(0, 153, 255, 1)",
-            zIndex: "4",
-            height: 60,
-            width: 310,
-            padding: "15px"
-          }}
-        >
+      <div className="Container-List">
+        <div className="blue-filter-bar">
           <Container />
           <div style={{ float: "left" }}>
             <DropdownButton id="dropdown-basic-button" title="Activity Level">

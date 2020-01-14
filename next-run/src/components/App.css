@@ -13,10 +13,11 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #222; 
   height: 10vh;
   padding: 20px;
   color: white;
+  z-index: 1;
 }
 
 .App-intro {
@@ -29,32 +30,14 @@
   100% { transform: translateY(0); }
 }
 
-.Court-list-container {
-  margin: 10px;
-  height: 70vh;
-  position: absolute;
-  z-index: 10;
-}
-
-.Court-list-container:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 .Court-list {
-  margin-top: 21%;
+  margin-top: 27%;
   justify-content: center;
 }
 
 @media only screen and (max-width: 600px) {
-  .Court-list-container {
-    position: fixed;
-    margin: 0;
-    bottom: 0;
-    height: 230px;
-    width: 100%;
-  }
   .Court-list {
     display: inline-flex;
-    width: 100%;
+    margin-top: 0;
   }
 }

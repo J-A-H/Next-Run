@@ -8,6 +8,8 @@ import {
   Circle
 } from "react-google-maps";
 
+//import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
+
 import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import CurrentLocationMarkerComponent from "./CurrentLocationMarkerComponent";

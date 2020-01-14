@@ -25,7 +25,7 @@ const CourtCard = props => {
   const [chatState, setChatState] = useState({ chatOpen: false });
 
   const handleDetailClick = () =>
-    setCourtDetailState(prevState => ({ open: !prevState.chatOpen }));
+    setCourtDetailState(prevState => ({ open: !prevState.open }));
   const handleDetailClose = () => setCourtDetailState({ open: false });
 
   const handleChatClick = () =>

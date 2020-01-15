@@ -55,19 +55,6 @@ const CourtListContainer = props => {
   return (
     <Fragment>
       <div className="Container-List">
-        <div className="blue-filter-bar">
-          <Container />
-          <div>
-            <DropdownButton id="dropdown-basic-button" title="Activity Level">
-              <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
-              <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
-              <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
-            </DropdownButton>
-          </div>
-          <Container style={{marginLeft: '10px'}}>
-            <Button primary color="blue" onClick={props.clearFilter}>Clear Filter</Button>
-          </Container>
-        </div>
         <div className="Court-list">
           <CourtList
             playersCount={props.playersCount}

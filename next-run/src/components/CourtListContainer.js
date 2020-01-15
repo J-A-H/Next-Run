@@ -1,11 +1,11 @@
 import React, { Component, Fragment, useState } from "react";
 import CourtList from "./CourtList";
 import ActivityLevelFilterList from "./ActivityLevelFilterList";
-import { Container } from "semantic-ui-react";
+import { Container, Button, Segment } from "semantic-ui-react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
-import './CourtListContainer.css'
+import "./CourtListContainer.css";
 
 const CourtListContainer = props => {
   // const [filteredCourts, setfilteredCourts] = useState([props.courts]);
@@ -14,51 +14,14 @@ const CourtListContainer = props => {
   //   setfilteredCourts(props.courts)
   // }, [filteredCourts]);
 
-
   const { clearAllMessages } = props;
 
 
-  // let low = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] < 5
-  // );
-  // let medium = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] > 5
-  // );
-  // let high = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] > 10
-  // );
 
-  // function showHigh() {
-  //   setfilteredCourts(high);
-  //   // props.courts = Object.keys(props.courts).filter(court =>
-  //   //   filteredCourts.includes(court)
-  //   // );
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-
-  // }
-
-  // function showMedium() {
-  //   setfilteredCourts(medium);
-  //   // props.courts = Object.keys(props.courts).filter(court =>
-  //   //   filteredCourts.includes(court)
-  //   // );
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-
-  // }
-
-  // function showLow() {
-  //   setfilteredCourts(low);
-
-  //   //console.log(props.courts);
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-
-
-  // }
 
   return (
     <Fragment>
       <div className="Container-List">
-
         <div className="Court-list">
           <CourtList
             playersCount={props.playersCount}

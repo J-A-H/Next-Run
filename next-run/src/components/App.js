@@ -4,7 +4,7 @@ import "./App.css";
 import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -52,13 +52,17 @@ const App = props => {
   const [allMessages, setAllMessages] = useState([]);
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
-
+  const [clickedCourt, setClickedCourt] = useState(null);
   /**
    * Adds message to allMessages
    * @param {*} message
    */
   const addMessageToAllMessages = message => {
     setAllMessages(prevState => [...prevState, message]);
+  };
+
+  const setClicked = id => {
+    setClickedCourt(id);
   };
 
   /**
@@ -80,7 +84,7 @@ const App = props => {
     });
 
     // console.log(send.data);
-    cookies.set('prev_location', courtName);
+    cookies.set("prev_location", courtName);
     setCurrentLocation(courtName);
   };
 
@@ -107,10 +111,12 @@ const App = props => {
     const name = data.courtToIncrement;
 
     // console.log(incrementPlayersObject);
-    setPlayersCount((prevState) => {
+
+    setPlayersCount(prevState => {
+
       let newPlayersCount = { ...playersCount };
       newPlayersCount[name] += 1;
-      return newPlayersCount
+      return newPlayersCount;
     });
     setGeolocation(geolocation);
     setAllCourts(allCourts);
@@ -125,7 +131,9 @@ const App = props => {
     console.log(`Court to decrement: ${data.courtToDecrement}`);
 
     // console.log(decrementPlayersCountObject);
-    setPlayersCount((prevState) => {
+
+    setPlayersCount(prevState => {
+
       const newPlayersCount = { ...prevState };
       if (newPlayersCount[data.courtToDecrement] > 0) {
         newPlayersCount[data.courtToDecrement] -= 1;
@@ -157,9 +165,9 @@ const App = props => {
     const initializeAllcourts = async () => {
       const allCourts = await getAllCourts();
       setAllCourts(allCourts.data);
-      setfilteredCourts(allCourts.data.map((court) => court.name));
+      setfilteredCourts(allCourts.data.map(court => court.name));
       const allCourts1 = await getAllCourts();
-      setCourtCopy(allCourts1.data)
+      setCourtCopy(allCourts1.data);
       const newPlayersCountReq = await axios.get("/initialialPlayerCounts");
       const newPlayersCount = newPlayersCountReq.data;
 
@@ -224,10 +232,11 @@ const App = props => {
         if (currentLocation === "Empty") {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
 
-          if (cookies.get('prev_location') !== withinAnyCourt()) {
-            sendIncrementToServer(withinAnyCourt());
-          };
 
+          if (cookies.get("prev_location") !== withinAnyCourt()) {
+
+            sendIncrementToServer(withinAnyCourt());
+          }
         } else if (currentLocation !== withinAnyCourt()) {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
           console.log(`Broadcast: Decrement court ${currentLocation}`);
@@ -266,11 +275,9 @@ const App = props => {
     // setAllCourts(allCourts);
   };
 
-  let low = Object.keys(playersCount).filter(
-    court => playersCount[court] < 5
-  );
+  let low = Object.keys(playersCount).filter(court => playersCount[court] < 5);
   let medium = Object.keys(playersCount).filter(
-    court => playersCount[court] > 5
+    court => playersCount[court] > 5 && playersCount[court] < 10
   );
   let high = Object.keys(playersCount).filter(
     court => playersCount[court] > 10
@@ -282,7 +289,6 @@ const App = props => {
     //   filteredCourts.includes(court)
     // );
     filterCourts(allCourts.filter(court => high.includes(court.name)));
-
   }
 
   function showMedium() {
@@ -291,16 +297,14 @@ const App = props => {
     //   filteredCourts.includes(court)
     // );
     filterCourts(allCourts.filter(court => medium.includes(court.name)));
-
   }
 
   function showLow() {
     setfilteredCourts(low);
-    console.log('low', low);
+    console.log("low", low);
 
     // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
     filterCourts(allCourts.filter(court => low.includes(court.name)));
-
 
   }
 
@@ -319,9 +323,7 @@ const App = props => {
           </DropdownButton>
         </div>
 
-      <div
-        className="Court-list-container"
-      >
+      <div className="Court-list-container">
         <CourtListContainer
           courts={courtCopy}
           getAllVisits={getAllVisits}
@@ -339,11 +341,13 @@ const App = props => {
           showLow={showLow}
           showMedium={showMedium}
           showHigh={showHigh}
+          setClicked={setClicked}
         />
       </div>
 
       <div style={{ zIndex: 1 }}>
         <MapComponent
+          clickedCourt={clickedCourt}
           googleMapURL={MAP_URL}
           loadingElement={<div style={{ height: `400px` }} />}
           containerElement={<div style={{ height: `90vh` }} />}

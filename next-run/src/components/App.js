@@ -296,6 +296,10 @@ const App = props => {
     filterCourts(allCourts.filter(court => low.includes(court.name)));
   }
 
+  function clearFilter(){
+    filterCourts(allCourts);
+  }
+
   return (
     <Fragment>
       <div className="App-header">
@@ -322,6 +326,7 @@ const App = props => {
           showMedium={showMedium}
           showHigh={showHigh}
           setClicked={setClicked}
+          clearFilter={clearFilter}
         />
       </div>
 

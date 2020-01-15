@@ -1,11 +1,11 @@
 import React, { Component, Fragment, useState } from "react";
 import CourtList from "./CourtList";
 import ActivityLevelFilterList from "./ActivityLevelFilterList";
-import { Container } from "semantic-ui-react";
+import { Container, Button, Segment } from "semantic-ui-react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
-import './CourtListContainer.css'
+import "./CourtListContainer.css";
 
 const CourtListContainer = props => {
   // const [filteredCourts, setfilteredCourts] = useState([props.courts]);
@@ -14,9 +14,7 @@ const CourtListContainer = props => {
   //   setfilteredCourts(props.courts)
   // }, [filteredCourts]);
 
-
-  const {clearAllMessages} = props;
-  
+  const { clearAllMessages } = props;
 
   // let low = Object.keys(props.playersCount).filter(
   //   court => props.playersCount[court] < 5
@@ -51,8 +49,7 @@ const CourtListContainer = props => {
 
   //   //console.log(props.courts);
   //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-    
-     
+
   // }
 
   return (
@@ -60,13 +57,16 @@ const CourtListContainer = props => {
       <div className="Container-List">
         <div className="blue-filter-bar">
           <Container />
-          <div style={{ float: "left" }}>
+          <div>
             <DropdownButton id="dropdown-basic-button" title="Activity Level">
               <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
               <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
               <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
             </DropdownButton>
           </div>
+          <Container style={{marginLeft: '10px'}}>
+            <Button primary color="blue" onClick={props.clearFilter}>Clear Filter</Button>
+          </Container>
         </div>
         <div className="Court-list">
           <CourtList

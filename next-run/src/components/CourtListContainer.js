@@ -82,6 +82,7 @@ const CourtListContainer = props => {
             allMessages={props.allMessages}
             addMessageToAllMessages={props.addMessageToAllMessages}
             clearAllMessages={clearAllMessages}
+            setClicked={props.setClicked}
           />
         </div>
       </div>

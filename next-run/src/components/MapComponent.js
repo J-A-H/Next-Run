@@ -26,8 +26,18 @@ const MapComponent = withScriptjs(
       geolocation,
       playersCount,
       getDailyPeakTimes,
-      getWeeklyPeakTimes
+      getWeeklyPeakTimes,
+      clickedCourt
     }) => {
+      // if (clickedCourt) {
+      //   let center = {
+      //     lat: Number(allCourts[clickedCourt - 1].lat),
+      //     lng: Number(allCourts[clickedCourt - 1].lng)
+      //   };
+      // } else {
+      //   let center = geolocation;
+      // }
+
       const [heatMapData, setHeatMapData] = useState([]);
 
       const initializeHeatMapData = (allCourts, playersCount) => {
@@ -37,7 +47,7 @@ const MapComponent = withScriptjs(
           var y0 = Number(court.lat);
           var x0 = Number(court.lng);
           var rd = 200 / 111300;
-          for(let i=0; i<playersCount[court.name]; i++) {
+          for (let i = 0; i < playersCount[court.name]; i++) {
             let newHeatMapPoint = { location: null, weight: null };
 
             var u = Math.random();
@@ -49,9 +59,9 @@ const MapComponent = withScriptjs(
             var y = w * Math.sin(t);
 
             let latitude = y + y0;
-            console.log(latitude)
+            console.log(latitude);
             let longitude = x + x0;
-            console.log(longitude)
+            console.log(longitude);
 
             const googlePoint = new window.google.maps.LatLng(
               //  court.lat + Math.cos(angle) * 400,
@@ -91,31 +101,20 @@ const MapComponent = withScriptjs(
 
       const defaultMapOptions = {
         fullscreenControl: false,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        featureType: "poi.business",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }]
       };
-
-      var gradient = [
-        "rgba(0, 255, 255, 0)",
-        "rgba(0, 255, 255, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(0, 127, 255, 1)",
-        "rgba(0, 63, 255, 1)",
-        "rgba(0, 0, 255, 1)",
-        "rgba(0, 0, 223, 1)",
-        "rgba(0, 0, 191, 1)",
-        "rgba(0, 0, 159, 1)",
-        "rgba(0, 0, 127, 1)",
-        "rgba(63, 0, 91, 1)",
-        "rgba(127, 0, 63, 1)",
-        "rgba(191, 0, 31, 1)",
-        "rgba(255, 0, 0, 1)"
-      ];
 
       return (
         <GoogleMap
           defaultZoom={14}
           defaultCenter={geolocation}
-          center={geolocation}
+          center={clickedCourt ? {
+                 lat: Number(allCourts[clickedCourt - 1].lat),
+                 lng: Number(allCourts[clickedCourt - 1].lng)
+               }: geolocation}
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
         >
@@ -124,7 +123,12 @@ const MapComponent = withScriptjs(
             let coords = { lat: Number(court.lat), lng: Number(court.lng) };
             return (
               <Fragment key={court.id}>
-                <CourtMarkerComponent location={coords} court={court} getDailyPeakTimes={getDailyPeakTimes} getWeeklyPeakTimes={getWeeklyPeakTimes} />
+                <CourtMarkerComponent
+                  location={coords}
+                  court={court}
+                  getDailyPeakTimes={getDailyPeakTimes}
+                  getWeeklyPeakTimes={getWeeklyPeakTimes}
+                />
                 <Circle
                   center={coords}
                   radius={400}

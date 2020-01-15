@@ -27,6 +27,7 @@ const CourtCard = props => {
 
   const [cardPlayersCount, setCardPlayersCount] = useState({});
 
+
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
 
   const [chatState, setChatState] = useState({ chatOpen: false });
@@ -44,6 +45,10 @@ const CourtCard = props => {
     setChatState(prevState => ({ chatOpen: false }));
     clearAllMessages();
   };
+
+  const courtFocus = () => {
+    props.setClicked(court.id);
+  }
 
   // useEffect(() => {
   //   console.log("Players count from court Card", playersCount);
@@ -72,7 +77,7 @@ const CourtCard = props => {
   };
 
   return (
-    <div className="card">
+    <div className="card" onClick={courtFocus}>
       <Card>
         <Card.Content>
           <Image

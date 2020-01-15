@@ -32,6 +32,7 @@ const CourtList = props => {
             clearAllMessages={clearAllMessages}
             getWeeklyPeakTimes={getWeeklyPeakTimes}
             getDailyPeakTimes={getDailyPeakTimes}
+            setClicked={props.setClicked}
           />
         }
       ></Modal>

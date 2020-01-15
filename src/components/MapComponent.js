@@ -27,7 +27,8 @@ const MapComponent = withScriptjs(
       playersCount,
       getDailyPeakTimes,
       getWeeklyPeakTimes,
-      clickedCourt
+      clickedCourt,
+    
     }) => {
       // if (clickedCourt) {
       //   let center = {
@@ -88,6 +89,20 @@ const MapComponent = withScriptjs(
         setHeatMapData(newHeatMapData);
       };
 
+      const convertIDtoCoords = (id) => {
+        let loc = null;
+        if(id === 0){
+          loc = {lat: Number(geolocation.lat), lng: Number(geolocation.lng)}
+        } else{
+          loc=
+          {
+            lat: Number(allCourts[id - 1].lat),
+            lng: Number(allCourts[id - 1].lng)
+          }
+        }
+        return loc;
+      }
+
       useEffect(() => {
         if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
           console.log(allCourts);
@@ -107,16 +122,19 @@ const MapComponent = withScriptjs(
         stylers: [{ visibility: "off" }]
       };
 
+
+
       return (
+        
         <GoogleMap
           defaultZoom={14}
           defaultCenter={geolocation}
-          center={clickedCourt ? {
-                 lat: Number(allCourts[clickedCourt - 1].lat),
-                 lng: Number(allCourts[clickedCourt - 1].lng)
-               }: geolocation}
+          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : geolocation}
+          //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
+
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
+          
         >
           <CurrentLocationMarkerComponent geolocation={geolocation} />
           {allCourts.map(court => {

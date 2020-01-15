@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {
   TransitionablePortal,
@@ -12,19 +12,24 @@ import myMarker from "../../public/images/Next-Run_logo_marker.png";
 
 import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
 
+import axios from "axios";
+
 /**
  * Generates a court marker  for each court
  * @param {*} param0
  */
 const CourtMarkerComponent = ({
+  geolocation,
   location,
   court,
   getDailyPeakTimes,
-  getWeeklyPeakTimes
+  getWeeklyPeakTimes,
 }) => {
   const [MarkerCourDetailState, setMarkCourtDetailState] = useState({
     open: false
   });
+
+  const [distance, setDistance] = useState("");
 
   /**
    * Opens court detail when marker on map is clicked.
@@ -41,6 +46,28 @@ const CourtMarkerComponent = ({
     setMarkCourtDetailState(prevState => ({ open: false }));
   };
 
+  /**
+       * Gets distance from current location to court.
+       * @param {} court
+       */
+      const getDistance = (court, geolocation) => {
+
+        axios.post("/getDistance", {court: court, geolocation: geolocation}).then(res => {
+
+          const distance = res.data[0].elements[0].distance;
+          setDistance(distance);
+        }).catch(err => {
+          console.log(err);
+        })
+      };
+
+  useEffect(() => {
+    if (court !== undefined && location !== undefined) {
+      console.log(`origin: ${location.lat}, ${location.lng} dest: ${court.lat}, ${court.lng}`);
+      getDistance(court, location);
+    }
+  }, [court, location]);
+
   return (
     <div>
       <Popup
@@ -54,7 +81,7 @@ const CourtMarkerComponent = ({
           >
             <Label as="a" color="teal" image>
               {court.name}
-              <Label.Detail>Friend</Label.Detail>
+              <Label.Detail>{distance.text}</Label.Detail>
             </Label>
           </MarkerWithLabel>
         }

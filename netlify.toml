@@ -12,5 +12,9 @@
   command = "npm run build"
 
 [build.environment]
-  REACT_APP_API_BASE_URL = "http://next-run.herokuapp.com"
-  REACT_APP_WEBSOCKET_URL = ""
+  REACT_APP_API_BASE_URL = "https://next-run.herokuapp.com"
+  REACT_APP_PUSHER_APP_ID = "918424"
+  REACT_APP_PUSHER_APP_KEY = "d64066063604037f3db4"
+  REACT_APP_PUSHER_APP_SECRET = "9b63f0fbaf9699efd064"
+  REACT_APP_PUSHER_APP_CLUSTER = "us2"
+  REACT_APP_GMAPS_API_KEY = "AIzaSyDgrD2T5T3aXS3rG7hHrW5dtabt4gicJGk"

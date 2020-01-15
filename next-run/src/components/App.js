@@ -6,6 +6,11 @@ import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 import Cookies from 'universal-cookie';
 
+import { DropdownButton, Dropdown } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import ActivityLevelFilterList from "./ActivityLevelFilterList";
+
+
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
 import helpers from "../helpers/helpers";
@@ -103,7 +108,7 @@ const App = props => {
 
     // console.log(incrementPlayersObject);
     setPlayersCount((prevState) => {
-      let newPlayersCount = {...playersCount};
+      let newPlayersCount = { ...playersCount };
       newPlayersCount[name] += 1;
       return newPlayersCount
     });
@@ -121,8 +126,8 @@ const App = props => {
 
     // console.log(decrementPlayersCountObject);
     setPlayersCount((prevState) => {
-      const newPlayersCount = {...prevState};
-      if(newPlayersCount[data.courtToDecrement] > 0){
+      const newPlayersCount = { ...prevState };
+      if (newPlayersCount[data.courtToDecrement] > 0) {
         newPlayersCount[data.courtToDecrement] -= 1;
       }
 
@@ -219,7 +224,7 @@ const App = props => {
         if (currentLocation === "Empty") {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
 
-          if(cookies.get('prev_location') !== withinAnyCourt()){
+          if (cookies.get('prev_location') !== withinAnyCourt()) {
             sendIncrementToServer(withinAnyCourt());
           };
 
@@ -295,8 +300,8 @@ const App = props => {
 
     // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
     filterCourts(allCourts.filter(court => low.includes(court.name)));
-    
-     
+
+
   }
 
   return (
@@ -305,6 +310,14 @@ const App = props => {
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
         <img src={"images/Next-Run_name_logo.png"} className="App-name" />
       </div>
+
+      <div className="filter">
+          <DropdownButton id="dropdown-basic-button" title="Activity Level">
+            <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
+            <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
+            <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
+          </DropdownButton>
+        </div>
 
       <div
         className="Court-list-container"
@@ -344,7 +357,7 @@ const App = props => {
           playersCount={playersCount}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
-          //testData={testData}
+        //testData={testData}
         />
       </div>
     </Fragment>

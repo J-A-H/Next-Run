@@ -39,10 +39,7 @@
 .Chat-history-box {
   height: 40vh;
   padding: 10px;
-  border: solid;
-  border-width: thin;
-  border-radius: 5px;
-  background-color: rgba(139, 206, 239, 0.2);
+  overflow: auto;
 }
 
 @media only screen and (max-width: 600px) {

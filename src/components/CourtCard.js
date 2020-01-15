@@ -41,6 +41,7 @@ const CourtCard = props => {
 
   const handleChatClick = () =>
     setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
+    
   const handleChatClose = () => {
     setChatState(prevState => ({ chatOpen: false }));
     clearAllMessages();
@@ -114,12 +115,12 @@ const CourtCard = props => {
         </Card.Content>
       </Card>
 
-      <TransitionablePortal
-        onClose={handleDetailClose}
-        open={courtDetailState.open}
-      >
+      <TransitionablePortal onClose={handleDetailClose} open={courtDetailState.open}>
         <div className="Court-portal">
           <Segment>
+          <div className='X-close'> 
+            <Button onClick={handleDetailClose}>X</Button>
+            </div>
             <div>
               <CourtDetailShow
                 court={court}
@@ -136,7 +137,9 @@ const CourtCard = props => {
         <div className="Chat-portal">
           <Segment>
             <Header>Court Chat</Header>
-
+            <div className='X-close'> 
+            <Button onClick={handleChatClose}>X</Button>
+            </div>
             <div>
               <Chatbox
                 court={props.court}

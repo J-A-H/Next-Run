@@ -1,3 +1,16 @@
+/* TESTING to see if this fixed mobile keyboard issue*/
+html {
+  overflow: auto;
+}
+body {
+  height: auto;
+  overflow: auto;
+}
+.scrollable {
+  position: inherit;
+}
+/* TESTING to see if this fixed mobile keyboard issue*/
+
 .App {
   text-align: center;
 }
@@ -31,7 +44,11 @@
   z-index: 100000;
   height: 74px;
   width: 312px;
-  padding: 20px;
+  padding: 30px;
+}
+
+.Clear-filter {
+  display: none;
 }
 
 .Court-list {
@@ -62,5 +79,6 @@
     right: 5px;
     width: 30%;
     height: 10%;
+    padding: 10px;
   }
 }

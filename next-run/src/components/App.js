@@ -5,7 +5,7 @@ import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 import Cookies from "universal-cookie";
-import { Button} from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -281,6 +281,7 @@ const App = props => {
 
   function showHigh() {
     setfilteredCourts(high);
+    document.getElementById('clearFilter').style.display = "block";
     // props.courts = Object.keys(props.courts).filter(court =>
     //   filteredCourts.includes(court)
     // );
@@ -289,6 +290,7 @@ const App = props => {
 
   function showMedium() {
     setfilteredCourts(medium);
+    document.getElementById('clearFilter').style.display = "block";
     // props.courts = Object.keys(props.courts).filter(court =>
     //   filteredCourts.includes(court)
     // );
@@ -297,6 +299,7 @@ const App = props => {
 
   function showLow() {
     setfilteredCourts(low);
+    document.getElementById('clearFilter').style.display = "block";
     console.log("low", low);
 
     // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
@@ -305,6 +308,7 @@ const App = props => {
 
   function clearFilter() {
     filterCourts(allCourts);
+    document.getElementById('clearFilter').style.display = "none";
   }
 
   return (
@@ -319,10 +323,9 @@ const App = props => {
           <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
           <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
           <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
+          <Dropdown.Item onClick={clearFilter} id="clearFilter" className="Clear-filter"><Button inverted color="red">Clear Filter</Button>
+          </Dropdown.Item>
         </DropdownButton>
-        <Button onClick={clearFilter} style={{float: 'right'}}inverted color="red">
-          Clear Filter
-        </Button>
       </div>
 
       <div className="Court-list-container">
@@ -364,7 +367,7 @@ const App = props => {
           playersCount={playersCount}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
-          //testData={testData}
+        //testData={testData}
         />
       </div>
     </Fragment>

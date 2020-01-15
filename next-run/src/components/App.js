@@ -5,7 +5,7 @@ import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 import Cookies from "universal-cookie";
-import { Button} from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -70,6 +70,10 @@ const App = props => {
    */
   const clearAllMessages = () => {
     setAllMessages([]);
+  };
+
+  const reCentre = () => {
+    setGeolocation(geolocation);
   };
 
   /**
@@ -320,7 +324,12 @@ const App = props => {
           <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
           <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
         </DropdownButton>
-        <Button onClick={clearFilter} style={{float: 'right'}}inverted color="red">
+        <Button
+          onClick={clearFilter}
+          style={{ float: "right" }}
+          inverted
+          color="red"
+        >
           Clear Filter
         </Button>
       </div>
@@ -366,6 +375,16 @@ const App = props => {
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           //testData={testData}
         />
+      </div>
+      <div
+        style={{
+          position: "fixed",
+          zIndex: 100000,
+          height: "400px",
+          padding: "100px"
+        }}
+      >
+        <Icon size="big" name="compass" />
       </div>
     </Fragment>
   );

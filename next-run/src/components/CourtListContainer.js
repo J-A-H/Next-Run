@@ -16,41 +16,8 @@ const CourtListContainer = props => {
 
   const { clearAllMessages } = props;
 
-  // let low = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] < 5
-  // );
-  // let medium = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] > 5
-  // );
-  // let high = Object.keys(props.playersCount).filter(
-  //   court => props.playersCount[court] > 10
-  // );
 
-  // function showHigh() {
-  //   setfilteredCourts(high);
-  //   // props.courts = Object.keys(props.courts).filter(court =>
-  //   //   filteredCourts.includes(court)
-  //   // );
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
 
-  // }
-
-  // function showMedium() {
-  //   setfilteredCourts(medium);
-  //   // props.courts = Object.keys(props.courts).filter(court =>
-  //   //   filteredCourts.includes(court)
-  //   // );
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-
-  // }
-
-  // function showLow() {
-  //   setfilteredCourts(low);
-
-  //   //console.log(props.courts);
-  //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-
-  // }
 
   return (
     <Fragment>

@@ -5,11 +5,11 @@ import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 import Cookies from "universal-cookie";
+import { Button} from "semantic-ui-react";
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import ActivityLevelFilterList from "./ActivityLevelFilterList";
-
 
 // Database helper object
 import useDatabase from "../helpers/useDatabase";
@@ -113,7 +113,6 @@ const App = props => {
     // console.log(incrementPlayersObject);
 
     setPlayersCount(prevState => {
-
       let newPlayersCount = { ...playersCount };
       newPlayersCount[name] += 1;
       return newPlayersCount;
@@ -133,7 +132,6 @@ const App = props => {
     // console.log(decrementPlayersCountObject);
 
     setPlayersCount(prevState => {
-
       const newPlayersCount = { ...prevState };
       if (newPlayersCount[data.courtToDecrement] > 0) {
         newPlayersCount[data.courtToDecrement] -= 1;
@@ -232,9 +230,7 @@ const App = props => {
         if (currentLocation === "Empty") {
           console.log(`Broadcast: Increment court ${withinAnyCourt()}`);
 
-
           if (cookies.get("prev_location") !== withinAnyCourt()) {
-
             sendIncrementToServer(withinAnyCourt());
           }
         } else if (currentLocation !== withinAnyCourt()) {
@@ -305,10 +301,9 @@ const App = props => {
 
     // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
     filterCourts(allCourts.filter(court => low.includes(court.name)));
-
   }
 
-  function clearFilter(){
+  function clearFilter() {
     filterCourts(allCourts);
   }
 
@@ -320,12 +315,15 @@ const App = props => {
       </div>
 
       <div className="filter">
-          <DropdownButton id="dropdown-basic-button" title="Activity Level">
-            <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
-            <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
-            <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
-          </DropdownButton>
-        </div>
+        <DropdownButton id="dropdown-basic-button" title="Activity Level">
+          <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
+          <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
+          <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
+        </DropdownButton>
+        <Button onClick={clearFilter} style={{float: 'right'}}inverted color="red">
+          Clear Filter
+        </Button>
+      </div>
 
       <div className="Court-list-container">
         <CourtListContainer
@@ -366,7 +364,7 @@ const App = props => {
           playersCount={playersCount}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
-        //testData={testData}
+          //testData={testData}
         />
       </div>
     </Fragment>

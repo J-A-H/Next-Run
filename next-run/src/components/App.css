@@ -3,19 +3,20 @@
 }
 
 .App-logo {
+  margin: 10px;
   animation: App-logo-bounce infinite 1s linear;
-  height: 50px;
+  height: 6vh;
 }
 
 .App-name {
-  height: 60px;
-  padding: 20px;
+  height: 20px;
+  margin: 10px;
 }
 
 .App-header {
   background-color: #222; 
   height: 10vh;
-  padding: 20px;
+  padding: 15px;
   color: white;
   z-index: 1;
 }
@@ -24,10 +25,13 @@
   font-size: large;
 }
 
-@keyframes App-logo-bounce {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
+.filter {
+  position: fixed;
+  background-color: rgba(0, 153, 255, 0);
+  z-index: 100000;
+  height: 74px;
+  width: 312px;
+  padding: 20px;
 }
 
 .Court-list {
@@ -35,9 +39,28 @@
   justify-content: center;
 }
 
+@keyframes App-logo-bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
 @media only screen and (max-width: 600px) {
+  .App-header {
+    padding: 10px;
+  }
   .Court-list {
     display: inline-flex;
     margin-top: 0;
+  }
+  .filter {
+    opacity: 1;
+    margin: 3%;
+    padding: 1%;
+    position: fixed;
+    top: 0px;
+    right: 5px;
+    width: 30%;
+    height: 10%;
   }
 }

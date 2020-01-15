@@ -15,8 +15,8 @@ const CourtListContainer = props => {
   // }, [filteredCourts]);
 
 
-  const {clearAllMessages} = props;
-  
+  const { clearAllMessages } = props;
+
 
   // let low = Object.keys(props.playersCount).filter(
   //   court => props.playersCount[court] < 5
@@ -51,23 +51,14 @@ const CourtListContainer = props => {
 
   //   //console.log(props.courts);
   //   props.filterCourts(props.courts.filter(court => filteredCourts.includes(court.name)));
-    
-     
+
+
   // }
 
   return (
     <Fragment>
       <div className="Container-List">
-        <div className="blue-filter-bar">
-          <Container />
-          <div style={{ float: "left" }}>
-            <DropdownButton id="dropdown-basic-button" title="Activity Level">
-              <Dropdown.Item onClick={props.showHigh}>High</Dropdown.Item>
-              <Dropdown.Item onClick={props.showMedium}>Medium</Dropdown.Item>
-              <Dropdown.Item onClick={props.showLow}>Low</Dropdown.Item>
-            </DropdownButton>
-          </div>
-        </div>
+
         <div className="Court-list">
           <CourtList
             playersCount={props.playersCount}

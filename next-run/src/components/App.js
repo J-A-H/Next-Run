@@ -65,6 +65,10 @@ const App = props => {
     setClickedCourt(id);
   };
 
+  
+
+  
+
   /**
    * Clears all messages state after chat portal close
    */
@@ -73,7 +77,8 @@ const App = props => {
   };
 
   const reCentre = () => {
-    setGeolocation(geolocation);
+    setClickedCourt(0);
+    console.log("button clicked")
   };
 
   /**
@@ -379,12 +384,13 @@ const App = props => {
       <div
         style={{
           position: "fixed",
-          zIndex: 100000,
-          height: "400px",
-          padding: "100px"
+
+
+          //padding: "100px"
+          bottom: "10%"
         }}
       >
-        <Icon size="big" name="compass" />
+        <Icon onClick={reCentre} style={{zIndex: 100000 }} size="big" name="compass" />
       </div>
     </Fragment>
   );

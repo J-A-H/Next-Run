@@ -88,6 +88,20 @@ const MapComponent = withScriptjs(
         setHeatMapData(newHeatMapData);
       };
 
+      const convertIDtoCoords = (id) => {
+        let loc = null;
+        if(id === 0){
+          loc = {lat: Number(geolocation.lat), lng: Number(geolocation.lng)}
+        } else{
+          loc=
+          {
+            lat: Number(allCourts[id - 1].lat),
+            lng: Number(allCourts[id - 1].lng)
+          }
+        }
+        return loc;
+      }
+
       useEffect(() => {
         if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
           console.log(allCourts);
@@ -102,6 +116,7 @@ const MapComponent = withScriptjs(
       const defaultMapOptions = {
         fullscreenControl: false,
         disableDefaultUI: true,
+        setMyLocationButtonEnabled: false,
         featureType: "poi.business",
         elementType: "labels",
         stylers: [{ visibility: "off" }]
@@ -109,12 +124,10 @@ const MapComponent = withScriptjs(
 
       return (
         <GoogleMap
+          //style={{width: '300%', height: '300%'}}
           defaultZoom={14}
           defaultCenter={geolocation}
-          center={clickedCourt ? {
-                 lat: Number(allCourts[clickedCourt - 1].lat),
-                 lng: Number(allCourts[clickedCourt - 1].lng)
-               }: geolocation}
+          center={clickedCourt ? convertIDtoCoords(clickedCourt) : geolocation}
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
         >

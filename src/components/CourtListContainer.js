@@ -16,9 +16,6 @@ const CourtListContainer = props => {
 
   const { clearAllMessages } = props;
 
-
-
-
   return (
     <Fragment>
       <div className="Container-List">

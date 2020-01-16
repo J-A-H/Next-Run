@@ -29,19 +29,13 @@ const MapComponent = withScriptjs(
       getDailyPeakTimes,
       getWeeklyPeakTimes,
       clickedCourt,
-      error
+      error,
+      setClicked
     
     }) => {
-      // if (clickedCourt) {
-      //   let center = {
-      //     lat: Number(allCourts[clickedCourt - 1].lat),
-      //     lng: Number(allCourts[clickedCourt - 1].lng)
-      //   };
-      // } else {
-      //   let center = geolocation;
-      // }
 
       const [heatMapData, setHeatMapData] = useState([]);
+      const [center, setCenter] = useState({});
 
       const initializeHeatMapData = (allCourts, playersCount) => {
         const newHeatMapData = [];
@@ -105,6 +99,21 @@ const MapComponent = withScriptjs(
         return loc;
       }
 
+      const getCenter = () => {
+
+        console.log("Map component no location:",error);
+        
+        if(error){
+          return {
+            lat: 43.644200,
+            lng: -79.402207
+          }
+        }
+        else{
+          return geolocation
+        }
+      }
+
       useEffect(() => {
         if (allCourts.length > 0 && Object.keys(playersCount).length > 0) {
           console.log(allCourts);
@@ -116,6 +125,23 @@ const MapComponent = withScriptjs(
         }
       }, [allCourts, playersCount]);
 
+      useEffect(()=>{
+
+        setCenter(getCenter());
+
+        if(clickedCourt > 0){
+          console.log("Card clicked", clickedCourt);
+          const newCenter = {
+            lat: Number(allCourts[clickedCourt - 1].lat),
+            lng: Number(allCourts[clickedCourt - 1].lng)
+          }
+          console.log("Card clicked", newCenter);
+
+
+          setCenter(newCenter);
+        }
+      }, [clickedCourt])
+
       const defaultMapOptions = {
         fullscreenControl: false,
         disableDefaultUI: true,
@@ -124,18 +150,19 @@ const MapComponent = withScriptjs(
         stylers: [{ visibility: "off" }]
       };
 
+      const onCenterChanged = ()=> {
+        setClicked(-1);
+      }
 
 
-      return (
-        
+
+      return (        
+      
         <GoogleMap
           defaultZoom={14}
           // defaultCenter={geolocation}
-          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : error !== null ? geolocation: {
-            lat: 43.644200,
-            lng: -79.402207
-          }}
-          //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
+          center={center}
+          onCenterChanged={onCenterChanged}
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
           

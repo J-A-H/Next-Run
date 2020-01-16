@@ -41,6 +41,7 @@ const App = props => {
   const { lat, lng, error } = usePosition();
   const broadcastLocationChannel = pusherObject.subscribe("broadcast-location");
   const cookies = new Cookies();
+  const google = window.google;
 
   //*States
   const [filteredCourts, setfilteredCourts] = useState(null);
@@ -73,7 +74,7 @@ const App = props => {
   };
 
   const reCentre = () => {
-    setClickedCourt(null);
+    setClickedCourt(0);
     console.log("button clicked");
   };
 
@@ -184,7 +185,6 @@ const App = props => {
 
   //*Checks if user in a court
   useEffect(() => {
-    const google = window.google;
     /**
      * Return true if current position is within the court region at court
      * @param {*} court
@@ -353,7 +353,7 @@ const App = props => {
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           playersCount={playersCount}
           court={allCourts[0]}
-          geolocation={ error !== null ? geolocation:null}
+          geolocation={error !== null ? geolocation : null}
           toKebabCase={toKebabCase}
           userId={userId}
           allMessages={allMessages}
@@ -386,10 +386,12 @@ const App = props => {
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           error={error}
+          setClicked={setClicked}
           //testData={testData}
         />
       </div>
-      <div className="compass"
+      <div
+        className="compass"
         style={{
           position: "fixed",
 
@@ -400,7 +402,7 @@ const App = props => {
       >
         <Icon
           onClick={reCentre}
-          style={{ zIndex: 100000, color: "orange", opacity: '0.75' }}
+          style={{ zIndex: 100000, color: "orange", opacity: "0.75" }}
           size="huge"
           name="compass"
         />

@@ -126,7 +126,6 @@ const MapComponent = withScriptjs(
       }, [allCourts, playersCount]);
 
       useEffect(()=>{
-        console.log("geolocation:", geolocation);
         setCenter(getCenter());
 
         if(clickedCourt > 0){
@@ -140,7 +139,7 @@ const MapComponent = withScriptjs(
 
           setCenter(newCenter);
         }
-      }, [clickedCourt, geolocation]);
+      }, [clickedCourt, geolocation, error]);
 
       const defaultMapOptions = {
         fullscreenControl: false,

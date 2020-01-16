@@ -161,7 +161,7 @@ const App = props => {
     if(!error){
       setGeolocation({ lat, lng });
     }
-  }, [lat, lng, error]);
+  }, [lat, lng]);
 
   //*Fetch court data
   useEffect(() => {

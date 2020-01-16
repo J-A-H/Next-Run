@@ -13,7 +13,16 @@ import {
 import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import CurrentLocationMarkerComponent from "./CurrentLocationMarkerComponent";
+
 import CourtMarkerComponent from "./CourtMarkerComponent";
+
+import axios from "axios";
+
+const axiosInstance = axios.create({
+  baseURL: 'https://maps.googleapis.com/maps/api/',
+  timeout: 1000,
+  headers:{'Content-Type': 'text/plain;charset=utf-8'}
+});
 
 /**
  * Generates Map component other props are used with withScriptjs and withGoogleMap
@@ -131,7 +140,6 @@ const MapComponent = withScriptjs(
           defaultCenter={geolocation}
           center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : geolocation}
           //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
-
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}
           
@@ -146,8 +154,9 @@ const MapComponent = withScriptjs(
                   court={court}
                   getDailyPeakTimes={getDailyPeakTimes}
                   getWeeklyPeakTimes={getWeeklyPeakTimes}
+                  geolocation={geolocation}
                 />
-                <Circle
+                {/* <Circle
                   center={coords}
                   radius={400}
                   options={{
@@ -155,7 +164,7 @@ const MapComponent = withScriptjs(
                     strokeWidth: 1,
                     strokeOpacity: 0.2
                   }}
-                />
+                /> */}
               </Fragment>
             );
           })}

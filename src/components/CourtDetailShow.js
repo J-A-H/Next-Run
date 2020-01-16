@@ -94,14 +94,18 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
     });
   };
 
+  /**
+   * Displays correct lable according to daily counts
+   * @param {} count 
+   */
   const displayActivityLevel = count => {
-    if (count < 3) {
+    if (count < 8) {
       return (
         <Label size="large" circular color="blue">
           Cold
         </Label>
       );
-    } else if (count < 6 && count >= 3) {
+    } else if (count < 12 && count >= 8) {
       return (
         <Label size="large" circular color="orange">
           Warm
@@ -116,8 +120,12 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
     }
   };
 
+  /**
+   * Displays correct label according to weekly counts
+   * @param {} count 
+   */
   const displayWeeklyActivityLevel = count => {
-    if (count <= 1) {
+    if (count <= 10) {
       return (
         <Label size="large" circular color="blue">
           Cold
@@ -125,7 +133,7 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
       );
     }
 
-    else if (count < 20 && count > 1) {
+    else if (count <= 50 && count > 10) {
       return (
         <Label size="large" circular color="orange">
           Warm

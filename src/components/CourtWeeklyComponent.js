@@ -14,7 +14,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/monday.png" />
               <Header.Content>
                 Monday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -26,7 +26,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/tuesday.png" />
               <Header.Content>
                 Tuesday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -38,7 +38,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/wednesday.png" />
               <Header.Content>
                 Wednesday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -50,7 +50,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/thursday.png" />
               <Header.Content>
                 Thursday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -62,7 +62,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/friday.png" />
               <Header.Content>
                 Friday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -74,7 +74,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/saturday.png" />
               <Header.Content>
                 Saturday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -86,7 +86,7 @@ const CourtWeeklyComponent = props => {
               <Image src="https://img.icons8.com/cute-clipart/64/000000/sunday.png" />
               <Header.Content>
                 Sunday
-                <Header.Subheader>Acitivty Level</Header.Subheader>
+                <Header.Subheader>Activity Level</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>

@@ -13,6 +13,16 @@ const CourtList = props => {
     getDailyPeakTimes
   } = props;
 
+  const [cardOpen, setCardOpen] = useState({court_id: ""});
+
+  /**
+   * Sets card that is opened
+   * @param {*} court_id 
+   */
+  const updateCardOpen = (court_id) => {
+    setCardOpen({court_id: court_id});
+  }
+
   return props.courts.map(court => (
     <div style={{ zIndex: 100000 }}>
       <Modal
@@ -33,6 +43,8 @@ const CourtList = props => {
             getWeeklyPeakTimes={getWeeklyPeakTimes}
             getDailyPeakTimes={getDailyPeakTimes}
             setClicked={props.setClicked}
+            cardOpen={cardOpen}
+            updateCardOpen={updateCardOpen}
           />
         }
       ></Modal>

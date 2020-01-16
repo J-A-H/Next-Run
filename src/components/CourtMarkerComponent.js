@@ -64,7 +64,7 @@ const CourtMarkerComponent = ({
   useEffect(() => {
     if (court !== undefined && location !== undefined) {
       console.log(`origin: ${location.lat}, ${location.lng} dest: ${court.lat}, ${court.lng}`);
-      getDistance(court, location);
+      getDistance(court, geolocation);
     }
   }, [court, location]);
 

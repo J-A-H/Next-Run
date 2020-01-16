@@ -15,6 +15,10 @@ body {
   text-align: center;
 }
 
+.compass:hover{
+  cursor: pointer;
+}
+
 .App-logo {
   margin: 10px;
   animation: App-logo-bounce infinite 1s linear;

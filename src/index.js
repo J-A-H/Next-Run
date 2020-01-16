@@ -6,7 +6,7 @@ import './index.css';
 import CourtDetailsContainer from './components/CourtDetailsContainer';
 import axios from "axios";
 
-axios.defaults.baseURL = `http://next-run.herokuapp.com`;
+axios.defaults.baseURL = `https://next-run.herokuapp.com/`;
 
 //API keys______________
 const API_KEY = process.env.REACT_APP_GMAPS_API_KEY;

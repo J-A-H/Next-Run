@@ -64,19 +64,19 @@ const CourtCard = props => {
     if (num > 10) {
       return (
         <Label size="medium" circular color="red">
-          Hot
+          {num}
         </Label>
       );
     } else if (num > 5 && num < 10) {
       return (
         <Label size="medium" circular color="orange">
-          Warm
+          {`  ${num}  `}
         </Label>
       );
     } else {
       return (
         <Label size="medium" circular color="blue">
-          Cold
+         {`  ${num}  `}
         </Label>
       );
     }

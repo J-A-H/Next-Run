@@ -156,10 +156,12 @@ const App = props => {
 
   //*Fetch curent location
   useEffect(() => {
-    if (lat) {
+
+    
+    if(!error){
       setGeolocation({ lat, lng });
     }
-  }, [lat, lng]);
+  }, [lat, lng, error]);
 
   //*Fetch court data
   useEffect(() => {

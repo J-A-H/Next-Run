@@ -126,7 +126,7 @@ const MapComponent = withScriptjs(
       }, [allCourts, playersCount]);
 
       useEffect(()=>{
-
+        console.log("geolocation:", geolocation);
         setCenter(getCenter());
 
         if(clickedCourt > 0){

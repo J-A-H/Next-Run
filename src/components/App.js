@@ -324,25 +324,10 @@ const App = props => {
     <Fragment>
       <div className="App-header">
         <img src={"images/Next-Run_logo.png"} className="App-logo" alt="logo" />
-        <img src={"images/Next-Run_name_logo.png"} className="App-name" />
+        <h1>Next-Run</h1>
       </div>
 
-      <div className="filter">
-        <DropdownButton id="dropdown-basic-button" title="Activity Level">
-          <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
-          <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
-          <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
-          <Dropdown.Item
-            onClick={clearFilter}
-            id="clearFilter"
-            className="Clear-filter"
-          >
-            <Button inverted color="red">
-              Clear Filter
-            </Button>
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
+
 
       <div className="Court-list-container">
         <CourtListContainer

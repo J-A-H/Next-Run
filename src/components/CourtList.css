@@ -1,3 +1,8 @@
 .button {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.Court-list .ui.card {
+  background-color: rgb(214, 210, 196);
+  border: solid 1px rgb(184, 97, 37);
 }

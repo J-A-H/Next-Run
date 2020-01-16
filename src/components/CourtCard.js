@@ -95,7 +95,7 @@ const CourtCard = props => {
         </Card.Content>
         <Card.Content extra>
           <div className="ui two buttons">
-            <Button
+            <Button className="courtlistdetails"
               basic
               color="green"
               content={"Details"}
@@ -103,7 +103,7 @@ const CourtCard = props => {
               positive={!courtDetailState.open}
               onClick={handleDetailClick}
             />
-            <Button
+            <Button className="courtlistchat"
               basic
               color="blue"
               content={"Chat"}

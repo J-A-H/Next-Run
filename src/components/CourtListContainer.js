@@ -6,6 +6,7 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import CourtCard from "./CourtCard";
 import "./CourtListContainer.css";
+import { callbackify } from "util";
 
 const CourtListContainer = props => {
   // const [filteredCourts, setfilteredCourts] = useState([props.courts]);
@@ -18,7 +19,23 @@ const CourtListContainer = props => {
 
   return (
     <Fragment>
-      <div className="Container-List">
+      <div className="Container-List" style={{height: "calc(100vh - 80px)"}}>
+        <div className="filter">
+          <DropdownButton id="dropdown-basic-button" title="Activity Level" style = {{color: 'rgb(184,97,37)'}}>
+            <Dropdown.Item onClick={props.showHigh}>Hot</Dropdown.Item>
+            <Dropdown.Item onClick={props.showMedium}>Warm</Dropdown.Item>
+            <Dropdown.Item onClick={props.showLow}>Cold</Dropdown.Item>
+            <Dropdown.Item
+              onClick={props.clearFilter}
+              id="clearFilter"
+              className="Clear-filter"
+            >
+              <Button inverted color="red">
+                Clear Filter
+              </Button>
+            </Dropdown.Item>
+          </DropdownButton>
+        </div>
         <div className="Court-list">
           <CourtList
             playersCount={props.playersCount}

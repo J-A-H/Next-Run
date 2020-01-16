@@ -22,6 +22,7 @@ const Chatbox = ({
   const [room, setRoom] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const message = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -43,6 +44,9 @@ const Chatbox = ({
         channel: `${toKebabCase(court.name)}-chat`,
         court_id: court.id
       });
+      // console.log(message.value);
+      // message.value = "";
+      //React.findDOMNode(message).value = ""
     }
   };
 
@@ -125,7 +129,7 @@ const Chatbox = ({
         </div>
 
         <Form reply onSubmit={sendMessage}>
-          <Form.TextArea
+          <Form.TextArea ref={message}
             type="text"
             onChange={onTextChange}
             style={{ 

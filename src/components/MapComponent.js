@@ -16,14 +16,6 @@ import CurrentLocationMarkerComponent from "./CurrentLocationMarkerComponent";
 
 import CourtMarkerComponent from "./CourtMarkerComponent";
 
-import axios from "axios";
-
-const axiosInstance = axios.create({
-  baseURL: 'https://maps.googleapis.com/maps/api/',
-  timeout: 1000,
-  headers:{'Content-Type': 'text/plain;charset=utf-8'}
-});
-
 /**
  * Generates Map component other props are used with withScriptjs and withGoogleMap
  */
@@ -37,6 +29,7 @@ const MapComponent = withScriptjs(
       getDailyPeakTimes,
       getWeeklyPeakTimes,
       clickedCourt,
+      error
     
     }) => {
       // if (clickedCourt) {
@@ -138,7 +131,10 @@ const MapComponent = withScriptjs(
         <GoogleMap
           defaultZoom={14}
           // defaultCenter={geolocation}
-          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : geolocation}
+          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : error !== null ? geolocation: {
+            lat: 43.644200,
+            lng: -79.402207
+          }}
           //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
           mapTypeId={"hybrid"}
           defaultOptions={defaultMapOptions}

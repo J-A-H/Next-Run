@@ -12,10 +12,10 @@ export const usePosition = () => {
   const onError = (error) => {
     console.log(error.message);
     setError(error.message);
-    setPosition({
-      lat: 43.644200,
-      lng: -79.402207
-    })
+    // setPosition({
+    //   lat: 43.644200,
+    //   lng: -79.402207
+    // })
   };
   useEffect(() => {
     const geo = navigator.geolocation;

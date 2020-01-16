@@ -23,7 +23,7 @@ const CourtMarkerComponent = ({
   location,
   court,
   getDailyPeakTimes,
-  getWeeklyPeakTimes,
+  getWeeklyPeakTimes
 }) => {
   const [MarkerCourDetailState, setMarkCourtDetailState] = useState({
     open: false
@@ -46,19 +46,26 @@ const CourtMarkerComponent = ({
   };
 
   /**
-       * Gets distance from current location to court.
-       * @param {} court
-       */
-      const getDistance = (court, geolocation) => {
+   * Gets distance from current location to court.
+   * @param {} court
+   */
+  const getDistance = (court, geolocation) => {
 
-        axios.post("/getDistance", {court: court, geolocation: geolocation}).then(res => {
-
+    if (geolocation.lat !== undefined) {
+      axios
+        .post("/getDistance", { court: court, geolocation: geolocation })
+        .then(res => {
           const distance = res.data[0].elements[0].distance;
           setDistance(distance);
-        }).catch(err => {
-          console.log(err);
         })
-      };
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    else{
+      setDistance("");
+    }
+  };
 
   useEffect(() => {
     if (court !== undefined && location !== undefined) {

@@ -2,11 +2,11 @@ import React, { useEffect, Fragment, useState } from "react";
 import { Header, Label, Image, Button, Card, Popup } from "semantic-ui-react";
 import CourtWeeklyComponent from "./CourtWeeklyComponent";
 import objectAssign from "object-assign";
-import './CourtCard.css';
+import "./CourtCard.css";
 
 const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
   const [state, setState] = useState({});
-  const [weeklyState, setWeeklyState] = useState({})
+  const [weeklyState, setWeeklyState] = useState({});
 
   /**
    * Updates state with correct daily and weekly information
@@ -96,16 +96,16 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
 
   /**
    * Displays correct lable according to daily counts
-   * @param {} count 
+   * @param {} count
    */
   const displayActivityLevel = count => {
-    if (count < 8) {
+    if (count < 2) {
       return (
         <Label size="large" circular color="blue">
           Cold
         </Label>
       );
-    } else if (count < 12 && count >= 8) {
+    } else if (count < 6 && count >= 2) {
       return (
         <Label size="large" circular color="orange">
           Warm
@@ -122,26 +122,22 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
 
   /**
    * Displays correct label according to weekly counts
-   * @param {} count 
+   * @param {} count
    */
   const displayWeeklyActivityLevel = count => {
-    if (count <= 10) {
+    if (count <= 3) {
       return (
         <Label size="large" circular color="blue">
           Cold
         </Label>
       );
-    }
-
-    else if (count <= 50 && count > 10) {
+    } else if (count <= 10 && count > 3) {
       return (
         <Label size="large" circular color="orange">
           Warm
         </Label>
       );
-    }
-
-    else {
+    } else {
       return (
         <Label size="large" circular color="red">
           Hot
@@ -168,92 +164,120 @@ const CourtDetailShow = ({ court, getWeeklyPeakTimes, getDailyPeakTimes }) => {
         />
         {court.name}
       </Header>
-        <Card.Group>
-          <Card>
-            <Card.Content>
-              <Popup
-                on="click"
-                pinned
-                trigger={
-                  <Button floated="right" size="small" color="green">
-                    Weekly
+      <Card.Group>
+        <Card
+          // style={{
+          //   width: "-webkit-fill-available",
+          //   display: "content"
+          // }}
+        >
+          <Card.Content>
+            <Popup
+              on="click"
+              pinned
+              trigger={
+                <Button floated="right" size="small" color="green">
+                  Weekly
                 </Button>
-                }
-              >
-                <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
-              </Popup>
-              <Card.Header>Morning</Card.Header>
-              <Card.Meta>Usual activity level</Card.Meta>
-              <Card.Description>
-                {displayActivityLevel(state.Morning)}
-              </Card.Description>
-            </Card.Content>
-          </Card>
+              }
+            >
+              <CourtWeeklyComponent
+                displayWeeklyActivityLevel={displayWeeklyActivityLevel}
+              />
+            </Popup>
+            <Card.Header>Morning</Card.Header>
+            <Card.Meta>Usual activity level</Card.Meta>
+            <Card.Description>
+              {displayActivityLevel(state.Morning)}
+            </Card.Description>
+          </Card.Content>
+        </Card>
 
-          <Card>
-            <Card.Content>
-              <Popup
-                on="click"
-                pinned
-                trigger={
-                  <Button floated="right" size="small" color="green">
-                    Weekly
+        <Card
+          // style={{
+          //   width: "-webkit-fill-available",
+          //   display: "content"
+          // }}
+        >
+          <Card.Content>
+            <Popup
+              on="click"
+              pinned
+              trigger={
+                <Button floated="right" size="small" color="green">
+                  Weekly
                 </Button>
-                }
-              >
-                <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
-              </Popup>
-              <Card.Header>Afternoon</Card.Header>
-              <Card.Meta>Usual activity level</Card.Meta>
-              <Card.Description>
-                {displayActivityLevel(state.Afternoon)}
-              </Card.Description>
-            </Card.Content>
-          </Card>
+              }
+            >
+              <CourtWeeklyComponent
+                displayWeeklyActivityLevel={displayWeeklyActivityLevel}
+              />
+            </Popup>
+            <Card.Header>Afternoon</Card.Header>
+            <Card.Meta>Usual activity level</Card.Meta>
+            <Card.Description>
+              {displayActivityLevel(state.Afternoon)}
+            </Card.Description>
+          </Card.Content>
+        </Card>
 
-          <Card>
-            <Card.Content>
-              <Popup
-                on="click"
-                pinned
-                trigger={
-                  <Button floated="right" size="small" color="green">
-                    Weekly
+        <Card
+          // style={{
+          //   width: "-webkit-fill-available",
+          //   display: "content"
+          // }}
+        >
+          <Card.Content>
+            <Popup
+              on="click"
+              pinned
+              trigger={
+                <Button floated="right" size="small" color="green">
+                  Weekly
                 </Button>
-                }
-              >
-                <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
-              </Popup>
-              <Card.Header>Evening</Card.Header>
-              <Card.Meta>Usual activity level</Card.Meta>
-              <Card.Description>
-                {displayActivityLevel(state.Evening)}
-              </Card.Description>
-            </Card.Content>
-          </Card>
+              }
+            >
+              <CourtWeeklyComponent
+                displayWeeklyActivityLevel={displayWeeklyActivityLevel}
+              />
+            </Popup>
+            <Card.Header>Evening</Card.Header>
+            <Card.Meta>Usual activity level</Card.Meta>
+            <Card.Description>
+              {displayActivityLevel(state.Evening)}
+            </Card.Description>
+          </Card.Content>
+        </Card>
 
-          <Card>
-            <Card.Content>
-              <Popup
-                on="click"
-                pinned
-                trigger={
-                  <Button floated="right" size="small" color="green">
-                    Weekly
+        <Card
+          // style={{
+          //   width: "-webkit-fill-available",
+          //   display: "content"
+          // }}
+        >
+          <Card.Content>
+            <Popup
+              on="click"
+              pinned
+              trigger={
+                <Button floated="right" size="small" color="green">
+                  Weekly
                 </Button>
-                }
-              >
-                <CourtWeeklyComponent displayWeeklyActivityLevel={displayWeeklyActivityLevel} />
-              </Popup>
-              <Card.Header>Night</Card.Header>
-              <Card.Meta>Usual activity level</Card.Meta>
-              <Card.Description>
-                {displayActivityLevel(state.Night)}
-              </Card.Description>
-            </Card.Content>
-          </Card>
-        </Card.Group>
-      </div>
+              }
+            >
+              <CourtWeeklyComponent
+                displayWeeklyActivityLevel={displayWeeklyActivityLevel}
+              />
+            </Popup>
+            <Card.Header>Night</Card.Header>
+            <Card.Meta>Usual activity level</Card.Meta>
+            <Card.Description>
+              {displayActivityLevel(state.Night)}
+            </Card.Description>
+          </Card.Content>
+        </Card>
+      </Card.Group>
+    </div>
   );
 };
 

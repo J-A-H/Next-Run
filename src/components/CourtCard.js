@@ -95,33 +95,13 @@ const CourtCard = props => {
             {convertActivityLevel(playersCount[court.name])}
           </Card.Description>
         </Card.Content>
-        {/* <Card.Content extra>
-          <div className="ui two buttons">
-            <Button
-              basic
-              color="green"
-              content={"Details"}
-              negative={courtDetailState.open}
-              positive={!courtDetailState.open}
-              onClick={handleDetailClick}
-            />
-            <Button
-              basic
-              color="blue"
-              content={"Chat"}
-              negative={chatState.chatOpen}
-              positive={!chatState.chatOpen}
-              onClick={handleChatClick}
-            />
-          </div>
-        </Card.Content> */}
         <Card.Content extra>
           <div className="ui two buttons">
             <Button
               basic
               color="green"
               negative={courtDetailState.open}
-              positive={!courtDetailState.open}
+              // positive={!courtDetailState.open}
               onClick={handleDetailClick}
             >
               Details

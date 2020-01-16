@@ -104,7 +104,7 @@ const Chatbox = ({
     return (
       <Comment key={index}>
         <Comment.Content>
-          <Comment.Author as="a">{`Random`}</Comment.Author>
+          <Comment.Author as="a">{`Anonymous`}</Comment.Author>
           <Comment.Metadata>
             <div> {message.time}</div>
           </Comment.Metadata>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Marker, InfoWindow } from "react-google-maps";
 import {
   TransitionablePortal,
@@ -12,11 +12,14 @@ import myMarker from "../../public/images/Next-Run_logo_marker.png";
 
 import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
 
+import axios from "axios";
+
 /**
  * Generates a court marker  for each court
  * @param {*} param0
  */
 const CourtMarkerComponent = ({
+  geolocation,
   location,
   court,
   getDailyPeakTimes,
@@ -26,11 +29,12 @@ const CourtMarkerComponent = ({
     open: false
   });
 
+  const [distance, setDistance] = useState("");
+
   /**
    * Opens court detail when marker on map is clicked.
    */
   const handleMarkerClick = () => {
-    console.log(court.name);
     setMarkCourtDetailState(prevState => ({ open: !prevState.open }));
   };
 
@@ -40,6 +44,34 @@ const CourtMarkerComponent = ({
   const handleMarkerClose = () => {
     setMarkCourtDetailState(prevState => ({ open: false }));
   };
+
+  /**
+   * Gets distance from current location to court.
+   * @param {} court
+   */
+  const getDistance = (court, geolocation) => {
+
+    if (geolocation.lat !== undefined) {
+      axios
+        .post("/getDistance", { court: court, geolocation: geolocation })
+        .then(res => {
+          const distance = res.data[0].elements[0].distance;
+          setDistance(distance);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    else{
+      setDistance("");
+    }
+  };
+
+  useEffect(() => {
+    if (court !== undefined && location !== undefined) {
+      getDistance(court, geolocation);
+    }
+  }, [court, location]);
 
   return (
     <div>
@@ -54,7 +86,7 @@ const CourtMarkerComponent = ({
           >
             <Label as="a" color="teal" image>
               {court.name}
-              <Label.Detail>Friend</Label.Detail>
+              <Label.Detail>{distance.text}</Label.Detail>
             </Label>
           </MarkerWithLabel>
         }

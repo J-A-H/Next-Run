@@ -13,6 +13,7 @@ import {
 import HeatmapLayer from "react-google-maps/lib/components/visualization/HeatmapLayer";
 
 import CurrentLocationMarkerComponent from "./CurrentLocationMarkerComponent";
+
 import CourtMarkerComponent from "./CourtMarkerComponent";
 
 /**
@@ -28,6 +29,7 @@ const MapComponent = withScriptjs(
       getDailyPeakTimes,
       getWeeklyPeakTimes,
       clickedCourt,
+      error
     
     }) => {
       // if (clickedCourt) {
@@ -47,7 +49,7 @@ const MapComponent = withScriptjs(
         allCourts.forEach(court => {
           var y0 = Number(court.lat);
           var x0 = Number(court.lng);
-          var rd = 200 / 111300;
+          var rd = 100 / 111300;
           for (let i = 0; i < playersCount[court.name]; i++) {
             let newHeatMapPoint = { location: null, weight: null };
 
@@ -129,9 +131,13 @@ const MapComponent = withScriptjs(
         
         <GoogleMap
           defaultZoom={14}
-          defaultCenter={geolocation}
-          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : geolocation}
+          // defaultCenter={geolocation}
+          center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : error !== null ? geolocation: {
+            lat: 43.644200,
+            lng: -79.402207
+          }}
           //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
+<<<<<<< HEAD
           //mapTypeId={"hybrid"}
           options={{styles: [
             {
@@ -469,6 +475,9 @@ const MapComponent = withScriptjs(
               ]
             }
           ]}}
+=======
+          mapTypeId={"hybrid"}
+>>>>>>> 50b6d3bcd0894a068e65543c46f6b87f4144adf1
           defaultOptions={defaultMapOptions}
 
           
@@ -483,8 +492,9 @@ const MapComponent = withScriptjs(
                   court={court}
                   getDailyPeakTimes={getDailyPeakTimes}
                   getWeeklyPeakTimes={getWeeklyPeakTimes}
+                  geolocation={geolocation}
                 />
-                <Circle
+                {/* <Circle
                   center={coords}
                   radius={400}
                   options={{
@@ -492,11 +502,11 @@ const MapComponent = withScriptjs(
                     strokeWidth: 1,
                     strokeOpacity: 0.2
                   }}
-                />
+                /> */}
               </Fragment>
             );
           })}
-          <HeatmapLayer data={heatMapData} options={{ radius: `50` }} />
+          <HeatmapLayer data={heatMapData} options={{ radius: `10` }} />
         </GoogleMap>
       );
     }

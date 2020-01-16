@@ -246,6 +246,7 @@ const App = props => {
         }
       }
     }
+    setGeolocation(geolocation);
   }, [allCourts, geolocation]);
 
   //*Initialize court location listeners
@@ -337,7 +338,7 @@ const App = props => {
           getWeeklyPeakTimes={getWeeklyPeakTimes}
           playersCount={playersCount}
           court={allCourts[0]}
-          geolocation={geolocation}
+          geolocation={ error !== null ? geolocation:null}
           toKebabCase={toKebabCase}
           userId={userId}
           allMessages={allMessages}
@@ -369,6 +370,7 @@ const App = props => {
           playersCount={playersCount}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
+          error={error}
           //testData={testData}
         />
       </div>

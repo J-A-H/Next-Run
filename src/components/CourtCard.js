@@ -22,56 +22,58 @@ const CourtCard = props => {
     playersCount,
     court,
     getWeeklyPeakTimes,
-    getDailyPeakTimes
+    getDailyPeakTimes,
+    cardOpen,
+    updateCardOpen
   } = props;
-
-  const [cardPlayersCount, setCardPlayersCount] = useState({});
-
 
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
 
   const [chatState, setChatState] = useState({ chatOpen: false });
 
   const handleDetailClick = () => {
-    console.log(court.name)
+    console.log(court.name);
     setCourtDetailState(prevState => ({ open: !prevState.open }));
   };
 
   const handleDetailClose = () => setCourtDetailState({ open: false });
 
-  const handleChatClick = () =>
-    setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
-    
+  const handleChatClick = () => {
+    console.log(`cardOpen:`, cardOpen);
+    if (cardOpen.court_id === "") {
+      clearAllMessages();
+      setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
+      updateCardOpen(court.id);
+    }
+  };
+
   const handleChatClose = () => {
     setChatState(prevState => ({ chatOpen: false }));
     clearAllMessages();
+    updateCardOpen("");
   };
 
   const courtFocus = () => {
     props.setClicked(court.id);
-  }
-
-  // useEffect(() => {
-  //   console.log("Players count from court Card", playersCount);
-  // })
+  };
 
   const convertActivityLevel = num => {
     if (num > 10) {
       return (
         <Label size="medium" circular color="red">
-          Hot
+          {`Hot`}
         </Label>
       );
-    } else if (num > 5 && num < 10) {
+    } else if (num > 5 && num <= 10) {
       return (
         <Label size="medium" circular color="orange">
-          Warm
+          {`Warm`}
         </Label>
       );
     } else {
       return (
         <Label size="medium" circular color="blue">
-          Cold
+          {`Cold`}
         </Label>
       );
     }
@@ -98,28 +100,38 @@ const CourtCard = props => {
             <Button className="courtlistdetails"
               basic
               color="green"
-              content={"Details"}
               negative={courtDetailState.open}
-              positive={!courtDetailState.open}
+              // positive={!courtDetailState.open}
               onClick={handleDetailClick}
+<<<<<<< HEAD
             />
             <Button className="courtlistchat"
+=======
+            >
+              Details
+            </Button>
+            <Button
+>>>>>>> 50b6d3bcd0894a068e65543c46f6b87f4144adf1
               basic
               color="blue"
-              content={"Chat"}
               negative={chatState.chatOpen}
-              positive={!chatState.chatOpen}
+              // positive={!chatState.chatOpen}
               onClick={handleChatClick}
-            />
+            >
+              Chat
+            </Button>
           </div>
         </Card.Content>
       </Card>
 
-      <TransitionablePortal onClose={handleDetailClose} open={courtDetailState.open}>
+      <TransitionablePortal
+        onClose={handleDetailClose}
+        open={courtDetailState.open}
+      >
         <div className="Court-portal">
           <Segment>
-          <div className='X-close'> 
-            <Button onClick={handleDetailClose}>X</Button>
+            <div className="X-close">
+              <Button onClick={handleDetailClose}>X</Button>
             </div>
             <div>
               <CourtDetailShow
@@ -137,8 +149,8 @@ const CourtCard = props => {
         <div className="Chat-portal">
           <Segment>
             <Header>Court Chat</Header>
-            <div className='X-close'> 
-            <Button onClick={handleChatClose}>X</Button>
+            <div className="X-close">
+              <Button onClick={handleChatClose}>X</Button>
             </div>
             <div>
               <Chatbox

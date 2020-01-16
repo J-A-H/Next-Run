@@ -101,9 +101,9 @@ const MapComponent = withScriptjs(
 
       const getCenter = () => {
 
-        console.log("Map component no location:",error);
         
         if(error){
+          console.log("Map component no location:",error);
           return {
             lat: 43.644200,
             lng: -79.402207
@@ -126,7 +126,6 @@ const MapComponent = withScriptjs(
       }, [allCourts, playersCount]);
 
       useEffect(()=>{
-
         setCenter(getCenter());
 
         if(clickedCourt > 0){
@@ -140,7 +139,7 @@ const MapComponent = withScriptjs(
 
           setCenter(newCenter);
         }
-      }, [clickedCourt])
+      }, [clickedCourt, geolocation, error]);
 
       const defaultMapOptions = {
         disableDefaultUI: true,

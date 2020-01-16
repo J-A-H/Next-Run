@@ -137,7 +137,7 @@ const MapComponent = withScriptjs(
         
         <GoogleMap
           defaultZoom={14}
-          defaultCenter={geolocation}
+          // defaultCenter={geolocation}
           center={clickedCourt !== null ? convertIDtoCoords(clickedCourt) : geolocation}
           //ref={(map) => map && map.panTo({lat: 25.0112183,lng: 121.52067570000001})}
           mapTypeId={"hybrid"}

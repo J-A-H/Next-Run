@@ -10,11 +10,18 @@ export const usePosition = () => {
     });
   };
   const onError = (error) => {
+    console.log(error.message);
     setError(error.message);
+    setPosition({
+      lat: 43.644200,
+      lng: -79.402207
+    })
   };
   useEffect(() => {
     const geo = navigator.geolocation;
     if (!geo) {
+
+      console.log("Geolocation not allowed!");
       setError('Geolocation is not supported');
       return;
     }

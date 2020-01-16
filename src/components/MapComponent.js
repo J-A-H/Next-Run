@@ -56,7 +56,7 @@ const MapComponent = withScriptjs(
         allCourts.forEach(court => {
           var y0 = Number(court.lat);
           var x0 = Number(court.lng);
-          var rd = 200 / 111300;
+          var rd = 100 / 111300;
           for (let i = 0; i < playersCount[court.name]; i++) {
             let newHeatMapPoint = { location: null, weight: null };
 
@@ -168,7 +168,7 @@ const MapComponent = withScriptjs(
               </Fragment>
             );
           })}
-          <HeatmapLayer data={heatMapData} options={{ radius: `50` }} />
+          <HeatmapLayer data={heatMapData} options={{ radius: `10` }} />
         </GoogleMap>
       );
     }

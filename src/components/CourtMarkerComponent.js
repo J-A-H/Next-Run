@@ -35,7 +35,6 @@ const CourtMarkerComponent = ({
    * Opens court detail when marker on map is clicked.
    */
   const handleMarkerClick = () => {
-    console.log(court.name);
     setMarkCourtDetailState(prevState => ({ open: !prevState.open }));
   };
 
@@ -63,7 +62,6 @@ const CourtMarkerComponent = ({
 
   useEffect(() => {
     if (court !== undefined && location !== undefined) {
-      console.log(`origin: ${location.lat}, ${location.lng} dest: ${court.lat}, ${court.lng}`);
       getDistance(court, geolocation);
     }
   }, [court, location]);

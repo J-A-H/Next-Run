@@ -22,10 +22,11 @@ const CourtCard = props => {
     playersCount,
     court,
     getWeeklyPeakTimes,
-    getDailyPeakTimes
+    getDailyPeakTimes,
+    cardOpen,
+    updateCardOpen
+    
   } = props;
-
-  const [cardPlayersCount, setCardPlayersCount] = useState({});
 
 
   const [courtDetailState, setCourtDetailState] = useState({ open: false });
@@ -39,21 +40,25 @@ const CourtCard = props => {
 
   const handleDetailClose = () => setCourtDetailState({ open: false });
 
-  const handleChatClick = () =>
-    setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
+  const handleChatClick = () =>{
+    console.log(`cardOpen:`, cardOpen);
+    if(cardOpen.court_id === ""){
+      clearAllMessages();
+      setChatState(prevState => ({ chatOpen: !prevState.chatOpen }));
+      updateCardOpen(court.id);
+    }
+  }
     
   const handleChatClose = () => {
     setChatState(prevState => ({ chatOpen: false }));
     clearAllMessages();
+    updateCardOpen("");
   };
 
   const courtFocus = () => {
     props.setClicked(court.id);
   }
 
-  // useEffect(() => {
-  //   console.log("Players count from court Card", playersCount);
-  // })
 
   const convertActivityLevel = num => {
     if (num > 10) {

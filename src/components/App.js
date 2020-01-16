@@ -5,7 +5,7 @@ import CourtListContainer from "./CourtListContainer";
 import MapComponent from "./MapComponent";
 import { usePosition } from "../helpers/usePosition";
 import Cookies from "universal-cookie";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -52,7 +52,7 @@ const App = props => {
   const [allMessages, setAllMessages] = useState([]);
   const [state, setState] = useState({ isTrue: false });
   const [userId, setUserId] = useState(randomId());
-  const [clickedCourt, setClickedCourt] = useState(null);
+  const [clickedCourt, setClickedCourt] = useState(0);
   /**
    * Adds message to allMessages
    * @param {*} message
@@ -70,6 +70,11 @@ const App = props => {
    */
   const clearAllMessages = () => {
     setAllMessages([]);
+  };
+
+  const reCentre = () => {
+    setClickedCourt(null);
+    console.log("button clicked");
   };
 
   /**
@@ -281,7 +286,7 @@ const App = props => {
 
   function showHigh() {
     setfilteredCourts(high);
-    document.getElementById('clearFilter').style.display = "block";
+    document.getElementById("clearFilter").style.display = "block";
     // props.courts = Object.keys(props.courts).filter(court =>
     //   filteredCourts.includes(court)
     // );
@@ -290,7 +295,7 @@ const App = props => {
 
   function showMedium() {
     setfilteredCourts(medium);
-    document.getElementById('clearFilter').style.display = "block";
+    document.getElementById("clearFilter").style.display = "block";
     // props.courts = Object.keys(props.courts).filter(court =>
     //   filteredCourts.includes(court)
     // );
@@ -299,7 +304,7 @@ const App = props => {
 
   function showLow() {
     setfilteredCourts(low);
-    document.getElementById('clearFilter').style.display = "block";
+    document.getElementById("clearFilter").style.display = "block";
     console.log("low", low);
 
     // console.log('courts', allCourts, filteredCourts, allCourts.filter(court => filteredCourts.includes(court.name)));
@@ -308,7 +313,11 @@ const App = props => {
 
   function clearFilter() {
     filterCourts(allCourts);
-    document.getElementById('clearFilter').style.display = "none";
+    document.getElementById("clearFilter").style.display = "none";
+  }
+
+  function setClickedFalse() {
+    setClickedCourt(null);
   }
 
   return (
@@ -323,7 +332,14 @@ const App = props => {
           <Dropdown.Item onClick={showHigh}>High</Dropdown.Item>
           <Dropdown.Item onClick={showMedium}>Medium</Dropdown.Item>
           <Dropdown.Item onClick={showLow}>Low</Dropdown.Item>
-          <Dropdown.Item onClick={clearFilter} id="clearFilter" className="Clear-filter"><Button inverted color="red">Clear Filter</Button>
+          <Dropdown.Item
+            onClick={clearFilter}
+            id="clearFilter"
+            className="Clear-filter"
+          >
+            <Button inverted color="red">
+              Clear Filter
+            </Button>
           </Dropdown.Item>
         </DropdownButton>
       </div>
@@ -353,6 +369,7 @@ const App = props => {
 
       <div style={{ zIndex: 1 }}>
         <MapComponent
+          onClick={setClickedFalse}
           clickedCourt={clickedCourt}
           googleMapURL={MAP_URL}
           loadingElement={<div style={{ height: `400px` }} />}
@@ -367,7 +384,23 @@ const App = props => {
           playersCount={playersCount}
           getDailyPeakTimes={getDailyPeakTimes}
           getWeeklyPeakTimes={getWeeklyPeakTimes}
-        //testData={testData}
+          //testData={testData}
+        />
+      </div>
+      <div className="compass"
+        style={{
+          position: "fixed",
+
+          //padding: "100px"
+          bottom: "10%",
+          right: "5%"
+        }}
+      >
+        <Icon
+          onClick={reCentre}
+          style={{ zIndex: 100000, color: "orange", opacity: '0.75' }}
+          size="huge"
+          name="compass"
         />
       </div>
     </Fragment>

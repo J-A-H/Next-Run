@@ -20,10 +20,6 @@
   overflow: auto;
 }
 
-.Weekly {
-
-}
-
 .Chat-portal {
   position: fixed;
   width: 23%;
@@ -40,6 +36,12 @@
   height: 40vh;
   padding: 10px;
   overflow: auto;
+}
+
+.X-close {
+  position: absolute;
+  right: 0px;
+  top: 3px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -69,5 +71,10 @@
     height: 30vh;
     bottom: 170px;
     overflow: auto;
+  }
+  .Weekly {
+    height: 60vh;
+    overflow: auto;
+    position: relative;
   }
 }

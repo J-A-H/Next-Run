@@ -246,6 +246,7 @@ const App = props => {
         }
       }
     }
+    setGeolocation(geolocation);
   }, [allCourts, geolocation]);
 
   //*Initialize court location listeners

@@ -25,10 +25,10 @@ export const usePosition = () => {
       setError('Geolocation is not supported');
       return;
     }
-    // const watcher = geo.watchPosition(onChange, onError, {enableHighAccuracy: false, maximimAge: 10000});
-    // return () => geo.clearWatch(watcher);
+    const watcher = geo.watchPosition(onChange, onError);
+    return () => geo.clearWatch(watcher);
 
-    const currentLocation = geo.getCurrentPosition(onChange, onError, {enableHighAccuracy: true});
+    // const currentLocation = geo.getCurrentPosition(onChange, onError, {enableHighAccuracy: true});
 
   }, []);
   return {...position, error};

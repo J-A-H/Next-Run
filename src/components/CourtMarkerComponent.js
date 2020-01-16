@@ -92,7 +92,7 @@ const CourtMarkerComponent = ({
         }
       />
 
-      <TransitionablePortal
+      {/* <TransitionablePortal
         onClose={handleMarkerClose}
         open={MarkerCourDetailState.open}
       >
@@ -107,7 +107,7 @@ const CourtMarkerComponent = ({
             </div>
           </Segment>
         </div>
-      </TransitionablePortal>
+      </TransitionablePortal> */}
     </div>
   );
 };

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Next-Run is an web application that connects basketball players through real-time communication. It provides live basketball court activity counts via heat maps as well as historical data that tells users when basketball courts are busy. Next-Run is built using ReactJs, Express, Pusher realtime libraries and more.  
+Next-Run is an web application that connects basketball players in the greater Toronto Area through real-time communication. It provides live basketball court activity counts via heat maps as well as historical data that tells users when basketball courts are busy. Next-Run is built using ReactJs, Express, Pusher realtime libraries and more.  
 
 ## Features
 1. Live heatmap data of courts.

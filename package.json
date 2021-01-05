@@ -12,7 +12,7 @@
     "@pusher/chatkit-client-react": "^0.1.2",
     "@pusher/chatkit-server": "^2.4.0",
     "@types/pusher__chatkit-client": "^1.13.0",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "cordova-plugin-background-geolocation": "^1.0.6",
     "cordova-plugin-dialogs": "^2.0.2",
